@@ -95,6 +95,7 @@ export default function EditProfile() {
             <Edit />
           </View>
         </View>
+        
         {user?.type == 'User' && (
           <>
             <View style={Styles.sectionHeader}>
