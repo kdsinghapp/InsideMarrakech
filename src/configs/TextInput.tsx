@@ -70,7 +70,7 @@ export default function TextInputField({...props}) {
             marginLeft: props.firstLogo ? 0 : 15,
             height: 50,
           }}>
-          <View style={{width: '80%', paddingTop: 1}}>
+          <View style={{width: '85%', paddingTop: 1,}}>
             <TextInput
               placeholderTextColor="#000"
               style={{
@@ -78,6 +78,7 @@ export default function TextInputField({...props}) {
                 fontWeight: '500',
                 fontSize: 14,
                 lineHeight: 18,
+                fontFamily: 'Federo-Regular',
               }}
               onChangeText={onChangeText}
               value={props.value}
@@ -93,12 +94,30 @@ export default function TextInputField({...props}) {
             style={{
               height: 42,
               width: 42,
+            
               alignItems: 'center',
               justifyContent: 'center',
             }}>
             <Image
                      source={require('../assets/Cropping/eyes4.png')}
               style={{width: 24, height: 24, color: '#EBEBEB'}}
+            />
+          </TouchableOpacity>
+        )}
+        {props.lastIcon && (
+          <TouchableOpacity
+            onPress={PasswordVisibility}
+            style={{
+              height: 42,
+              width: 42,
+              marginRight:10,
+             
+             overflow:'hidden',
+              justifyContent: 'center',
+            }}>
+            <Image
+                     source={props.lastIcon}
+              style={{width: 24, height: 24, }}
             />
           </TouchableOpacity>
         )}

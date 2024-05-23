@@ -91,9 +91,10 @@ console.log('====================================');
               <Text
                 style={{
                   fontSize: 24,
-                  fontWeight: '700',
+                  fontWeight: '600',
                   color: '#000',
                   lineHeight: 36,
+                  fontFamily: 'Federo-Regular',
                 }}>
                 Create New Password
               </Text>
@@ -109,6 +110,7 @@ console.log('====================================');
                   fontWeight: '400',
                   color: '#000',
                   lineHeight: 24,
+                  fontFamily: 'Federo-Regular',
                 }}>
                 Your new password must be different from previous used
                 passwords.
@@ -161,6 +163,7 @@ console.log('====================================');
             fontSize: 17,
             color: '#FFFFFF',
             fontWeight: '600',
+            fontFamily: 'Federo-Regular',
             lineHeight: 25,
           }}>
           Save
@@ -172,6 +175,7 @@ console.log('====================================');
 
 const styles = StyleSheet.create({
   txtInput: {
+    fontFamily: 'Federo-Regular',
     height: 60,
     marginHorizontal: 20,
     borderRadius: 30,

@@ -16,13 +16,13 @@ export default function ProfileHeader({titile = '',width=20}) {
         }}
         style={{flexDirection: 'row', alignItems: 'center'}}>
         <RightArrow height={15} Width={15} />
-        <Text style={{fontSize: 14, color: '#000', fontWeight: '500'}}>
+        <Text style={{fontFamily: 'Federo-Regular',fontSize: 14, color: '#000', fontWeight: '500'}}>
           Back
         </Text>
       </TouchableOpacity>
 
       <View style={{alignSelf: 'center', marginLeft: wp(width)}}>
-        <Text style={{fontSize: 20, color: '#000', fontWeight: '500'}}>
+        <Text style={{fontFamily: 'Federo-Regular',fontSize: 20, color: '#000', fontWeight: '500'}}>
           {titile}
         </Text>
       </View>

@@ -12,6 +12,10 @@ import Profile from "../screens/BottomTab/Profile";
 import Search from "../screens/BottomTab/Search";
 import Chat from "../screens/chat/Chat";
 import ChatPage from "../screens/chat/ChatPage";
+import AddProperty from "../screens/company/AddProperty";
+import CbookingDetails from "../screens/company/CbookingDetails";
+import CompanyBooking from "../screens/company/CompanyBooking";
+import CProfile from "../screens/company/CProfile";
 import AddTravelerDetails from "../screens/Features/AddTravelerDetails";
 import BookingDetails from "../screens/Features/BookingDetails";
 import PaymentDetails from "../screens/Features/PaymentDetails";
@@ -128,6 +132,18 @@ const _routes = {
       name: ScreenNameEnum.LOGIN_OPTION,
       Component:LoginOption,
     },
+    {
+      name: ScreenNameEnum.ADD_PROPERTY,
+      Component:AddProperty,
+    },
+    {
+      name: ScreenNameEnum.CompanyBooking,
+      Component:CompanyBooking,
+    },
+    {
+      name: ScreenNameEnum.CbookingDetails,
+      Component:CbookingDetails,
+    },
     
   ],
   HOME_ROUTE: [
@@ -150,7 +166,7 @@ const _routes = {
 //  ],
 
 
-  BOTTOMTAB_ROUTE:[
+BOTTOMTAB_ROUTE_USER:[
     {
       name: ScreenNameEnum.HOME_SCREEN,
       Component:Home,
@@ -177,6 +193,48 @@ const _routes = {
     {
       name: ScreenNameEnum.PROFILE_SCREEN,
       Component:Profile,
+      logo:require('../assets/Cropping/Profile2x.png'),
+      logo2:require('../assets/Cropping/ProfileActive2.png'),
+      lable:'Profile'
+    },
+
+ 
+  ],
+  BOTTOMTAB_ROUTE_COMPANY:[
+    {
+      name: ScreenNameEnum.HOME_SCREEN,
+      Component:Home,
+      logo:require('../assets/Cropping/Home.png'),
+      lable:'Home',
+      logo2:require('../assets/Cropping/Home2x.png'),
+    },
+   
+    
+    {
+      name: ScreenNameEnum.CompanyBooking,
+      Component:CompanyBooking,
+      logo:require('../assets/Cropping/bag-2.png'),
+      logo2:require('../assets/Cropping/bag-2a.png'),
+      lable:'Booking'
+    },
+  
+    {
+      name: ScreenNameEnum.ADD_PROPERTY,
+      Component:AddProperty,
+      logo:require('../assets/Cropping/Cadd.png'),
+      logo2:require('../assets/Cropping/Cadd.png'),
+      lable:''
+    },
+    {
+      name: ScreenNameEnum.CHAT_CONTACT_SCREEN,
+      Component:ChatPage,
+      logo:require('../assets/Cropping/message-notif.png'),
+      logo2:require('../assets/Cropping/Chats_1.png'),
+      lable:'Message'
+    },
+    {
+      name: ScreenNameEnum.CProfile,
+      Component:CProfile,
       logo:require('../assets/Cropping/Profile2x.png'),
       logo2:require('../assets/Cropping/ProfileActive2.png'),
       lable:'Profile'

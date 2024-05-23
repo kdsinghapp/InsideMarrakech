@@ -10,194 +10,114 @@ import {
 } from 'react-native';
 import React from 'react';
 import GoldRight from '../../assets/svg/GoldRight.svg';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 
 import Pin from '../../assets/svg/BlackPin.svg';
 import Call from '../../assets/svg/call.svg';
 import Chat from '../../assets/svg/chat.svg';
 import Star from '../../assets/svg/Star.svg';
-import {styles} from '../../configs/Styles';
+import { styles } from '../../configs/Styles';
 import ScreenNameEnum from '../../routes/screenName.enum';
+
 export default function PlaceDetails() {
   const navigation = useNavigation();
   return (
-    <View style={{flex: 1, backgroundColor: '#FFF'}}>
+    <View style={localStyles.container}>
       <ScrollView>
         <ImageBackground
           source={require('../../assets/Cropping/img1.png')}
-          style={{height: hp(25)}}>
+          style={localStyles.imageBackground}>
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
             }}
-            style={{marginTop: 20, marginLeft: 15}}>
+            style={localStyles.goBackButton}>
             <GoldRight />
           </TouchableOpacity>
         </ImageBackground>
 
-        <View style={{flex: 1, backgroundColor: '#FFF'}}>
-          <View style={{marginTop: 10, paddingHorizontal: 10}}>
-            <Text style={{fontSize: 20, color: '#000'}}>
-              Marrakech Quad Biking
-            </Text>
+        <View style={localStyles.contentContainer}>
+          <View style={localStyles.titleContainer}>
+            <Text style={localStyles.titleText}>Marrakech Quad Biking</Text>
           </View>
-          <View
-            style={{
-              paddingHorizontal: 10,
-              marginTop: 10,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
+          <View style={localStyles.addressContainer}>
             <Pin />
-            <Text style={{fontSize: 12, color: '#000'}}>
-              192 Rue Tachenbacht, Marrakech 40000
-            </Text>
+            <Text style={localStyles.addressText}>192 Rue Tachenbacht, Marrakech 40000</Text>
           </View>
 
-          <View style={Styles.star}>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <View
-                style={{
-                  marginHorizontal: 10,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
+          <View style={localStyles.star}>
+            <View style={localStyles.starsContainer}>
+              <View style={localStyles.stars}>
                 <Star />
                 <Star />
                 <Star />
                 <Star />
                 <Star />
               </View>
-              <Text style={{fontSize: 12, color: '#000', fontWeight: '800'}}>
-                5.0
-              </Text>
+              <Text style={localStyles.ratingText}>5.0</Text>
             </View>
 
-            <Text style={{color: '#000', fontWeight: '800', fontSize: 14}}>
-              From MAD 165,3
-            </Text>
+            <Text style={localStyles.priceText}>From MAD 165,3</Text>
           </View>
 
-          <View
-            style={{
-              marginTop: 20,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginHorizontal: 40,
-            }}>
-            <TouchableOpacity 
-            onPress={()=>{
-              navigation.navigate(ScreenNameEnum.BOOKING_DETAILS)
-            }}
-            
-            style={Styles.btn}>
-              <Text>BOOK</Text>
+          <View style={localStyles.buttonsContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(ScreenNameEnum.BOOKING_DETAILS);
+              }}
+              style={localStyles.btn}>
+              <Text style={localStyles.btnText}>BOOK</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={Styles.btn}>
-              <Text>MENU</Text>
+            <TouchableOpacity style={localStyles.btn}>
+              <Text style={localStyles.btnText}>MENU</Text>
             </TouchableOpacity>
           </View>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: 20,
-              paddingHorizontal: 20,
-            }}>
-            <Text
-              style={{
-                fontSize: 18,
-                color: '#000',
-                fontWeight: '500',
-              }}>
-              Gallery Photos
-            </Text>
-
+          <View style={localStyles.galleryHeaderContainer}>
+            <Text style={localStyles.galleryHeaderText}>Gallery Photos</Text>
             <TouchableOpacity>
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: '#000',
-                  fontWeight: '500',
-                }}>
-                See all
-              </Text>
+              <Text style={localStyles.seeAllText}>See all</Text>
             </TouchableOpacity>
           </View>
 
-          <View
-            style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+          <View style={localStyles.galleryContainer}>
             <FlatList
               data={GalleryData}
               showsHorizontalScrollIndicator={false}
               horizontal
-              renderItem={({item}) => (
+              renderItem={({ item }) => (
                 <View>
                   <Image
                     source={item.Img}
                     resizeMode="contain"
-                    style={{height: 100, width: 100, marginHorizontal: 10}}
+                    style={localStyles.galleryImage}
                   />
                 </View>
               )}
             />
           </View>
 
-          <View style={{marginTop: 20, marginHorizontal: 15}}>
-            <TouchableOpacity
-              style={{
-                borderWidth: 1,
-                borderRadius: 30,
-                height: 55,
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-              }}>
+          <View style={localStyles.contactContainer}>
+            <TouchableOpacity style={localStyles.contactButton}>
               <Call />
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: '#000',
-                  marginLeft: 10,
-                  fontWeight: '500',
-                }}>
+              <Text style={localStyles.contactButtonText}>
                 Book online or call: +212 679-419149
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-            onPress={()=>{
-              navigation.navigate(ScreenNameEnum.CHAT_CONTACT_SCREEN)
-            }}
-              style={{
-                borderWidth: 1,
-                borderRadius: 30,
-                height: 55,
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                marginTop: 20,
-              }}>
+              onPress={() => {
+                navigation.navigate(ScreenNameEnum.CHAT_CONTACT_SCREEN);
+              }}
+              style={[localStyles.contactButton, localStyles.chatButton]}>
               <Chat />
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: '#000',
-                  marginLeft: 10,
-                  fontWeight: '500',
-                }}>
-                Chat now
-              </Text>
+              <Text style={localStyles.contactButtonText}>Chat now</Text>
             </TouchableOpacity>
           </View>
 
-          <View style={{marginTop: 20, paddingHorizontal: 15}}>
-            <Text style={{fontSize: 20, color: '#000', fontWeight: '500'}}>
-              Agafay Desert
-            </Text>
-            <Text style={{fontSize: 14, color: '#000', fontWeight: '400'}}>
+          <View style={localStyles.descriptionContainer}>
+            <Text style={localStyles.sectionTitle}>Agafay Desert</Text>
+            <Text style={localStyles.descriptionText}>
               Lorem ipsum dolor sit amet consectetur. A purus parturient sed
               enim erat. Mattis eget tincidunt dolor consequat molestie ante.
               Nibh consequat at sed magna turpis lectus. Mi urna libero sit
@@ -209,141 +129,94 @@ export default function PlaceDetails() {
             </Text>
           </View>
         </View>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderRadius: 30,
-            height: 45,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginHorizontal: 20,
-
-            marginTop: 20,
-          }}>
-          <Text
-            style={{
-              fontSize: 18,
-              color: '#000',
-              marginLeft: 10,
-              fontWeight: '400',
-            }}>
-            BOOK
-          </Text>
+        <TouchableOpacity style={localStyles.bookButton}>
+          <Text style={localStyles.bookButtonText}>BOOK</Text>
         </TouchableOpacity>
-        <View style={{marginTop: 20, paddingHorizontal:20}}>
-          <Text style={{fontSize: 20, color: '#000', fontWeight: '500'}}>
-            Opening hours
-          </Text>
-          <Text style={{fontSize: 14, color: '#777777', fontWeight: '400'}}>
-            Open 7 days a week
-          </Text>
+        <View style={localStyles.openingHoursContainer}>
+          <Text style={localStyles.sectionTitle}>Opening hours</Text>
+          <Text style={localStyles.openingHoursText}>Open 7 days a week</Text>
         </View>
-        <View style={{marginHorizontal:20,marginTop:20}}>
-          <Text style={{fontSize: 14, color: '#777777', fontWeight: '400'}}>
-            Lunch
-          </Text>
-          <Text style={{fontSize: 14, color: '#777777', fontWeight: '400'}}>
-            12h-15h
-          </Text>
+        <View style={localStyles.scheduleContainer}>
+          <Text style={localStyles.scheduleText}>Lunch</Text>
+          <Text style={localStyles.scheduleText}>12h-15h</Text>
         </View>
-        <View style={{marginHorizontal:20,marginTop:20}}>
-          <Text style={{fontSize: 14, color: '#777777', fontWeight: '400'}}>
-          Dinner
-          </Text>
-          <Text style={{fontSize: 14, color: '#777777', fontWeight: '400'}}>
-          7pm-2am
-          </Text>
+        <View style={localStyles.scheduleContainer}>
+          <Text style={localStyles.scheduleText}>Dinner</Text>
+          <Text style={localStyles.scheduleText}>7pm-2am</Text>
         </View>
-        <View
-                style={{
-                  padding: 5,
-                  height: hp(25),
-                  width: hp(45),
-                  marginLeft: 15,
-                }}>
-                <ImageBackground
-                  source={require('../../assets/Cropping/img2.png')}
-                  style={{
-                    width: '100%',
+        <View style={localStyles.exploreContainer}>
+          <ImageBackground
+            source={require('../../assets/Cropping/img2.png')}
+            style={localStyles.exploreImageBackground}
+            resizeMode="contain">
+            <View style={localStyles.exploreTextContainer}>
+              <Text style={localStyles.exploreTitle}>
+                Exploring the Surroundings of Essaouira
+              </Text>
+              <Text style={localStyles.exploreSubtitle}>
+                By Car, Motorbike, Motorhome, Coach, By Bike
+              </Text>
+            </View>
 
-                    height: '100%',
-                    padding: 10,
-                  }}
-                  resizeMode="contain">
-                  <View style={{marginTop:30}}>
-                    <Text
-                      style={{
-                        color: '#fff',
-                        width: '60%',
-                        fontSize: 14,
-                        fontWeight: '400',
-                      }}>
-                      Exploring the Surroundings of Essaouira
-                    </Text>
-                    <Text
-                      style={{color: '#fff', marginTop:10,fontSize: 12, fontWeight: '400'}}>
-                      By Car, Motorbike, Motorhome, Coach, By Bike
-                    </Text>
-                  </View>
+            <TouchableOpacity style={localStyles.viewButton}>
+              <Text style={localStyles.viewButtonText}>View</Text>
+            </TouchableOpacity>
+          </ImageBackground>
+        </View>
 
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: '#FFF',
-                      width: '20%',
-
-                      position: 'absolute',
-                      bottom: 40,
-                      left: 20,
-                      paddingVertical: 5,
-                      borderRadius: 30,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Text
-                      style={{color: '#000', fontWeight: '500', fontSize: 14}}>
-                      View
-                    </Text>
-                  </TouchableOpacity>
-                </ImageBackground>
-              </View>
-
-              <View style={{marginHorizontal:20}}> 
-                 <Text style={{fontSize: 20, color: '#000', fontWeight: '500'}}>
-              How to get to
-          </Text>
-                 <Text style={{fontSize: 20, color: '#000', fontWeight: '500'}}>
-                 Agafay Desert
-          </Text>
-               
-              </View>
-           <ImageBackground
-
-           style={{height:hp(30),marginTop:10,justifyContent:'center',alignItems:'center'}}
-                  source={require('../../assets/Cropping/map.png')}>
-           <TouchableOpacity
-                    style={{
-                      backgroundColor: '#FFF',
-                    paddingHorizontal:20,
-
-                      borderWidth:1,
-                      paddingVertical:10,
-                      borderRadius: 30,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <Text
-                      style={{color: '#000', fontWeight: '500', fontSize: 14}}>
-                     OPEN IN MAPS
-                    </Text>
-                  </TouchableOpacity>
-              </ImageBackground>
-        <View style={{height: hp(5)}} />
+        <View style={localStyles.sectionContainer}>
+          <Text style={localStyles.sectionTitle}>How to get to</Text>
+          <Text style={localStyles.sectionTitle}>Agafay Desert</Text>
+        </View>
+        <ImageBackground
+          style={localStyles.mapImageBackground}
+          source={require('../../assets/Cropping/map.png')}>
+          <TouchableOpacity style={localStyles.mapButton}>
+            <Text style={localStyles.mapButtonText}>OPEN IN MAPS</Text>
+          </TouchableOpacity>
+        </ImageBackground>
+        <View style={localStyles.bottomSpace} />
       </ScrollView>
     </View>
   );
 }
 
-const Styles = StyleSheet.create({
+const localStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFF',
+  },
+  imageBackground: {
+    height: hp(25),
+  },
+  goBackButton: {
+    marginTop: 20,
+    marginLeft: 15,
+  },
+  contentContainer: {
+    flex: 1,
+    backgroundColor: '#FFF',
+  },
+  titleContainer: {
+    marginTop: 10,
+    paddingHorizontal: 10,
+  },
+  titleText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 20,
+    color: '#000',
+  },
+  addressContainer: {
+    paddingHorizontal: 10,
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  addressText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 12,
+    color: '#000',
+  },
   star: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -351,14 +224,219 @@ const Styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginTop: 20,
   },
+  starsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  stars: {
+    marginHorizontal: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ratingText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 12,
+    color: '#000',
+    fontWeight: '800',
+  },
+  priceText: {
+    fontFamily: 'Federo-Regular',
+    color: '#000',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  buttonsContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 40,
+  },
   btn: {
     borderWidth: 1,
     height: 45,
-
     borderRadius: 30,
     width: '45%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  btnText: {
+    color: '#000',
+    fontSize: 14,
+    fontFamily: 'Federo-Regular',
+    fontWeight: '500',
+  },
+  galleryHeaderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  galleryHeaderText: {
+    fontSize: 18,
+    color: '#000',
+    fontWeight: '500',
+  },
+  seeAllText: {
+    fontSize: 14,
+    color: '#000',
+    fontWeight: '500',
+  },
+  galleryContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  galleryImage: {
+    height: 100,
+    width: 100,
+    marginHorizontal: 10,
+  },
+  contactContainer: {
+    marginTop: 20,
+    marginHorizontal: 15,
+  },
+  contactButton: {
+    borderWidth: 1,
+    borderRadius: 30,
+    height: 55,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  contactButtonText: {
+    fontSize: 12,
+    color: '#000',
+    marginLeft: 10,
+    fontWeight: '500',
+    fontFamily: 'Federo-Regular',
+  },
+  chatButton: {
+    marginTop: 20,
+  },
+  descriptionContainer: {
+    marginTop: 20,
+    paddingHorizontal: 15,
+  },
+  sectionTitle: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 20,
+    color: '#000',
+    fontWeight: '500',
+  },
+  descriptionText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 14,
+    color: '#000',
+    fontWeight: '400',
+  },
+  bookButton: {
+    borderWidth: 1,
+    borderRadius: 30,
+    height: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 20,
+    marginTop: 20,
+  },
+  bookButtonText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 18,
+    color: '#000',
+    marginLeft: 10,
+    fontWeight: '400',
+  },
+  openingHoursContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  openingHoursText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 14,
+    color: '#777777',
+    fontWeight: '400',
+  },
+  scheduleContainer: {
+    marginHorizontal: 20,
+    marginTop: 20,
+  },
+  scheduleText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 14,
+    color: '#777777',
+    fontWeight: '400',
+  },
+  exploreContainer: {
+    padding: 5,
+    height: hp(25),
+    width: hp(45),
+    marginLeft: 15,
+  },
+  exploreImageBackground: {
+    width: '100%',
+    height: '100%',
+    padding: 10,
+  },
+  exploreTextContainer: {
+    marginTop: 30,
+  },
+  exploreTitle: {
+    color: '#fff',
+    width: '60%',
+    fontSize: 14,
+    fontWeight: '400',
+    fontFamily: 'Federo-Regular',
+  },
+  exploreSubtitle: {
+    color: '#fff',
+    marginTop: 10,
+    fontSize: 12,
+    fontWeight: '400',
+    fontFamily: 'Federo-Regular',
+  },
+  viewButton: {
+    backgroundColor: '#FFF',
+    width: '20%',
+    position: 'absolute',
+    bottom: 40,
+    left: 20,
+    paddingVertical: 5,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  viewButtonText: {
+    color: '#000',
+    fontWeight: '500',
+    fontSize: 14,
+    fontFamily: 'Federo-Regular',
+  },
+  sectionContainer: {
+    marginHorizontal: 20,
+  },
+  mapImageBackground: {
+    height: hp(30),
+    marginTop: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  mapButton: {
+    backgroundColor: '#FFF',
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    paddingVertical: 10,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mapButtonText: {
+    color: '#000',
+    fontWeight: '500',
+    fontSize: 14,
+    fontFamily: 'Federo-Regular',
+  },
+  bottomSpace: {
+    height: hp(5),
   },
 });
 

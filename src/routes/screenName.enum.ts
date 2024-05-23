@@ -38,7 +38,11 @@ enum ScreenNameEnum {
  PAYMENT_DETAILS = 'PAYMENT_DETAILS',
  PAYMENT_SUCCESS ='PAYMENT_SUCCESS',
  
-  //Tab screen 
+  //company
+  ADD_PROPERTY ='ADD_PROPERTY',
+  CompanyBooking='CompanyBooking',
+  CProfile ='CProfile',
+  CbookingDetails='CbookingDetails',
 
 // chat
 

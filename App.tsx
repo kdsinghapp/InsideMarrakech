@@ -10,3 +10,5 @@ LogBox.ignoreAllLogs();//Ignore all log notifications
 const App: FunctionComponent<any> = () => <AppNavigator />;
 
 export default App;
+
+

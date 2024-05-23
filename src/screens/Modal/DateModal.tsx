@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   Modal,
   View,
@@ -18,7 +18,7 @@ import {
 } from 'react-native-responsive-screen';
 import CheckBox from 'react-native-check-box';
 
-const DateModal = ({visible, onClose, data}) => {
+const DateModal = ({ visible, onClose, data }) => {
   const screenHeight = Dimensions.get('screen').height;
   const translateY = useRef(new Animated.Value(screenHeight)).current;
 
@@ -48,171 +48,59 @@ const DateModal = ({visible, onClose, data}) => {
 
   return (
     <Modal visible={visible} transparent>
-      <TouchableOpacity 
-      
-      onPress={()=>{
-        onClose()
-        closeModal()
-      }}
-      activeOpacity={1} style={styles.container}>
+      <TouchableOpacity
+        onPress={() => {
+          onClose();
+          closeModal();
+        }}
+        activeOpacity={1}
+        style={styles.container}>
         <Animated.View
           style={[
             styles.modal,
             {
-              transform: [{translateY: translateY}],
+              transform: [{ translateY: translateY }],
             },
           ]}>
           <ScrollView>
-            <View style={{marginTop: 20, marginHorizontal: 15}}>
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: '#000',
-                  fontWeight: '700',
-                }}>
-                Date
-              </Text>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  height: hp(8),
-
-                  marginVertical: 10,
-                  flexDirection: 'row',
-                }}>
-                <View
-                  style={{
-                    borderWidth: 1,
-                    backgroundColor: '#000',
-                    width: '30%',
-                    height: 40,
-                    borderRadius: 30,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Text style={{fontSize: 8, fontWeight: '600', color: '#FFF'}}>
-                    Wednesday 20 March
-                  </Text>
+            <View style={{ marginTop: 20, marginHorizontal: 15 }}>
+              <Text style={styles.title}>Date</Text>
+              <View style={styles.optionContainer}>
+                <View style={styles.dateOption}>
+                  <Text style={styles.dateText}>Wednesday 20 March</Text>
                 </View>
-                <View
-                  style={{
-                    borderWidth: 1,
-                    backgroundColor: '#fff',
-                    width: '30%',
-                    height: 40,
-                    borderRadius: 30,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Text style={{fontSize: 8, fontWeight: '600', color: '#000'}}>
-                    Wednesday 20 March
-                  </Text>
+                <View style={styles.dateOption}>
+                  <Text style={styles.dateText}>Wednesday 20 March</Text>
                 </View>
-                <View
-                  style={{
-                    borderWidth: 1,
-                    backgroundColor: '#fff',
-                    width: '30%',
-                    height: 40,
-                    borderRadius: 30,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Text style={{fontSize: 8, fontWeight: '600', color: '#000'}}>
-                    Wednesday 20 March
-                  </Text>
+                <View style={styles.dateOption}>
+                  <Text style={styles.dateText}>Wednesday 20 March</Text>
                 </View>
               </View>
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: '#000',
-                  fontWeight: '700',
-                }}>
-                Guests
-              </Text>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  height: hp(8),
-                 
-                  marginVertical:10,
-                  flexDirection:'row',
-                  
-                }}>
-              <View style={{borderWidth:1,width:'20%',height:40,
-              flexDirection:'row',
-              borderRadius:30,alignItems:'center',justifyContent:'center'}}>
-                <Text style={{fontSize:12,fontWeight:'600',color:'#000',marginRight:10}}>1</Text>
-
-                <Image   source={require('../../assets/Cropping/Person2x.png')} style={{height:20,width:20}} />
-
-
-
-              </View>
-              <View style={{borderWidth:1,width:'20%',height:40,
-              flexDirection:'row',
-              borderRadius:30,alignItems:'center',justifyContent:'center'}}>
-                <Text style={{fontSize:12,fontWeight:'600',color:'#000',marginRight:10}}>1</Text>
-
-                <Image   source={require('../../assets/Cropping/Person2x.png')} style={{height:20,width:20}} />
-
-
-
-              </View>
-              <View style={{borderWidth:1,width:'20%',height:40,
-              flexDirection:'row',
-              borderRadius:30,alignItems:'center',justifyContent:'center'}}>
-                <Text style={{fontSize:12,fontWeight:'600',color:'#000',marginRight:10}}>1</Text>
-
-                <Image   source={require('../../assets/Cropping/Person2x.png')} style={{height:20,width:20}} />
-
-
-
-              </View>
-              <View style={{borderWidth:1,width:'20%',height:40,
-              flexDirection:'row',
-              borderRadius:30,alignItems:'center',justifyContent:'center'}}>
-                <Text style={{fontSize:12,fontWeight:'600',color:'#000',marginRight:10}}>1</Text>
-
-                <Image   source={require('../../assets/Cropping/Person2x.png')} style={{height:20,width:20}} />
-
-
-
-              </View>
-           
-
-               
+              <Text style={styles.title}>Guests</Text>
+              <View style={styles.optionContainer}>
+                <View style={styles.guestOption}>
+                  <Text style={styles.guestText}>1</Text>
+                  <Image source={require('../../assets/Cropping/Person2x.png')} style={styles.guestIcon} />
+                </View>
+                <View style={styles.guestOption}>
+                  <Text style={styles.guestText}>1</Text>
+                  <Image source={require('../../assets/Cropping/Person2x.png')} style={styles.guestIcon} />
+                </View>
+                <View style={styles.guestOption}>
+                  <Text style={styles.guestText}>1</Text>
+                  <Image source={require('../../assets/Cropping/Person2x.png')} style={styles.guestIcon} />
+                </View>
+                <View style={styles.guestOption}>
+                  <Text style={styles.guestText}>1</Text>
+                  <Image source={require('../../assets/Cropping/Person2x.png')} style={styles.guestIcon} />
+                </View>
               </View>
             </View>
           </ScrollView>
           <TouchableOpacity
             onPress={() => {}}
-            style={{
-              backgroundColor: '#FFF',
-              borderWidth: 1,
-              height: 55,
-              width: '100%',
-              marginTop: 20,
-              borderRadius: 30,
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'absolute',
-              bottom: 10,
-              alignSelf: 'center',
-            }}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: '500',
-                color: '#000',
-              }}>
-              Search
-            </Text>
+            style={styles.searchButton}>
+            <Text style={styles.searchButtonText}>Search</Text>
           </TouchableOpacity>
         </Animated.View>
       </TouchableOpacity>
@@ -220,50 +108,7 @@ const DateModal = ({visible, onClose, data}) => {
   );
 };
 
-const Account = [
-  {
-    name: 'Account 1',
-  },
-  {
-    name: 'Account 2',
-  },
-  {
-    name: 'Account 3',
-  },
-];
-
-const Event = [
-  {
-    name: 'Match',
-  },
-  {
-    name: 'Account',
-  },
-  {
-    name: 'Meeting',
-  },
-  {
-    name: 'Camp',
-  },
-  {
-    name: 'Cup',
-  },
-  {
-    name: 'Other',
-  },
-];
 const styles = StyleSheet.create({
-  shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
   container: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -275,7 +120,72 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     minHeight: hp(50),
-    elevation: 5, // Add this for Android shadow
+    elevation: 5,
+  },
+  title: {
+    fontSize: 20,
+    color: '#000',
+    fontWeight: '700',
+    fontFamily: 'Federo-Regular',
+  },
+  optionContainer: {
+    marginTop: 10,
+    marginHorizontal: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  dateOption: {
+    borderWidth: 1,
+    backgroundColor: '#000',
+    width: '30%',
+    height: 40,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dateText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 8,
+    fontWeight: '600',
+    color: '#FFF',
+  },
+  guestOption: {
+    borderWidth: 1,
+    width: '20%',
+    height: 40,
+    flexDirection: 'row',
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  guestText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#000',
+    marginRight: 10,
+  },
+  guestIcon: {
+    height: 20,
+    width: 20,
+  },
+  searchButton: {
+    backgroundColor: '#FFF',
+    borderWidth: 1,
+    height: 55,
+    width: '100%',
+    marginTop: 20,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 10,
+    alignSelf: 'center',
+  },
+  searchButtonText: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#000',
   },
 });
 

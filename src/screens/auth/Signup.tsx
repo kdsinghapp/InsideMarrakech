@@ -310,6 +310,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   title: {
+    fontFamily: 'Federo-Regular',
     fontSize: 24,
     fontWeight: '700',
     color: '#000',
@@ -317,6 +318,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   subtitle: {
+    fontFamily: 'Federo-Regular',
     fontSize: 16,
     fontWeight: '400',
     color: '#000',
@@ -348,6 +350,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   btnText: {
+    fontFamily: 'Federo-Regular',
     fontSize: 17,
     color: '#FFFFFF',
     fontWeight: '600',
@@ -359,6 +362,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   signInText: {
+    fontFamily: 'Federo-Regular',
     fontSize: 14,
     color: '#000',
     fontWeight: '600',

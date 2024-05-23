@@ -180,8 +180,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   headerText: {
+    fontFamily: 'Federo-Regular',
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: '500',
     color: '#000',
     lineHeight: 36,
   },
@@ -190,6 +191,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   subHeaderText: {
+    fontFamily: 'Federo-Regular',
     fontSize: 16,
     fontWeight: '400',
     color: '#000',
@@ -224,9 +226,10 @@ const styles = StyleSheet.create({
     height: 43,
   },
   inputLabel: {
+    fontFamily: 'Federo-Regular',
     fontSize: 16,
     lineHeight: 19.09,
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#000',
   },
   inputRow: {
@@ -238,11 +241,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'blue',
     marginRight: 5,
+    fontFamily: 'Federo-Regular',
   },
   countryCodeSelected: {
     color: '#000',
   },
   textInput: {
+    fontFamily: 'Federo-Regular',
     fontSize: 14,
     lineHeight: 19.09,
     fontWeight: '400',
@@ -267,6 +272,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
     lineHeight: 25,
+    fontFamily: 'Federo-Regular',
   },
   countryPicker: {
     modal: {

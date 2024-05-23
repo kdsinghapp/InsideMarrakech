@@ -170,30 +170,30 @@ export const validOtp = createAsyncThunk(
     }
   },
 );
-export const CreateNewPassword = createAsyncThunk(
-  'CreateNewPassword',
+export const change_password = createAsyncThunk(
+  'change_password',
   async (params, thunkApi) => {
     console.log(
-      '🚀 ~ file: AuthSlice.js:12 ~ CreatePassword ~ params:',
-      params,
+      '🚀 ~ file: AuthSlice.js:12 ~ change_password ~ params:',
+      params.data,
     );
 
     try {
-      const response = await API.post('/create_new_password', params.data, {
+      const response = await API.post('/change_password', params.data, {
         headers: {
           'Content-Type': 'multipart/form-data', // Set content type to FormData
         },
       });
 
       console.log(
-        '🚀 ~ file: AuthSlice.js:16 ~ CreatePassword ~ response:',
+        '🚀 ~ file: AuthSlice.js:16 ~ change_password ~ response:',
         response.data,
       );
 
-      if (response.data.status) {
+      if (response.data.status == '1') {
         successToast('Password Reset Successfully');
 
-        params.navigation.navigate(ScreenNameEnum.LOGIN_SCREEN);
+        params.navigation.navigate(ScreenNameEnum.PROFILE_SCREEN);
       } else {
         errorToast('response.data.message');
       }
@@ -210,22 +210,23 @@ export const CreateNewPassword = createAsyncThunk(
   },
 );
 
-export const logout = createAsyncThunk('logout', async (params, thunkApi) => {
+export const logout = createAsyncThunk('log_out', async (params, thunkApi) => {
   try {
     const response = await API.post('/log_out', params.data);
 
     console.log(
-      '🚀 ~ file: AuthSlice.js:29 ~ logout ~ response:',
+      '🚀 ~ file: AuthSlice.js:29 ~ log_out ~ response:',
       response.data,
     );
 
     if (response.data.status == '1') {
       successToast(response.data.message);
+      params.navigation.navigate(ScreenNameEnum.LOGIN_SCREEN);
     } else {
       errorToast(response.data.message);
     }
 
-    params.navigation.navigate('Login');
+    
   } catch (error) {
     errorToast('Network error');
     console.log('🚀 ~ file: AuthSlice.js:32 ~ logout ~ error:', error);
@@ -238,6 +239,9 @@ export const get_profile = createAsyncThunk(
   'get_profile',
   async (params, thunkApi) => {
     try {
+
+      console.log('=============get_profile=======================');
+    
       const formData = new FormData();
       formData.append('user_id', params.user_id);
 
@@ -263,6 +267,7 @@ export const get_profile = createAsyncThunk(
     }
   },
 );
+
 
 const AuthSlice = createSlice({
   name: 'authSlice',
@@ -352,14 +357,14 @@ const AuthSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
     });
-    builder.addCase(CreateNewPassword.pending, state => {
+    builder.addCase(change_password.pending, state => {
       state.isLoading = true;
     });
-    builder.addCase(CreateNewPassword.fulfilled, (state, action) => {
+    builder.addCase(change_password.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isError = false;
     });
-    builder.addCase(CreateNewPassword.rejected, (state, action) => {
+    builder.addCase(change_password.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
     });

@@ -2,84 +2,85 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {API} from '../Api';
 
 import {Alert} from 'react-native';
+import {errorToast, successToast} from '../../configs/customToast';
+import ScreenNameEnum from '../../routes/screenName.enum';
 const initialState = {
   isLoading: false,
   isError: false,
   isSuccess: false,
-  DashboardList: null,
-  ResturantDetails: null,
-  Privacypolicy: null,
- 
+  PrivacyPolicy:null,
+  TermsCondition:null,
+  CategoryList:null
 };
-
-export const get_HomeDashBoard = createAsyncThunk(
-  'get_HomeDashBoard',
+export const update_notiification = createAsyncThunk(
+  'update_notiification',
   async (params, thunkApi) => {
     try {
-      const response = await API.post('/home/get-home', null, {
+      const config = {
         headers: {
-          Authorization: `Bearer ${params.token}`,
+          Accept: 'application/json',
         },
-      });
-
-      if (response.data.success) {
-        console.log('User Get_Home Succesfuly');
-      }
-      return response.data.data;
-    } catch (error) {
+      };
+      const response = await API.post('/update_notiification', params, config);
       console.log(
-        '🚀 ~ file: get_HomeDashBoard .js:16 ~ get_HomeDashBoard ~ error:',
-        error,
+        '==============update_notiification======================',
+        response.data,
       );
+      if (response.data.status == '1') {
+      }
 
+      return response.data.user_data;
+    } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
   },
 );
-export const get_RestauRantDetails = createAsyncThunk(
-  'get_RestauRantDetails',
+export const update_profile = createAsyncThunk(
+  'update_profile',
   async (params, thunkApi) => {
-    console.log('================RestauRantDetails=APi===================');
     try {
-      const response = await API.post('/restaurant/get-restaurant-by-id', params.data, {
+      const config = {
         headers: {
-          Authorization: `Bearer ${params.token}`,
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
         },
-      });
-      console.log('================RestauRantDetails=APi===================',response.data);
-      if (response.data.success) {
-        console.log('User get_RestauRantDetails Succesfuly');
-      }
-      return response.data.data;
-    } catch (error) {
+      };
+
+      let data = new FormData();
+      data.append('user_id', params.data.user_id);
+      data.append('mobile', params.data.mobile);
+      data.append('first_name', params.data.first_name);
+      data.append('last_name', params.data.last_name);
+      data.append('dob', params.data.dob);
+      data.append('home_town', params.data.home_town);
+      data.append('image', params.data.image);
+      data.append('email', params.data.email);
+      data.append('company_name', params.data.company_name);
+      data.append('vat_number',params.data.vat_number);
+      data.append('company_address', params.data.company_address);
+
+      
+
+      const response = await API.post('/update_profile', data, config);
       console.log(
-        '🚀 ~ file: get_RestauRantDetails .js:16 ~ get_RestauRantDetails ~ error:',
-        error,
+        '==============update_profile======================',
+        response.data,
       );
+      if (response.data.status == '1') {
+        successToast('Profile Update Successfuly');
+        if(params.type === 'User'){
 
-      return thunkApi.rejectWithValue(error);
-    }
-  },
-);
+          params.navigation.navigate(ScreenNameEnum.PROFILE_SCREEN);
+        }else{
+          params.navigation.navigate(ScreenNameEnum.CProfile);
+        }
 
-export const get_terms_conditions = createAsyncThunk(
-  'get_terms_conditions',
-  async (params, thunkApi) => {
-    try {
-      const response = await API.get('/get_terms_conditions');
-
-      console.log(
-        '🚀 ~ get_terms_conditions ~ response:',
-        response.data.result,
-      );
-
-      if (response.data.status) {
-        console.log('User get_terms_conditions Succesfuly');
+      } else {
+        errorToast(response.data.message);
       }
-      return response.data.result;
+      return response.data;
     } catch (error) {
-      console.log('🚀 ~ : get_terms_conditions error:', error);
-
+      errorToast('NetWork error');
       return thunkApi.rejectWithValue(error);
     }
   },
@@ -88,52 +89,140 @@ export const get_privacy_policy = createAsyncThunk(
   'get_privacy_policy',
   async (params, thunkApi) => {
     try {
-      const response = await API.get('/get_privacy_policy');
 
-      console.log('🚀 ~ get_privacy_policy ~ response:', response.data.result);
+      console.log('=============get_privacy_policy=======================')
+    
 
-      if (response.data.status) {
-        console.log('User get_privacy_policy Succesfuly');
+      const response = await API.get('/get_privacy_policy',);
+
+      if (response.data.status == '1') {
+        
+      } else {
       }
+
       return response.data.result;
     } catch (error) {
-      console.log('🚀 ~ : get_privacy_policy error:', error);
-
+      console.log('Error:', error);
+      errorToast('Network Error');
       return thunkApi.rejectWithValue(error);
     }
   },
 );
+export const get_terms_conditions = createAsyncThunk(
+  'get_terms_conditions',
+  async (params, thunkApi) => {
+    try {
 
+      console.log('=============get_terms_conditions=======================')
+    
+
+      const response = await API.get('/get_terms_conditions',);
+
+      if (response.data.status == '1') {
+        
+      } else {
+      }
+
+      return response.data.result;
+    } catch (error) {
+      console.log('Error:', error);
+      errorToast('Network Error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+export const get_category = createAsyncThunk(
+  'get_category',
+  async (params, thunkApi) => {
+    try {
+
+      console.log('=============get_category=======================')
+    
+
+      const response = await API.get('/get_category',);
+
+      if (response.data.status == '1') {
+        
+      } else {
+      }
+
+      return response.data.result;
+    } catch (error) {
+      console.log('Error:', error);
+      errorToast('Network Error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
 const FeatureSlice = createSlice({
   name: 'featureSlice',
   initialState,
   reducers: {},
   extraReducers: builder => {
-    // DashboardSlice cases
-    builder.addCase(get_HomeDashBoard.pending, state => {
+    builder.addCase(update_notiification.pending, state => {
       state.isLoading = true;
     });
-    builder.addCase(get_HomeDashBoard.fulfilled, (state, action) => {
+    builder.addCase(update_notiification.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.isError = false;
-      state.DashboardList = action.payload;
     });
-    builder.addCase(get_HomeDashBoard.rejected, (state, action) => {
+    builder.addCase(update_notiification.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
     });
-    builder.addCase(get_RestauRantDetails.pending, state => {
+    builder.addCase(update_profile.pending, state => {
       state.isLoading = true;
     });
-    builder.addCase(get_RestauRantDetails.fulfilled, (state, action) => {
+    builder.addCase(update_profile.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
       state.isError = false;
-      state.ResturantDetails = action.payload;
     });
-    builder.addCase(get_RestauRantDetails.rejected, (state, action) => {
+    builder.addCase(update_profile.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(get_privacy_policy.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_privacy_policy.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.PrivacyPolicy=action.payload
+    });
+    builder.addCase(get_privacy_policy.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(get_terms_conditions.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_terms_conditions.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.TermsCondition=action.payload
+    });
+    builder.addCase(get_terms_conditions.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(get_category.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_category.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.CategoryList=action.payload
+    });
+    builder.addCase(get_category.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;

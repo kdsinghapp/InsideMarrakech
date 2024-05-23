@@ -6,19 +6,26 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {useDispatch, useSelector} from 'react-redux';
-import {get_profile, update_profile} from '../../redux/feature/authSlice';
+import ImagePicker from 'react-native-image-crop-picker';
 import TextInputField from '../../configs/TextInput';
 import Edit from '../../assets/svg/Edit.svg';
 import ProfileHeader from '../../configs/ProfileHeader';
 import {styles} from '../../configs/Styles';
+import Loading from '../../configs/Loader';
+import {update_profile} from '../../redux/feature/featuresSlice';
+import {get_profile} from '../../redux/feature/authSlice';
+import {useNavigation} from '@react-navigation/native';
 
 export default function EditProfile() {
   const user = useSelector(state => state.auth.userData);
+
   const Updated_user = useSelector(state => state.auth.Update_user);
+  const isLoading = useSelector(state => state.feature.isLoading);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -30,10 +37,26 @@ export default function EditProfile() {
   const [CompanyAddress, setCompanyAddress] = useState('');
   const [email, setEmail] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
+  const [profile, setprofile] = useState('');
+  const [imageUrl, setimageUrl] = useState('');
+
   const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
-
+  const openImageLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    })
+      .then(image => {
+        setprofile(image);
+        setimageUrl(image.path);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
     if (user) {
       setFirstName(Updated_user?.first_name);
@@ -45,31 +68,68 @@ export default function EditProfile() {
       setCompanyName(Updated_user?.company_name);
       setCompanyAddress(Updated_user?.company_address);
       setVatNumber(Updated_user?.vat_number);
+      setimageUrl(Updated_user?.image);
     }
   }, [user]);
 
-  useEffect(() => {
-    get_userprofile();
-  }, [user]);
-
-  const get_userprofile = () => {
-    const params = {
-      user_id: user.id,
-    };
-    dispatch(get_profile(params));
-  };
+  const navigation = useNavigation();
 
   const handleSave = () => {
-    //   const updatedData = {
-    //     id: user.id,
-    //     firstName,
-    //     lastName,
-    //     dob,
-    //     homeTown,
-    //     email,
-    //     mobileNumber,
-    //   };
-    //   dispatch(update_profile(updatedData));
+    if (user?.type == 'User') {
+      console.log('=========user called===========================', {
+        uri:
+          Platform.OS === 'android'
+            ? profile.path
+            : profile?.path?.replace('file://', ''),
+        type: profile.mime,
+        name: `image${mobileNumber}${user?.id}.png`,
+      });
+
+      const params = {
+        data: {
+          user_id: user?.id,
+          mobile: mobileNumber,
+          first_name: firstName,
+          last_name: lastName,
+          dob: dob,
+          home_town: homeTown,
+          image: {
+            uri:
+              Platform.OS === 'android'
+                ? profile.path
+                : profile?.path?.replace('file://', ''),
+            type: profile.mime,
+            name: `image${mobileNumber}${user?.id}.png`,
+          },
+          email: email,
+        },
+        navigation: navigation,
+        type:user?.type
+      };
+      dispatch(update_profile(params));
+    } else {
+      const params = {
+        data: {
+          user_id: user?.id,
+          company_name: CompanyName,
+          vat_number: VatNumber,
+          company_address: CompanyAddress,
+          mobile: mobileNumber,
+          email: email,
+          image: {
+            uri:
+              Platform.OS === 'android'
+                ? profile.path
+                : profile?.path?.replace('file://', ''),
+            type: profile.mime,
+            name: `image${mobileNumber}${user?.id}.png`,
+          },
+        },
+        navigation: navigation,
+        type:user?.type
+      };
+      dispatch(update_profile(params));
+    }
   };
   const pickupDOB = date => {
     const year = date.getFullYear();
@@ -84,18 +144,28 @@ export default function EditProfile() {
   };
   return (
     <View style={Styles.container}>
+      {isLoading ? <Loading /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader title="Edit Profile" width={21} />
-        <View style={Styles.profileImageContainer}>
-          <Image
-            source={require('../../assets/Cropping/img3.png')}
-            style={Styles.profileImage}
-          />
+        <TouchableOpacity
+          onPress={() => {
+            openImageLibrary();
+          }}
+          style={Styles.profileImageContainer}>
+          {imageUrl == '' ? (
+            <Text style={{fontFamily: 'Federo-Regular',fontSize: 18, color: '#000', fontWeight: '600'}}>
+              {firstName[0]?.toUpperCase()}
+              {lastName[0]?.toUpperCase()}
+            </Text>
+          ) : (
+            <Image source={{uri: imageUrl}} style={Styles.profileImage} />
+          )}
+
           <View style={Styles.editIcon}>
             <Edit />
           </View>
-        </View>
-        
+        </TouchableOpacity>
+
         {user?.type == 'User' && (
           <>
             <View style={Styles.sectionHeader}>
@@ -141,7 +211,14 @@ export default function EditProfile() {
                   justifyContent: 'space-between',
                 },
               ]}>
-              <Text style={{fontSize: 16, color: '#000', fontWeight: '600'}}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: '#000',
+                  fontWeight: '600',
+                  marginLeft: 20,
+                  fontFamily: 'Federo-Regular',
+                }}>
                 {dob}
               </Text>
               <TouchableOpacity
@@ -212,11 +289,16 @@ export default function EditProfile() {
           <Text style={Styles.labelText}>Email</Text>
         </View>
         <View style={Styles.txtInput}>
-          <TextInputField
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-          />
+          <Text
+            style={{
+              fontSize: 14,
+              color: '#000',
+              fontWeight: '600',
+              marginLeft: 20,
+              fontFamily: 'Federo-Regular',
+            }}>
+            {email}
+          </Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
           <Text style={Styles.labelText}>Mobile Number</Text>
@@ -283,9 +365,10 @@ const Styles = StyleSheet.create({
     marginTop: hp(3),
   },
   sectionHeaderText: {
+    fontFamily: 'Federo-Regular',
     fontSize: 20,
     lineHeight: 30,
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#000',
   },
   row: {
@@ -299,8 +382,9 @@ const Styles = StyleSheet.create({
   },
   labelText: {
     fontSize: 14,
-    fontWeight: '800',
+    fontWeight: '600',
     color: '#000',
+    fontFamily: 'Federo-Regular',
   },
   labelContainerWithMargin: {
     width: '47%',
@@ -328,6 +412,7 @@ const Styles = StyleSheet.create({
   datePickerText: {
     fontSize: 16,
     color: '#000',
+    fontFamily: 'Federo-Regular',
   },
   saveButton: {
     ...styles.tabBtn,
@@ -338,5 +423,6 @@ const Styles = StyleSheet.create({
     color: '#FFF',
     lineHeight: 25.5,
     marginLeft: 10,
+    fontFamily: 'Federo-Regular',
   },
 });

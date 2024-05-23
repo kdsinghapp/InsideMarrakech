@@ -218,12 +218,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
+    fontFamily: 'Federo-Regular',
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: '500',
     color: '#000',
     lineHeight: 36,
   },
   subHeaderText: {
+    fontFamily: 'Federo-Regular',
     fontSize: 16,
     fontWeight: '400',
     color: '#000',
@@ -256,6 +258,7 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     fontSize: 14,
+    fontFamily: 'Federo-Regular',
     color: '#000',
     fontWeight: '600',
     lineHeight: 18,
@@ -271,6 +274,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loginButtonText: {
+    fontFamily: 'Federo-Regular',
     fontSize: 17,
     color: '#FFFFFF',
     fontWeight: '600',
@@ -286,6 +290,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: '600',
     lineHeight: 18,
+    fontFamily: 'Federo-Regular',
   },
   orContainer: {
     justifyContent: 'center',
@@ -303,6 +308,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   googleSignInText: {
+    fontFamily: 'Federo-Regular',
     fontSize: 16,
     fontWeight: '500',
     color: '#000',

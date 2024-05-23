@@ -51,7 +51,7 @@ const Role =(type)=>{
         
        
         <View style={{justifyContent:'center',alignItems:'center',marginTop:30}}>
-<Text style={{fontSize:22,color:'#000',fontWeight:'600'}}>Select Your Login </Text>
+<Text style={{fontFamily: 'Federo-Regular',fontSize:22,color:'#000',fontWeight:'600'}}>Select Your Login </Text>
         </View>
           <View style={{marginTop: hp(3)}}>
             <TouchableOpacity
@@ -69,6 +69,7 @@ const Role =(type)=>{
               ]}>
               <Text
                 style={{
+                  fontFamily: 'Federo-Regular',
                   fontSize: 17,
                   color:'#000',
                   fontWeight: '600',
@@ -97,6 +98,7 @@ const Role =(type)=>{
                   color:'#000',
                   fontWeight: '600',
                   lineHeight: 25,
+                  fontFamily: 'Federo-Regular',
                 }}>
              Company
               </Text>

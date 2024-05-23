@@ -1,73 +1,102 @@
-import { View, Text ,Image,TouchableOpacity, StyleSheet} from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import React from 'react'
 import ProfileHeader from '../../configs/ProfileHeader'
-import { heightPercentageToDP as hp} from 'react-native-responsive-screen'
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { styles } from '../../configs/Styles'
 import { useNavigation } from '@react-navigation/native'
 import ScreenNameEnum from '../../routes/screenName.enum'
 
-
 export default function PaymentSuccess() {
-
-    const navigation = useNavigation()
+  const navigation = useNavigation()
+  
   return (
-    <View style={{flex:1,backgroundColor:'#FFF'}}>
-      <View style={{marginTop:40,alignSelf:'center',}}>
-        <Text style={{fontSize:22,fontWeight:'600',color:'#000'}}>SuccessFully</Text>
+    <View style={localStyles.container}>
+      <View style={localStyles.header}>
+        <Text style={localStyles.headerText}>SuccessFully</Text>
       </View>
-      <View
-          style={{
-            height: hp(40),
-            marginTop: 20,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Image
-            source={require('../../assets/Cropping/I_1a3x.png')}
-            style={{height: '90%', width: '90%'}}
-            resizeMode="contain"
-          />
-        </View>
-   <View style={{alignItems:'center',marginTop:20,paddingHorizontal:0}}>
-   <Text style={{fontSize:20,fontWeight:'600',color:'#000',}}>Your booking is confirmed! 🎉</Text>
-   <Text style={{fontSize:12,fontWeight:'400',color:'#777777',marginTop:15}}>Lorem ipsum dolor sit amet consectetur. Semper odio nullam neque </Text>
-   <Text style={{fontSize:12,fontWeight:'400',color:'#777777',}}>lacus sit egestas.</Text>
-   </View>
-     
-   <TouchableOpacity
-          onPress={() => {
-            navigation.navigate(ScreenNameEnum.BOTTOM_TAB);
-          }}
-          style={[
-            styles.tabBtn,
-            {
-              backgroundColor: '#000',
-              bottom:20,
-              position:'absolute'
-            },
-          ]}>
-          <Text
-            style={{
-              fontSize: 17,
-              color: '#FFFFFF',
-              fontWeight: '400',
-              lineHeight:20,
-            }}>
-            BACK TO HOME
-          </Text>
-        </TouchableOpacity>
+      
+      <View style={localStyles.imageContainer}>
+        <Image
+          source={require('../../assets/Cropping/I_1a3x.png')}
+          style={localStyles.image}
+          resizeMode="contain"
+        />
+      </View>
+      
+      <View style={localStyles.confirmationContainer}>
+        <Text style={localStyles.confirmationText}>Your booking is confirmed! 🎉</Text>
+        <Text style={localStyles.descriptionText}>Lorem ipsum dolor sit amet consectetur. Semper odio nullam neque</Text>
+        <Text style={localStyles.descriptionText}>lacus sit egestas.</Text>
+      </View>
+      
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate(ScreenNameEnum.BOTTOM_TAB);
+        }}
+        style={localStyles.button}>
+        <Text style={localStyles.buttonText}>BACK TO HOME</Text>
+      </TouchableOpacity>
     </View>
   )
 }
 
-const Styles = StyleSheet.create({
-    txtInput: {
-      height: 50,
-  
-      borderRadius: 30,
-      justifyContent: 'center',
-      paddingLeft: 10,
-      borderWidth: 1,
-    },
-  });
-  
+const localStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFF'
+  },
+  header: {
+    marginTop: 40,
+    alignSelf: 'center',
+  },
+  headerText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 22,
+    fontWeight: '600',
+    color: '#000'
+  },
+  imageContainer: {
+    height: hp(40),
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    height: '90%',
+    width: '90%'
+  },
+  confirmationContainer: {
+    alignItems: 'center',
+    marginTop: 20,
+    paddingHorizontal: 0
+  },
+  confirmationText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#000',
+  },
+  descriptionText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 12,
+    fontWeight: '400',
+    color: '#777777',
+    marginTop: 15
+  },
+  button: {
+    backgroundColor: '#000',
+    bottom: 20,
+    position: 'absolute',
+    alignSelf: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 30
+  },
+  buttonText: {
+    fontSize: 17,
+    color: '#FFFFFF',
+    fontWeight: '400',
+    lineHeight: 20,
+    fontFamily: 'Federo-Regular',
+  }
+});

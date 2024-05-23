@@ -130,9 +130,10 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#000',
     lineHeight: 36,
+    fontFamily: 'Federo-Regular',
   },
   subHeaderContainer: {
     alignSelf: 'center',
@@ -142,6 +143,7 @@ const styles = StyleSheet.create({
   },
   subHeaderText: {
     fontSize: 16,
+    fontFamily: 'Federo-Regular',
     fontWeight: '400',
     color: '#000',
     lineHeight: 24,
@@ -169,6 +171,7 @@ const styles = StyleSheet.create({
   cell: {
     fontWeight: '600',
     fontSize: 24,
+    fontFamily: 'Federo-Regular',
     color: '#000',
     textAlign: 'center',
     borderRadius: 10,
@@ -189,6 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   submitButtonText: {
+    fontFamily: 'Federo-Regular',
     fontSize: 17,
     color: '#FFFFFF',
     fontWeight: '600',
