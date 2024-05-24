@@ -9,16 +9,16 @@ import {
   FlatList,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ProfileHeader from '../../configs/ProfileHeader';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DarkStar from '../../assets/svg/DarkStar.svg';
 import TextInputField from '../../configs/TextInput';
 import ScreenNameEnum from '../../routes/screenName.enum';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import AddPlus from '../../assets/svg/Add.svg';
 import Box from '../../assets/svg/checkBox.svg';
-import {RadioButton} from 'react-native-radio-buttons-group';
+import { RadioButton } from 'react-native-radio-buttons-group';
 
 export default function PaymentDetails() {
   const [isVisible, setIsVisible] = useState(false);
@@ -26,9 +26,34 @@ export default function PaymentDetails() {
   const [isSelected, setSelection] = useState(false);
   const [DriverDetails, setDriverDetails] = useState(null);
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
+  const [cardNumber, setCardNumber] = useState('');
+  const [validMonth, setValidMonth] = useState('');
+  const [validYear, setValidYear] = useState('');
+  const [cvv, setCvv] = useState('');
+  const [cardHolderName, setCardHolderName] = useState('');
+  const route = useRoute();
+  const {  firstName,
+    lastName,
+    email,
+    phoneNumber,
+    travelers,
+    language,
+    address, } = route.params;
+
+    console.log('====================================');
+    console.log( firstName,
+      lastName,
+      email,
+      phoneNumber,
+      travelers,
+      language,
+      address,);
+    console.log('====================================');
+
   const handleItemSelect = index => {
     setSelectedItemIndex(index);
   };
+  
   const navigation = useNavigation();
 
   return (
@@ -78,7 +103,7 @@ export default function PaymentDetails() {
           <FlatList
             scrollEnabled={false}
             data={card}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <TouchableOpacity
                 onPress={() => handleItemSelect(index)}
                 style={[
@@ -126,6 +151,8 @@ export default function PaymentDetails() {
               placeholder="Enter 12 digit card number"
               placeholderTextColor={'#979797'}
               style={styles.inputField}
+              value={cardNumber}
+              onChangeText={setCardNumber}
             />
           </View>
 
@@ -133,16 +160,33 @@ export default function PaymentDetails() {
             <View style={styles.inputColumn}>
               <Text style={styles.inputLabel}>Valid Thru</Text>
               <View style={styles.smallInputFieldContainer}>
-                <TextInput placeholder="Month" style={styles.inputField} />
+                <TextInput
+                  placeholder="Month"
+                  style={styles.inputField}
+                  value={validMonth}
+                  onChangeText={setValidMonth}
+                />
               </View>
+              <Text style={styles.inputLabel}>Ex year</Text>
               <View style={styles.smallInputFieldContainer}>
-                <TextInput placeholder="Year" style={styles.inputField} />
+             
+                <TextInput
+                  placeholder="Year"
+                  style={styles.inputField}
+                  value={validYear}
+                  onChangeText={setValidYear}
+                />
               </View>
             </View>
             <View style={styles.inputColumn}>
               <Text style={styles.inputLabel}>CVV</Text>
               <View style={styles.cvvContainer}>
-                <TextInput placeholder="CVV" style={styles.cvvInput} />
+                <TextInput
+                  placeholder="CVV"
+                  style={styles.cvvInput}
+                  value={cvv}
+                  onChangeText={setCvv}
+                />
                 <TouchableOpacity>
                   <Image
                     source={require('../../assets/Cropping/eyes4.png')}
@@ -150,6 +194,8 @@ export default function PaymentDetails() {
                   />
                 </TouchableOpacity>
               </View>
+              
+             
             </View>
           </View>
 
@@ -159,6 +205,8 @@ export default function PaymentDetails() {
               placeholder="Name on Card"
               placeholderTextColor={'#979797'}
               style={styles.inputField}
+              value={cardHolderName}
+              onChangeText={setCardHolderName}
             />
           </View>
         </View>
@@ -182,7 +230,7 @@ export default function PaymentDetails() {
                 <Text style={styles.modalTitle}>Driver</Text>
               </View>
               <FlatList
-                renderItem={({item, index}) => (
+                renderItem={({ item, index }) => (
                   <TouchableOpacity
                     onPress={() => {
                       setSelection(true);
@@ -199,10 +247,10 @@ export default function PaymentDetails() {
                       <Text style={styles.driverName}>{item.name}</Text>
                       <Text style={styles.driverInfo}>{item.Details}</Text>
                     </View>
-                    {isSelected && index != selectedIndex && (
+                    {isSelected && index !== selectedIndex && (
                       <View style={styles.unselectedCheckbox}></View>
                     )}
-                    {isSelected && index == selectedIndex && (
+                    {isSelected && index === selectedIndex && (
                       <Box height={20} width={20} />
                     )}
                   </TouchableOpacity>
@@ -213,7 +261,7 @@ export default function PaymentDetails() {
           </TouchableOpacity>
         </Modal>
 
-        <View style={{height: hp(5)}} />
+        <View style={{ height: hp(5) }} />
       </ScrollView>
     </View>
   );
@@ -234,21 +282,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     paddingHorizontal: 5,
     shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      
-      elevation: 5,
-    // ...StyleSheet.flatten(styles.shadow),
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   bookingImageContainer: {
     marginLeft: 10,
   },
   bookingImage: {
     height: 80,
+   
     width: 80,
   },
   bookingDetails: {
@@ -437,25 +484,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 10,
-    alignItems: 'center',
     marginTop: 5,
+ 
   },
   inputColumn: {
     width: '40%',
     paddingHorizontal: 10,
-    justifyContent: 'center',
+ 
   },
   smallInputFieldContainer: {
-    width: '48%',
+    width: '100%',
     paddingHorizontal: 10,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F8F8F8',
+    marginTop:10,
     borderRadius: 12,
   },
   cvvContainer: {
     flexDirection: 'row',
-    width: '30%',
+    width: '100%',
     backgroundColor: '#F8F8F8',
     borderRadius: 12,
     paddingHorizontal: 15,
@@ -464,6 +512,7 @@ const styles = StyleSheet.create({
   },
   cvvInput: {
     width: '60%',
+    
   },
   cvvIcon: {
     height: 20,
@@ -471,15 +520,11 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     backgroundColor: '#000',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    
-    elevation: 5,
+    marginTop: 20,
+    paddingVertical: 10,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   nextButtonText: {
     fontSize: 17,
@@ -560,6 +605,7 @@ const styles = StyleSheet.create({
     width: 20,
     borderWidth: 2,
   },
+  
   shadow: {
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},

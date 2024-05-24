@@ -8,7 +8,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import GoldRight from '../../assets/svg/GoldRight.svg';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
@@ -19,9 +19,11 @@ import Chat from '../../assets/svg/chat.svg';
 import Star from '../../assets/svg/Star.svg';
 import { styles } from '../../configs/Styles';
 import ScreenNameEnum from '../../routes/screenName.enum';
+import DateModal from '../Modal/DateModal';
 
 export default function PlaceDetails() {
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={localStyles.container}>
       <ScrollView>
@@ -176,6 +178,10 @@ export default function PlaceDetails() {
           </TouchableOpacity>
         </ImageBackground>
         <View style={localStyles.bottomSpace} />
+        <DateModal
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
+            />
       </ScrollView>
     </View>
   );

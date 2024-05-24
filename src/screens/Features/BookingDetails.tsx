@@ -1,8 +1,8 @@
-import {View, Text, Image, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
-import React from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState } from 'react';
 import ProfileHeader from '../../configs/ProfileHeader';
-import {styles} from '../../configs/Styles';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { styles } from '../../configs/Styles';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DarkStar from '../../assets/svg/DarkStar.svg';
 import TextInputField from '../../configs/TextInput';
 import ScreenNameEnum from '../../routes/screenName.enum';
@@ -10,6 +10,12 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function BookingDetails() {
   const navigation = useNavigation();
+
+  // State variables for text input fields
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   return (
     <View style={localStyles.container}>
@@ -59,6 +65,8 @@ export default function BookingDetails() {
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
+            value={firstName}
+            onChangeText={setFirstName}
           />
         </View>
         <View style={localStyles.textInputContainer}>
@@ -67,6 +75,8 @@ export default function BookingDetails() {
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
+            value={lastName}
+            onChangeText={setLastName}
           />
         </View>
         <View style={localStyles.textInputContainer}>
@@ -75,6 +85,8 @@ export default function BookingDetails() {
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
+            value={email}
+            onChangeText={setEmail}
           />
         </View>
         <View style={localStyles.textInputContainer}>
@@ -83,16 +95,24 @@ export default function BookingDetails() {
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
           />
         </View>
-      </ScrollView>
-      <TouchableOpacity
+        <TouchableOpacity
         onPress={() => {
-          navigation.navigate(ScreenNameEnum.TRAVELER_DETAILS);
+          navigation.navigate(ScreenNameEnum.TRAVELER_DETAILS, {
+            firstName,
+            lastName,
+            email,
+            phoneNumber,
+          });
         }}
         style={[styles.tabBtn, localStyles.nextButton]}>
         <Text style={localStyles.nextButtonText}>NEXT</Text>
       </TouchableOpacity>
+      </ScrollView>
+      
     </View>
   );
 }
@@ -108,6 +128,7 @@ const localStyles = StyleSheet.create({
     alignItems: 'center',
     height: hp(12),
     backgroundColor: '#FFF',
+    marginHorizontal: 5,
     borderRadius: 10,
   },
   imageContainer: {
@@ -194,15 +215,14 @@ const localStyles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     marginTop: 20,
     paddingRight: 10,
-    borderWidth:1,
-    borderRadius:30,
-    height:60,
-    justifyContent:'center'
+    borderWidth: 1,
+    borderRadius: 30,
+    height: 60,
+    justifyContent: 'center',
   },
   nextButton: {
     backgroundColor: '#000',
-    position: 'absolute',
-    bottom: 20,
+   
   },
   nextButtonText: {
     fontSize: 17,

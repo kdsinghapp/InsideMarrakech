@@ -9,7 +9,11 @@ const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
   const user = useSelector(state => state.auth.userData);
-  const BottomTabConfig = user.type === 'Company' ? _routes.BOTTOMTAB_ROUTE_COMPANY : _routes.BOTTOMTAB_ROUTE_USER;
+
+  console.log('====================================');
+  console.log(user);
+  console.log('====================================');
+  const BottomTabConfig = user?.type === 'Company' ? _routes.BOTTOMTAB_ROUTE_COMPANY : _routes.BOTTOMTAB_ROUTE_USER;
 
   return (
     <Tab.Navigator

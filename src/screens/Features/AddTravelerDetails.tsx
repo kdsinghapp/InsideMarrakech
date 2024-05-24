@@ -8,23 +8,51 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ProfileHeader from '../../configs/ProfileHeader';
-
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DarkStar from '../../assets/svg/DarkStar.svg';
 import TextInputField from '../../configs/TextInput';
 import ScreenNameEnum from '../../routes/screenName.enum';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Pin from '../../assets/svg/BlackPin.svg';
 import Box from '../../assets/svg/checkBox.svg';
 
 export default function AddTravelerDetails() {
+  const route = useRoute();
+  const { firstName, lastName, email, phoneNumber } = route.params;
+
   const [isVisible, setIsVisible] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isSelected, setSelection] = useState(false);
   const [DriverDetails, setDriverDetails] = useState(null);
   const navigation = useNavigation();
+
+  // State variable to manage the number of travelers
+  const [travelerCount, setTravelerCount] = useState(3);
+  const [travelers, setTravelers] = useState(
+    Array.from({ length: travelerCount }, () => ({ firstName: '', lastName: '' }))
+  );
+
+  // Update traveler details
+  const handleInputChange = (index, field, value) => {
+    const newTravelers = [...travelers];
+    newTravelers[index][field] = value;
+    setTravelers(newTravelers);
+  };
+
+  const handleNext = () => {
+    const data = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      travelers,
+      language,
+      address,
+    };
+    navigation.navigate(ScreenNameEnum.PAYMENT_DETAILS, data);
+  };
 
   return (
     <View style={styles.container}>
@@ -45,7 +73,7 @@ export default function AddTravelerDetails() {
               <Text style={styles.bookingTitle}>$165.3</Text>
             </View>
             <Text style={styles.bookingAddress}>
-              192 Rue Tachebatch,Marrkech 40000
+              192 Rue Tachebatch, Marrakech 40000
             </Text>
             <View style={styles.ratingContainer}>
               <DarkStar height={20} width={20} />
@@ -62,14 +90,14 @@ export default function AddTravelerDetails() {
           <Text style={styles.totalText}>Total</Text>
           <Text style={styles.totalText}>$84.97</Text>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             setIsVisible(true);
           }}
           style={styles.selectDriverButton}>
           <Text style={styles.selectDriverButtonText}>Select Driver</Text>
-        </TouchableOpacity>
-
+        </TouchableOpacity> */}
+{/* 
         {DriverDetails !== null && (
           <>
             <Text style={styles.driverTitle}>Driver</Text>
@@ -86,47 +114,43 @@ export default function AddTravelerDetails() {
               </View>
             </View>
           </>
-        )}
+        )} */}
 
-        <View style={styles.travelerSection}>
-          <Text style={styles.travelerTitle}>Traveler 1 (Adults)</Text>
-        </View>
-
-        <View style={[styles.txtInput, styles.inputMargin]}>
-          <TextInputField
-            placeholder="First Name"
-            firstLogo={false}
-            img={require('../../assets/Cropping/Lock3x.png')}
-            showEye={false}
-          />
-        </View>
-        <View style={[styles.txtInput, styles.inputMargin]}>
-          <TextInputField
-            placeholder="Last Name"
-            firstLogo={false}
-            img={require('../../assets/Cropping/Lock3x.png')}
-            showEye={false}
-          />
-        </View>
-        <View style={styles.travelerSection}>
-          <Text style={styles.travelerTitle}>Traveler 2 (Adults)</Text>
-        </View>
-        <View style={[styles.txtInput, styles.inputMargin]}>
-          <TextInputField
-            placeholder="First Name"
-            firstLogo={false}
-            img={require('../../assets/Cropping/Lock3x.png')}
-            showEye={false}
-          />
-        </View>
-        <View style={[styles.txtInput, styles.inputMargin]}>
-          <TextInputField
-            placeholder="Last Name"
-            firstLogo={false}
-            img={require('../../assets/Cropping/Lock3x.png')}
-            showEye={false}
-          />
-        </View>
+        {travelers.map((traveler, index) => (
+          <View key={index} style={styles.travelerSection}>
+            <Text style={styles.travelerTitle}>{`Traveler ${index + 1} (Adults)`}</Text>
+            <View style={[styles.txtInput, styles.inputMargin]}>
+              <TextInputField
+                placeholder="First Name"
+                firstLogo={false}
+                img={require('../../assets/Cropping/Lock3x.png')}
+                showEye={false}
+                value={traveler.firstName}
+                onChangeText={(text) => handleInputChange(index, 'firstName', text)}
+              />
+            </View>
+            <View style={[styles.txtInput, styles.inputMargin]}>
+              <TextInputField
+                placeholder="Last Name"
+                firstLogo={false}
+                img={require('../../assets/Cropping/Lock3x.png')}
+                showEye={false}
+                value={traveler.lastName}
+                onChangeText={(text) => handleInputChange(index, 'lastName', text)}
+              />
+            </View>
+            <View style={[styles.txtInput, styles.inputMargin]}>
+              <TextInputField
+                placeholder="Age"
+                firstLogo={false}
+                img={require('../../assets/Cropping/Lock3x.png')}
+                showEye={false}
+                value={traveler.lastName}
+                onChangeText={(text) => handleInputChange(index, 'lastName', text)}
+              />
+            </View>
+          </View>
+        ))}
         <View style={[styles.txtInput, styles.inputMargin]}>
           <TextInputField
             placeholder="Language"
@@ -147,7 +171,7 @@ export default function AddTravelerDetails() {
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(ScreenNameEnum.PAYMENT_DETAILS);
+            handleNext()
           }}
           style={styles.nextButton}>
           <Text style={styles.nextButtonText}>NEXT</Text>
@@ -165,7 +189,7 @@ export default function AddTravelerDetails() {
               </View>
               <View>
                 <FlatList
-                  renderItem={({item, index}) => (
+                  renderItem={({ item, index }) => (
                     <TouchableOpacity
                       onPress={() => {
                         setSelection(true);
@@ -211,16 +235,16 @@ export default function AddTravelerDetails() {
 }
 
 const styles = StyleSheet.create({
-  shadow:{shadowColor: "#000",
-  shadowOffset: {
-    width: 0,
-    height: 2,
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  shadowOpacity: 0.25,
-  shadowRadius: 3.84,
-  
-  elevation: 5,
-},
   container: {
     flex: 1,
     paddingHorizontal: 15,
@@ -267,6 +291,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '50%',
+
+
     justifyContent: 'space-around',
   },
   ratingText: {

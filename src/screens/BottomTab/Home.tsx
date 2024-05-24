@@ -26,7 +26,7 @@ import Loading from '../../configs/Loader';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+
   const user = useSelector(state => state.auth.userData);
   const isFocused = useIsFocused();
 
@@ -72,9 +72,7 @@ export default function Home() {
         </View>
 
         <TouchableOpacity
-          onPress={() => {
-            setModalVisible(true);
-          }}
+         
           style={styles.updateButton}>
           <Text style={styles.updateButtonText}>Update</Text>
         </TouchableOpacity>
@@ -234,10 +232,7 @@ export default function Home() {
                 </View>
               </TouchableOpacity>
             </Modal>
-            <DateModal
-              visible={modalVisible}
-              onClose={() => setModalVisible(false)}
-            />
+           
           </>
         )}
         {user?.type === 'Company' && (

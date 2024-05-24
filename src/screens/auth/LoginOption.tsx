@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
+    ImageBackground,
   } from 'react-native';
   import React, { useState } from 'react';
   import {
@@ -33,27 +34,15 @@ const Role =(type)=>{
 
   
     return (
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <View
-          style={{
-            height: hp(20),
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 10,
-          }}>
-          <Image
-            source={require('../../assets/Cropping/Logo3x.png')}
-            style={{height: 180, width: 180}}
-            resizeMode="contain"
-          />
-        </View>
-        <View>
+      <ImageBackground
+      source={require('../../assets/Cropping/role.png')}
+      style={{flex: 1, backgroundColor: '#fff'}}>
+       
+     
         
        
-        <View style={{justifyContent:'center',alignItems:'center',marginTop:30}}>
-<Text style={{fontFamily: 'Federo-Regular',fontSize:22,color:'#000',fontWeight:'600'}}>Select Your Login </Text>
-        </View>
-          <View style={{marginTop: hp(3)}}>
+  
+          <View style={{position: 'absolute',bottom:30,width:'100%'}}>
             <TouchableOpacity
               onPress={() => {
                
@@ -61,22 +50,12 @@ const Role =(type)=>{
               }}
               style={[
                 styles.btn,
-                {
-                    borderWidth:2,
-                    borderColor:selectRole=='User'?'green':'#000',
-                     marginTop:20
-                },
+                
               ]}>
-              <Text
-                style={{
-                  fontFamily: 'Federo-Regular',
-                  fontSize: 17,
-                  color:'#000',
-                  fontWeight: '600',
-                  lineHeight: 25,
-                }}>
-            User
-              </Text>
+            <Image
+              style={{height:50}}
+              resizeMode='contain'
+            source={require('../../assets/Cropping/roleuser.png')} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -86,30 +65,20 @@ const Role =(type)=>{
               }}
               style={[
                 styles.btn,
-                {
-                 borderWidth:2,
-                 borderColor:selectRole=='Company'?'green':'#000',
-                  marginTop:20
-                },
+                
               ]}>
-              <Text
-                style={{
-                  fontSize: 17,
-                  color:'#000',
-                  fontWeight: '600',
-                  lineHeight: 25,
-                  fontFamily: 'Federo-Regular',
-                }}>
-             Company
-              </Text>
+             <Image
+             
+             style={{height:50,marginTop:40}}
+             resizeMode='contain'
+             source={require('../../assets/Cropping/rolecompany.png')} />
             </TouchableOpacity>
           </View>
   
        
       
-        </View>
       
-      </View>
+      </ImageBackground>
     );
   }
   
@@ -132,7 +101,7 @@ const Role =(type)=>{
       paddingBottom: 30,
     },
     btn: {
-      height: hp(15),
+      height: hp(6),
       marginHorizontal: 20,
       borderRadius: 30,
       justifyContent: 'center',

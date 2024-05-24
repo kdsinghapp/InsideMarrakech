@@ -7,20 +7,44 @@ import {
   TouchableOpacity,
   Image
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BlackPin from '../../assets/svg/BlackPin.svg';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import ScreenNameEnum from '../../routes/screenName.enum';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { get_user_booking_list } from '../../redux/feature/featuresSlice';
+import Loading from '../../configs/Loader';
 
 export default function CompanyBooking() {
     const [chooseBtn, setChooseBtn] = useState(true);
-    const [selectedOption, setSelectedOption] = useState('Request');
-
+    const [selectedOption, setSelectedOption] = useState('Pending');
+    const user = useSelector(state => state.auth.userData);
+    const isLoading = useSelector(state => state.feature.isLoading);
+    const BookingList = useSelector(state => state.feature.BookingList);
+    const isFocused = useIsFocused();
+  
     const navigation = useNavigation()
+    const dispatch =useDispatch()
+
+console.log('====================================',user.id);
+console.log(BookingList);
+console.log('====================================');
+
+    useEffect(()=>{
+      get_booking_list()
+    },[user,selectedOption])
+    const get_booking_list = async()=>{
+ const params = {
+  user_id:user?.id,
+  status:selectedOption
+ }
+
+ await dispatch(get_user_booking_list(params))
+    }
     const renderItem = ({ item }) => (
         <TouchableOpacity
         onPress={()=>{
@@ -31,9 +55,9 @@ export default function CompanyBooking() {
           <View style={styles.itemRow}>
             <View style={styles.itemImageContainer}>
               <Image
-                source={item.img}
+                source={{uri:item.image}}
                 style={styles.itemImage}
-                resizeMode="contain"
+                resizeMode="cover"
               />
             </View>
             <View style={styles.itemDetailsContainer}>
@@ -41,8 +65,8 @@ export default function CompanyBooking() {
                 <Text style={styles.itemName}>{item.name}</Text>
               </View>
               <View style={styles.itemDetailsRow}>
-               
-                <Text style={styles.itemDetails}>{item.Details}</Text>
+               <BlackPin />
+                <Text style={styles.itemDetails}>{item.address}</Text>
                
               </View>
               <View style={{marginTop:10,}}>
@@ -87,9 +111,9 @@ export default function CompanyBooking() {
           <View style={styles.itemRow}>
             <View style={styles.itemImageContainer}>
               <Image
-                source={item.img}
+                source={{uri:item.image}}
                 style={styles.itemImage}
-                resizeMode="contain"
+                resizeMode="cover"
               />
             </View>
             <View style={styles.itemDetailsContainer}>
@@ -98,7 +122,7 @@ export default function CompanyBooking() {
               </View>
               <View style={styles.itemDetailsRow}>
               <BlackPin />
-                <Text style={styles.itemDetails}>{item.Details}</Text>
+                <Text style={styles.itemDetails}>{item.address}</Text>
               </View>
               <View style={styles.itemFooter2}>
                 <TouchableOpacity
@@ -107,11 +131,11 @@ export default function CompanyBooking() {
                   }}
                   style={[
                     styles.statusButton2,
-                    { backgroundColor: item.status === 'Canceled' ? 'red' : '#34A853' },
+                    { backgroundColor: selectedOption == 'Cancel' ? 'red' : '#34A853' },
                     styles.shadow,
                   ]}
                 >
-                  <Text style={styles.statusButtonText}>{item.status}</Text>
+                  <Text style={styles.statusButtonText}>{selectedOption}</Text>
                 </TouchableOpacity>
                 <View>
                   <Text style={styles.itemTime}>{item.Time}</Text>
@@ -123,13 +147,14 @@ export default function CompanyBooking() {
       );
   return (
     <View style={styles.container}>
+      {isLoading?<Loading/>:null}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.title}>
           <Text style={styles.titleText}>Booking </Text>
         </View>
-        <View style={{height: hp(5), marginTop: 20}}>
+        <View style={{height: hp(5), marginTop: 20,}}>
           <FlatList
-            data={BookingList}
+            data={BList}
             horizontal
             showsHorizontalScrollIndicator={false}
             renderItem={({item}) => (
@@ -169,8 +194,8 @@ export default function CompanyBooking() {
         <View style={styles.listContainer}>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={selectedOption === 'Request'?RquestBooking:selectedOption === 'Complete'?CompleteBooking:CancelBooking}
-            renderItem={selectedOption === 'Request'?renderItem:renderItemCancleComplete}
+            data={BookingList}
+            renderItem={selectedOption === 'Pending'?renderItem:renderItemCancleComplete}
             keyExtractor={(item) => item.id}
           />
         </View>
@@ -225,8 +250,8 @@ const styles = StyleSheet.create({
     width: 100,
   },
   itemImage: {
-    height:70,
-    width: 70,
+    height:80,
+    width: 80,
     borderRadius:15,
     borderColor: '#7756FC',
   },
@@ -388,14 +413,14 @@ const CompleteBooking = [
       Time: 'March 26, 2024',
     },
   ];
-const BookingList = [
+const BList = [
   {
-    name: 'Request',
+    name: 'Pending',
   },
   {
     name: 'Complete',
   },
   {
-    name: 'Cancle',
+    name: 'Cancel',
   },
 ];
