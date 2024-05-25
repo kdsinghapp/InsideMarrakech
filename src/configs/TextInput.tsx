@@ -80,6 +80,7 @@ export default function TextInputField({...props}) {
                 lineHeight: 18,
                 fontFamily: 'Federo-Regular',
               }}
+              keyboardType={props.keyboardType}
               onChangeText={onChangeText}
               value={props.value}
               placeholder={props.placeholder}

@@ -90,6 +90,9 @@ const localStyles = StyleSheet.create({
     alignSelf: 'center',
     paddingVertical: 15,
     paddingHorizontal: 30,
+    width:'90%',
+    justifyContent:'center',
+    alignItems:'center',
     borderRadius: 30
   },
   buttonText: {

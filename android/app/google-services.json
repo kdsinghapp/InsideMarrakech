@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "756648517",
+    "project_id": "insidemarrkesh",
+    "storage_bucket": "insidemarrkesh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756648517:android:654ca242a4af71e853f12c",
+        "android_client_info": {
+          "package_name": "com.insidemarrakech"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClXcrKkn3pl_lTYfHj8OjrNs1E51fSF7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

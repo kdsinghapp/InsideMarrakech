@@ -8,30 +8,40 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import ProfileHeader from '../../configs/ProfileHeader';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import DarkStar from '../../assets/svg/DarkStar.svg';
 import TextInputField from '../../configs/TextInput';
 import ScreenNameEnum from '../../routes/screenName.enum';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import Pin from '../../assets/svg/BlackPin.svg';
 import Box from '../../assets/svg/checkBox.svg';
 
 export default function AddTravelerDetails() {
   const route = useRoute();
-  const { firstName, lastName, email, phoneNumber } = route.params;
+  const {
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    selectedDate,
+    selectedGuestCount,
+    Property
+  } = route.params;
 
   const [isVisible, setIsVisible] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [isSelected, setSelection] = useState(false);
   const [DriverDetails, setDriverDetails] = useState(null);
+  const [address,setAddress] =useState('')
+  const [language,setLanguage] =useState('')
   const navigation = useNavigation();
 
   // State variable to manage the number of travelers
-  const [travelerCount, setTravelerCount] = useState(3);
+  const [travelerCount, setTravelerCount] = useState(selectedGuestCount);
   const [travelers, setTravelers] = useState(
-    Array.from({ length: travelerCount }, () => ({ firstName: '', lastName: '' }))
+    Array.from({length: travelerCount}, () => ({firstName: '', lastName: ''})),
   );
 
   // Update traveler details
@@ -50,6 +60,9 @@ export default function AddTravelerDetails() {
       travelers,
       language,
       address,
+      selectedDate,
+      selectedGuestCount,
+      Property
     };
     navigation.navigate(ScreenNameEnum.PAYMENT_DETAILS, data);
   };
@@ -62,18 +75,18 @@ export default function AddTravelerDetails() {
         <View style={[styles.shadow, styles.bookingDetails]}>
           <View style={styles.imageContainer}>
             <Image
-              source={require('../../assets/Cropping/img6.png')}
+               source={{uri:Property.document_gallery[0].image}}
               style={styles.bookingImage}
               resizeMode="contain"
             />
           </View>
           <View style={styles.bookingInfo}>
             <View style={styles.bookingTitleContainer}>
-              <Text style={styles.bookingTitle}>Marralech Quad Booking</Text>
-              <Text style={styles.bookingTitle}>$165.3</Text>
+              <Text style={styles.bookingTitle}>{Property.name}</Text>
+              <Text style={styles.bookingTitle}>$ {Property.amount}</Text>
             </View>
             <Text style={styles.bookingAddress}>
-              192 Rue Tachebatch, Marrakech 40000
+            {Property.address}
             </Text>
             <View style={styles.ratingContainer}>
               <DarkStar height={20} width={20} />
@@ -88,7 +101,11 @@ export default function AddTravelerDetails() {
 
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>Total</Text>
-          <Text style={styles.totalText}>$84.97</Text>
+          <Text style={styles.totalText}>$ {Property.amount*selectedGuestCount}</Text>
+        </View>
+        <View style={styles.totalContainer}>
+          <Text style={styles.totalText}>Booking Date</Text>
+          <Text style={styles.totalText}>{selectedDate}</Text>
         </View>
         {/* <TouchableOpacity
           onPress={() => {
@@ -97,7 +114,7 @@ export default function AddTravelerDetails() {
           style={styles.selectDriverButton}>
           <Text style={styles.selectDriverButtonText}>Select Driver</Text>
         </TouchableOpacity> */}
-{/* 
+        {/* 
         {DriverDetails !== null && (
           <>
             <Text style={styles.driverTitle}>Driver</Text>
@@ -118,7 +135,9 @@ export default function AddTravelerDetails() {
 
         {travelers.map((traveler, index) => (
           <View key={index} style={styles.travelerSection}>
-            <Text style={styles.travelerTitle}>{`Traveler ${index + 1} (Adults)`}</Text>
+            <Text style={styles.travelerTitle}>{`Traveler ${
+              index + 1
+            } (Adults)`}</Text>
             <View style={[styles.txtInput, styles.inputMargin]}>
               <TextInputField
                 placeholder="First Name"
@@ -126,7 +145,9 @@ export default function AddTravelerDetails() {
                 img={require('../../assets/Cropping/Lock3x.png')}
                 showEye={false}
                 value={traveler.firstName}
-                onChangeText={(text) => handleInputChange(index, 'firstName', text)}
+                onChangeText={text =>
+                  handleInputChange(index, 'firstName', text)
+                }
               />
             </View>
             <View style={[styles.txtInput, styles.inputMargin]}>
@@ -136,19 +157,23 @@ export default function AddTravelerDetails() {
                 img={require('../../assets/Cropping/Lock3x.png')}
                 showEye={false}
                 value={traveler.lastName}
-                onChangeText={(text) => handleInputChange(index, 'lastName', text)}
+                onChangeText={text =>
+                  handleInputChange(index, 'lastName', text)
+                }
               />
             </View>
-            <View style={[styles.txtInput, styles.inputMargin]}>
+            {/* <View style={[styles.txtInput, styles.inputMargin]}>
               <TextInputField
                 placeholder="Age"
                 firstLogo={false}
                 img={require('../../assets/Cropping/Lock3x.png')}
                 showEye={false}
-                value={traveler.lastName}
-                onChangeText={(text) => handleInputChange(index, 'lastName', text)}
+                value={traveler.age}
+                onChangeText={text =>
+                  handleInputChange(index, 'age', text)
+                }
               />
-            </View>
+            </View> */}
           </View>
         ))}
         <View style={[styles.txtInput, styles.inputMargin]}>
@@ -157,27 +182,35 @@ export default function AddTravelerDetails() {
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
+            value={language}
+            onChangeText={text =>
+              setLanguage(text)
+            }
           />
         </View>
         <View style={[styles.txtInput, styles.inputContainer]}>
           <Pin />
           <TextInputField
-            placeholder="JIBOU RES SAADIENNE IMM P NR 15 ..."
+            placeholder="address"
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
+            value={address}
+            onChangeText={text =>
+              setAddress(text)
+            }
           />
         </View>
 
         <TouchableOpacity
           onPress={() => {
-            handleNext()
+            handleNext();
           }}
           style={styles.nextButton}>
           <Text style={styles.nextButtonText}>NEXT</Text>
         </TouchableOpacity>
 
-        <Modal visible={isVisible} animationType="slide" transparent={true}>
+        {/* <Modal visible={isVisible} animationType="slide" transparent={true}>
           <TouchableOpacity
             onPress={() => {
               setIsVisible(false);
@@ -189,7 +222,7 @@ export default function AddTravelerDetails() {
               </View>
               <View>
                 <FlatList
-                  renderItem={({ item, index }) => (
+                  renderItem={({item, index}) => (
                     <TouchableOpacity
                       onPress={() => {
                         setSelection(true);
@@ -197,10 +230,7 @@ export default function AddTravelerDetails() {
                         setIsVisible(false);
                         setDriverDetails(item);
                       }}
-                      style={[
-                        styles.shadow,
-                        styles.driverListItem,
-                      ]}>
+                      style={[styles.shadow, styles.driverListItem]}>
                       <Image
                         source={item.img}
                         style={styles.driverListItemImage}
@@ -226,7 +256,7 @@ export default function AddTravelerDetails() {
               </View>
             </View>
           </TouchableOpacity>
-        </Modal>
+        </Modal> */}
 
         <View style={styles.bottomSpacer} />
       </ScrollView>
@@ -236,7 +266,7 @@ export default function AddTravelerDetails() {
 
 const styles = StyleSheet.create({
   shadow: {
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -265,6 +295,7 @@ const styles = StyleSheet.create({
   bookingImage: {
     height: 80,
     width: 80,
+    borderRadius:10
   },
   bookingInfo: {
     marginLeft: 10,
@@ -291,7 +322,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '50%',
-
 
     justifyContent: 'space-around',
   },

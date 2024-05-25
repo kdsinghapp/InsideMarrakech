@@ -170,7 +170,7 @@ BOTTOMTAB_ROUTE_USER:[
     {
       name: ScreenNameEnum.HOME_SCREEN,
       Component:Home,
-      logo:require('../assets/Cropping/Home.png'),
+      logo:require('../assets/Cropping/Home1.png'),
       lable:'Home',
       logo2:require('../assets/Cropping/Home2x.png'),
     },
@@ -204,7 +204,7 @@ BOTTOMTAB_ROUTE_USER:[
     {
       name: ScreenNameEnum.HOME_SCREEN,
       Component:Home,
-      logo:require('../assets/Cropping/Home.png'),
+      logo:require('../assets/Cropping/Home1.png'),
       lable:'Home',
       logo2:require('../assets/Cropping/Home2x.png'),
     },

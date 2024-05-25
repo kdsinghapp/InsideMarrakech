@@ -6,10 +6,14 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DarkStar from '../../assets/svg/DarkStar.svg';
 import TextInputField from '../../configs/TextInput';
 import ScreenNameEnum from '../../routes/screenName.enum';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { errorToast } from '../../configs/customToast';
 
 export default function BookingDetails() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { selectedDate,Property,
+    selectedGuestCount } = route.params;
 
   // State variables for text input fields
   const [firstName, setFirstName] = useState('');
@@ -17,25 +21,48 @@ export default function BookingDetails() {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
+
+  const CheckInputData =()=>{
+
+    if (
+      firstName === '' &&
+      lastName === '' &&
+      phoneNumber === '' &&
+      email === '' 
+    ) return errorToast('Please enter all fields error');
+    navigation.navigate(ScreenNameEnum.TRAVELER_DETAILS, {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      selectedDate,
+      selectedGuestCount,
+      Property
+    });
+  }
+
+  console.log('==================Property==================');
+  console.log(Property);
+  console.log('====================================');
   return (
     <View style={localStyles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader titile="Booking Details" width={18} />
 
         <View style={[styles.shadow, localStyles.bookingDetailsContainer]}>
           <View style={localStyles.imageContainer}>
             <Image
-              source={require('../../assets/Cropping/img6.png')}
+              source={{uri:Property.document_gallery[0].image}}
               style={localStyles.image}
               resizeMode="contain"
             />
           </View>
           <View style={localStyles.detailsContainer}>
             <View style={localStyles.detailsHeader}>
-              <Text style={localStyles.bookingTitle}>Marralech Quad Booking</Text>
-              <Text style={localStyles.bookingPrice}>MAD 165.3</Text>
+              <Text style={localStyles.bookingTitle}>{Property.name}</Text>
+              <Text style={localStyles.bookingPrice}>price: {Property.amount}</Text>
             </View>
-            <Text style={localStyles.bookingAddress}>192 Rue Tachebatch, Marrakech 40000</Text>
+            <Text style={localStyles.bookingAddress}>{Property.address}</Text>
             <View style={localStyles.ratingContainer}>
               <DarkStar height={20} width={20} />
               <DarkStar height={20} width={20} />
@@ -48,8 +75,12 @@ export default function BookingDetails() {
         </View>
 
         <View style={localStyles.totalContainer}>
+          <Text style={localStyles.totalText}>Guest No</Text>
+          <Text style={localStyles.totalAmount}>{selectedGuestCount}</Text>
+        </View>
+        <View style={localStyles.totalContainer}>
           <Text style={localStyles.totalText}>Total</Text>
-          <Text style={localStyles.totalAmount}>MAD 84.97</Text>
+          <Text style={localStyles.totalAmount}>{Property.amount*selectedGuestCount}</Text>
         </View>
 
         <View style={localStyles.contactHeader}>
@@ -97,16 +128,12 @@ export default function BookingDetails() {
             showEye={false}
             value={phoneNumber}
             onChangeText={setPhoneNumber}
+            
           />
         </View>
         <TouchableOpacity
         onPress={() => {
-          navigation.navigate(ScreenNameEnum.TRAVELER_DETAILS, {
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-          });
+         CheckInputData()
         }}
         style={[styles.tabBtn, localStyles.nextButton]}>
         <Text style={localStyles.nextButtonText}>NEXT</Text>
@@ -137,6 +164,7 @@ const localStyles = StyleSheet.create({
   image: {
     height: 80,
     width: 80,
+    borderRadius:10
   },
   detailsContainer: {
     marginLeft: 10,

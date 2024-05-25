@@ -9,16 +9,19 @@ import {
   FlatList,
   TextInput,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import ProfileHeader from '../../configs/ProfileHeader';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import DarkStar from '../../assets/svg/DarkStar.svg';
 import TextInputField from '../../configs/TextInput';
 import ScreenNameEnum from '../../routes/screenName.enum';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import AddPlus from '../../assets/svg/Add.svg';
 import Box from '../../assets/svg/checkBox.svg';
-import { RadioButton } from 'react-native-radio-buttons-group';
+import {RadioButton} from 'react-native-radio-buttons-group';
+import {useDispatch, useSelector} from 'react-redux';
+import { add_booking } from '../../redux/feature/featuresSlice';
+import Loading from '../../configs/Loader';
 
 export default function PaymentDetails() {
   const [isVisible, setIsVisible] = useState(false);
@@ -30,52 +33,98 @@ export default function PaymentDetails() {
   const [validMonth, setValidMonth] = useState('');
   const [validYear, setValidYear] = useState('');
   const [cvv, setCvv] = useState('');
+  const navigation = useNavigation();
   const [cardHolderName, setCardHolderName] = useState('');
+
+  const user = useSelector(state => state.auth.userData);
+  const isLoading = useSelector(state => state.feature.isLoading);
+  console.log('====================================');
+  console.log(user.id);
+  console.log('====================================');
   const route = useRoute();
-  const {  firstName,
+  const {
+    firstName,
     lastName,
     email,
     phoneNumber,
     travelers,
     language,
-    address, } = route.params;
+    address,
+    selectedDate,
+    selectedGuestCount,
+    Property
+  } = route.params;
 
-    console.log('====================================');
-    console.log( firstName,
-      lastName,
-      email,
-      phoneNumber,
-      travelers,
-      language,
-      address,);
-    console.log('====================================');
+  console.log('====================================');
+  console.log(
+    firstName,
+    ',',
+    lastName,
+    ',',
+    email,
+    ',',
+    phoneNumber,
+    ',',
+    travelers,
+    ',',
+    language,
+    ',',
+    address,
+    ',',
+    selectedDate,
+    ',',
+    selectedGuestCount,
+  );
+  console.log('====================================');
 
   const handleItemSelect = index => {
     setSelectedItemIndex(index);
   };
-  
-  const navigation = useNavigation();
+const dispatch= useDispatch()
+  const submitBooking = () => {
+    const params = {
+      data:{
+      user_id: user.id,
+      property_id: Property.id,
+      first_name: firstName,
+      last_name: lastName,
+      mobile: phoneNumber,
+      driver_id: '',
+      language: language,
+      address: address,
+      lat: '',
+      lon: '',
+      amount: '150',
+      GuestList: travelers,
+      created_date: selectedDate,
+      email: email,
+      },
+      navigation:navigation
+    };
+    dispatch(add_booking(params))
+  };
 
   return (
     <View style={styles.container}>
+      {isLoading ?<Loading />:null}
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader titile="Booking Details" width={18} />
 
         <View style={styles.bookingContainer}>
           <View style={styles.bookingImageContainer}>
             <Image
-              source={require('../../assets/Cropping/img6.png')}
+                  source={{uri:Property.document_gallery[0].image}}
               style={styles.bookingImage}
               resizeMode="contain"
             />
           </View>
           <View style={styles.bookingDetails}>
             <View style={styles.bookingHeader}>
-              <Text style={styles.bookingTitle}>Marralech Quad Booking</Text>
-              <Text style={styles.bookingPrice}>$165.3</Text>
+              <Text style={styles.bookingTitle}>{Property.name}</Text>
+              <Text style={styles.bookingPrice}>$ {Property.amount}</Text>
             </View>
             <Text style={styles.bookingAddress}>
-              192 Rue Tachebatch, Marrkech 40000
+              {Property.address}
             </Text>
             <View style={styles.ratingContainer}>
               <DarkStar height={20} width={20} />
@@ -90,20 +139,20 @@ export default function PaymentDetails() {
 
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>Total</Text>
-          <Text style={styles.totalAmount}>MAD 84.97</Text>
+          <Text style={styles.totalAmount}>$ {Property.amount*selectedGuestCount}</Text>
         </View>
 
         <View style={styles.paymentTitleContainer}>
           <Text style={styles.paymentTitle}>Payment Details</Text>
         </View>
         <View style={styles.creditDebitTitleContainer}>
-          <Text style={styles.creditDebitTitle}>Credit & Debit Cards</Text>
+          <Text style={styles.creditDebitTitle}>Select Credit & Debit Cards</Text>
         </View>
         <View style={styles.cardListContainer}>
           <FlatList
             scrollEnabled={false}
             data={card}
-            renderItem={({ item, index }) => (
+            renderItem={({item, index}) => (
               <TouchableOpacity
                 onPress={() => handleItemSelect(index)}
                 style={[
@@ -169,7 +218,6 @@ export default function PaymentDetails() {
               </View>
               <Text style={styles.inputLabel}>Ex year</Text>
               <View style={styles.smallInputFieldContainer}>
-             
                 <TextInput
                   placeholder="Year"
                   style={styles.inputField}
@@ -194,8 +242,6 @@ export default function PaymentDetails() {
                   />
                 </TouchableOpacity>
               </View>
-              
-             
             </View>
           </View>
 
@@ -213,10 +259,11 @@ export default function PaymentDetails() {
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(ScreenNameEnum.PAYMENT_SUCCESS);
+            submitBooking();
+            // navigation.navigate(ScreenNameEnum.PAYMENT_SUCCESS);
           }}
           style={styles.nextButton}>
-          <Text style={styles.nextButtonText}>NEXT</Text>
+          <Text style={styles.nextButtonText}>Pay Now</Text>
         </TouchableOpacity>
 
         <Modal visible={isVisible} animationType="slide" transparent={true}>
@@ -230,7 +277,7 @@ export default function PaymentDetails() {
                 <Text style={styles.modalTitle}>Driver</Text>
               </View>
               <FlatList
-                renderItem={({ item, index }) => (
+                renderItem={({item, index}) => (
                   <TouchableOpacity
                     onPress={() => {
                       setSelection(true);
@@ -239,10 +286,7 @@ export default function PaymentDetails() {
                       setDriverDetails(item);
                     }}
                     style={styles.driverItem}>
-                    <Image
-                      source={item.img}
-                      style={styles.driverImage}
-                    />
+                    <Image source={item.img} style={styles.driverImage} />
                     <View style={styles.driverDetails}>
                       <Text style={styles.driverName}>{item.name}</Text>
                       <Text style={styles.driverInfo}>{item.Details}</Text>
@@ -261,7 +305,7 @@ export default function PaymentDetails() {
           </TouchableOpacity>
         </Modal>
 
-        <View style={{ height: hp(5) }} />
+        <View style={{height: hp(5)}} />
       </ScrollView>
     </View>
   );
@@ -281,7 +325,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 5,
     paddingHorizontal: 5,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -295,7 +339,7 @@ const styles = StyleSheet.create({
   },
   bookingImage: {
     height: 80,
-   
+borderRadius:10,
     width: 80,
   },
   bookingDetails: {
@@ -382,17 +426,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 10,
     borderRadius: 10,
-    marginTop: 20,
+   
     marginHorizontal: 10,
-    shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      
-      elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   cardItem: {
     height: 36,
@@ -485,12 +529,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 10,
     marginTop: 5,
- 
   },
   inputColumn: {
     width: '40%',
     paddingHorizontal: 10,
- 
   },
   smallInputFieldContainer: {
     width: '100%',
@@ -498,7 +540,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F8F8F8',
-    marginTop:10,
+    marginTop: 10,
     borderRadius: 12,
   },
   cvvContainer: {
@@ -512,7 +554,6 @@ const styles = StyleSheet.create({
   },
   cvvInput: {
     width: '60%',
-    
   },
   cvvIcon: {
     height: 20,
@@ -568,14 +609,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    
+
     elevation: 5,
   },
   driverImage: {
@@ -605,7 +646,7 @@ const styles = StyleSheet.create({
     width: 20,
     borderWidth: 2,
   },
-  
+
   shadow: {
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},

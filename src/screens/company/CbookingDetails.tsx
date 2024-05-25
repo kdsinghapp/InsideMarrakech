@@ -44,20 +44,7 @@
       const [open, setOpen] = useState(false);
     
       const dispatch = useDispatch();
-      const openImageLibrary = () => {
-        ImagePicker.openPicker({
-          width: 300,
-          height: 400,
-          cropping: true,
-        })
-          .then(image => {
-            setprofile(image);
-            setimageUrl(image.path);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      };
+ 
       useEffect(() => {
         if (user) {
           setFirstName(Updated_user?.first_name);
@@ -75,74 +62,8 @@
     
       const navigation = useNavigation();
     
-      const handleSave = () => {
-        if (user?.type == 'User') {
-          console.log('=========user called===========================', {
-            uri:
-              Platform.OS === 'android'
-                ? profile.path
-                : profile?.path?.replace('file://', ''),
-            type: profile.mime,
-            name: `image${mobileNumber}${user?.id}.png`,
-          });
-    
-          const params = {
-            data: {
-              user_id: user?.id,
-              mobile: mobileNumber,
-              first_name: firstName,
-              last_name: lastName,
-              dob: dob,
-              home_town: homeTown,
-              image: {
-                uri:
-                  Platform.OS === 'android'
-                    ? profile.path
-                    : profile?.path?.replace('file://', ''),
-                type: profile.mime,
-                name: `image${mobileNumber}${user?.id}.png`,
-              },
-              email: email,
-            },
-            navigation: navigation,
-            type:user?.type
-          };
-          dispatch(update_profile(params));
-        } else {
-          const params = {
-            data: {
-              user_id: user?.id,
-              company_name: CompanyName,
-              vat_number: VatNumber,
-              company_address: CompanyAddress,
-              mobile: mobileNumber,
-              email: email,
-              image: {
-                uri:
-                  Platform.OS === 'android'
-                    ? profile.path
-                    : profile?.path?.replace('file://', ''),
-                type: profile.mime,
-                name: `image${mobileNumber}${user?.id}.png`,
-              },
-            },
-            navigation: navigation,
-            type:user?.type
-          };
-          dispatch(update_profile(params));
-        }
-      };
-      const pickupDOB = date => {
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1; // Months are zero indexed
-        const day = date.getDate();
-        const formattedDate = `${day < 10 ? '0' + day : day}-${
-          month < 10 ? '0' + month : month
-        }-${year}`;
-    
-        console.log('Formatted date:', formattedDate);
-        setDob(formattedDate);
-      };
+ 
+      
       return (
         <View style={Styles.container}>
           {isLoading ? <Loading /> : null}

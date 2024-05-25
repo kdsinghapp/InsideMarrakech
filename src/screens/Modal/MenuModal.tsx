@@ -17,32 +17,40 @@ import {
 } from 'react-native-responsive-screen';
 import CheckBox from 'react-native-check-box';
 import ScreenNameEnum from '../../routes/screenName.enum';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { get_property_menu } from '../../redux/feature/featuresSlice';
+import Loading from '../../configs/Loader';
 
-const DateModal = ({ visible, onClose, data }) => {
+const MenuModal = ({ visible, onClose, data }) => {
   const screenHeight = Dimensions.get('screen').height;
   const translateY = useRef(new Animated.Value(screenHeight)).current;
 
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedGuestCount, setSelectedGuestCount] = useState(null);
+  const menu = useSelector(state => state.feature.MenuList);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const user = useSelector(state => state.auth.userData);
+  const isFocused = useIsFocused();
+  const isLoading = useSelector(state => state.feature.isLoading);
+  const dispatch = useDispatch();
+const navigation = useNavigation()
+  useEffect(() => {
+   getMenu()
+    
+  }, [isFocused,user]);
 
 
-  console.log('=================data===================');
-  console.log(data);
+  console.log('==============menu======================');
+  console.log(menu);
   console.log('====================================');
-  const handleNext = () => {
-    if (selectedDate !== null && selectedGuestCount !== null) {
-      const selectedDateString = date[selectedDate].date;
-      const selectedGuestCountString = Guests[selectedGuestCount].count;
-      navigation.navigate(ScreenNameEnum.BOOKING_DETAILS, {
-        selectedDate: selectedDateString,
-        selectedGuestCount: selectedGuestCountString,
-        Property:data
-      });
-      onClose(); // Close the modal after navigating
-    }
-  };
-  const navigation = useNavigation();
+const getMenu =()=>{
+const params ={
+    // id:data.id
+    id:'1'
+}
+dispatch(get_property_menu(params))
+}
+
   useEffect(() => {
     if (visible) {
       openModal();
@@ -69,11 +77,13 @@ const DateModal = ({ visible, onClose, data }) => {
 
   return (
     <Modal visible={visible} transparent>
+    
       <View
        
         activeOpacity={1}
         style={styles.container}
       >
+        {isLoading?<Loading />:null}
         <Animated.View
           style={[
             styles.modal,
@@ -82,6 +92,11 @@ const DateModal = ({ visible, onClose, data }) => {
             },
           ]}
         >
+            <View style={{flexDirection:'row',
+            paddingHorizontal:20,
+            justifyContent:'space-between',alignItems:'center'}}>
+            <Text style={[styles.title,{width:'15%'}]}></Text>
+            <Text style={styles.title}>Menu</Text>
           <TouchableOpacity
           onPress={()=>{
             onClose()
@@ -89,73 +104,39 @@ const DateModal = ({ visible, onClose, data }) => {
           style={{ alignItems:'flex-end',marginRight:20}}>
 <Image  source={require('../../assets/Cropping/Close2x.png')}  style={{height:30,width:30}}/>
           </TouchableOpacity>
+
+         
+          </View>
           <View style={{ marginTop: 20, marginHorizontal: 15 }}>
-            <Text style={styles.title}>Date</Text>
+            
             <View style={styles.optionContainer}>
-              <FlatList
-                data={date}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                renderItem={({ item, index }) => (
-                  <TouchableOpacity
-                    style={[
-                      styles.dateOption,
-                      selectedDate === index && styles.selectedOption,
-                    ]}
-                    onPress={() => setSelectedDate(index)}
-                  >
-                    <Text
-                      style={[
-                        styles.dateText,
-                        selectedDate === index && styles.selectedText,
-                      ]}
-                    >
-                      {item.date}
-                    </Text>
-                  </TouchableOpacity>
+           {menu &&   <FlatList
+                data={menu}
+              
+                showsVerticalScrollIndicator={false}
+                ListFooterComponent={({item})=>(
+                    <View  style={{height:hp(15)}}/>
                 )}
-                keyExtractor={(item, index) => index.toString()}
-              />
-            </View>
-            <Text style={styles.title}>Guests</Text>
-            <View style={styles.optionContainer}>
-              <FlatList
-                data={Guests}
-                horizontal
-                showsHorizontalScrollIndicator={false}
                 renderItem={({ item, index }) => (
-                  <TouchableOpacity
-                    style={[
-                      styles.guestOption,
-                      selectedGuestCount === index && styles.selectedOption,
-                    ]}
-                    onPress={() => setSelectedGuestCount(index)}
-                  >
-                    <Text
-                      style={[
-                        styles.guestText,
-                        selectedGuestCount === index && styles.selectedText,
-                      ]}
-                    >
-                      {item.count}
-                    </Text>
-                    <Image
-                      source={require('../../assets/Cropping/Person2x.png')}
-                      style={styles.guestIcon}
+                  <View style={{
+                    height:hp(60),
+                  marginVertical:10,
+                  width:wp(100)}}>
+                    <Image  
+                    resizeMode='contain'
+                    source={{uri:item.image}}
+                    style={{height:'100%',width:'100%'}}
                     />
-                  </TouchableOpacity>
+                    </View>
                 )}
                 keyExtractor={(item, index) => index.toString()}
-              />
+              />}
             </View>
+          
+           
           </View>
 
-          <TouchableOpacity onPress={() => {
-handleNext()
-
-          }} style={styles.searchButton}>
-            <Text style={styles.searchButtonText}>Next</Text>
-          </TouchableOpacity>
+          
         </Animated.View>
       </View>
     </Modal>
@@ -173,7 +154,8 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    minHeight: hp(50),
+    marginTop:hp(20),
+    minHeight: hp(80),
     elevation: 5,
   },
   title: {
@@ -248,52 +230,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DateModal;
+export default MenuModal;
 
-const date = [
-  {
-    date: 'Wednesday 20 March',
-  },
-  {
-    date: 'Thursday 21 March',
-  },
-  {
-    date: 'Friday 22 March',
-  },
-  {
-    date: 'Saturday 23 March',
-  },
-  {
-    date: 'Sunday 24 March',
-  },
-  {
-    date: 'Monday 25 March',
-  },
-  {
-    date: 'Tuesday 26 March',
-  },
-];
 
-const Guests = [
-  {
-    count: '1',
-  },
-  {
-    count: '2',
-  },
-  {
-    count: '3',
-  },
-  {
-    count: '4',
-  },
-  {
-    count: '5',
-  },
-  {
-    count: '6',
-  },
-  {
-    count: '7',
-  },
-];

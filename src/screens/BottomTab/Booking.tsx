@@ -7,26 +7,90 @@ import {
   FlatList,
   StyleSheet,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import BlackPin from '../../assets/svg/BlackPin.svg';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native';
-import { styles } from '../../configs/Styles';
+import {useNavigation} from '@react-navigation/native';
+import {styles} from '../../configs/Styles';
 import ProfileHeader from '../../configs/ProfileHeader';
+import {useDispatch, useSelector} from 'react-redux';
+import {get_user_booking_list} from '../../redux/feature/featuresSlice';
+import Loading from '../../configs/Loader';
+import BookingDetailsModal from '../Modal/BookingDetailsModal';
+import ScreenNameEnum from '../../routes/screenName.enum';
 
 export default function Booking() {
   const [chooseBtn, setChooseBtn] = useState(true);
   const navigation = useNavigation();
+  const [selectedOption, setSelectedOption] = useState('Pending');
+  const BookingList = useSelector(state => state.feature.BookingList);
+  const BookingCompleteList = useSelector(
+    state => state.feature.BookingCompleteList,
+  );
+  const BookingCancelList = useSelector(
+    state => state.feature.BookingCancelList,
+  );
+  const isLoading = useSelector(state => state.feature.isLoading);
+  const dispatch = useDispatch();
+  const [modalMenuVisible,setmodalMenuVisible] =useState(false)
+  const [BookingData,setBookingData] = useState(null)
+  const user = useSelector(state => state.auth.userData);
+  useEffect(() => {
+    get_booking_list();
+  }, [user, selectedOption]);
+  const get_booking_list = async () => {
+    const params = {
+      user_id: user?.id,
+      status: selectedOption,
+    };
 
-  const renderItem = ({ item }) => (
-    <View style={[styles.shadow, localStyles.itemContainer]}>
+    await dispatch(get_user_booking_list(params));
+  };
+  const Completebooking_list = async () => {
+    const params = {
+      user_id: user?.id,
+      status: selectedOption,
+    };
+
+    await dispatch(get_Completebooking_list(params));
+  };
+
+
+  const Cancelbooking_list = async () => {
+    const params = {
+      user_id: user?.id,
+      status: selectedOption,
+    };
+
+    await dispatch(get_Cancelbooking_list(params));
+  };
+
+  const getListData = async type => {
+    setSelectedOption(type);
+    if(selectedOption =='Cancel'){
+      Cancelbooking_list()
+    }
+    else if(selectedOption == 'Complete'){
+      Completebooking_list()
+    }
+    else{
+      get_booking_list()
+    }
+  };
+  const renderItem = ({item}) => (
+    <TouchableOpacity 
+    onPress={()=>{
+      setBookingData(item)
+      setmodalMenuVisible(true)
+    }}
+    style={[styles.shadow, localStyles.itemContainer]}>
       <View style={localStyles.itemRow}>
         <View style={localStyles.itemImageContainer}>
           <Image
-            source={item.img}
+            source={{uri: item.image}}
             style={localStyles.itemImage}
             resizeMode="contain"
           />
@@ -46,109 +110,97 @@ export default function Booking() {
               }}
               style={[
                 localStyles.statusButton,
-                { backgroundColor: item.status === 'Canceled' ? 'red' : '#000' },
+                {
+                  backgroundColor:
+                    selectedOption === 'Cancel'
+                      ? 'red'
+                      : selectedOption == 'Pending'
+                      ? '#f0f0f0'
+                      : '#34A853',
+                },
                 styles.shadow,
-              ]}
-            >
-              <Text style={localStyles.statusButtonText}>{item.status}</Text>
+              ]}>
+              <Text
+                style={[
+                  localStyles.statusButtonText,
+                  {color: selectedOption == 'Pending' ? '#000' : '#FFF'},
+                ]}>
+                {selectedOption}
+              </Text>
             </TouchableOpacity>
             <View>
-              <Text style={localStyles.itemTime}>{item.Time}</Text>
+              <Text style={localStyles.itemTime}>{item.date}</Text>
             </View>
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
     <View style={localStyles.container}>
+      {isLoading ? <Loading /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader titile="Booking" width={25} />
-        <View style={localStyles.toggleButtonsContainer}>
-          <TouchableOpacity
-            disabled={chooseBtn}
-            onPress={() => {
-              setChooseBtn(true);
-            }}
-            style={[
-              localStyles.toggleButton,
-              { borderBottomWidth: chooseBtn ? 2 : 0 },
-            ]}
-          >
-            <Text style={localStyles.toggleButtonText}>Complete</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            disabled={!chooseBtn}
-            onPress={() => {
-              setChooseBtn(false);
-            }}
-            style={[
-              localStyles.toggleButton,
-              { borderBottomWidth: chooseBtn ? 0 : 2 },
-            ]}
-          >
-            <Text style={localStyles.toggleButtonText}>Canceled</Text>
-          </TouchableOpacity>
+        <View style={{height: hp(5), marginTop: 20}}>
+          <FlatList
+            data={BList}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                onPress={() => {
+                  getListData(item.name);
+                }}
+                style={{
+                  width: wp(29),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+
+                  marginLeft: 10,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: '#000',
+                    fontWeight: '500',
+                    fontFamily: 'Federo-Regular',
+                  }}>
+                  {item.name}
+                </Text>
+
+                {selectedOption == item.name && (
+                  <View
+                    style={{
+                      height: 3,
+                      backgroundColor: '#000',
+                      width: '100%',
+                      marginTop: 10,
+                      borderRadius: 20,
+                    }}
+                  />
+                )}
+              </TouchableOpacity>
+            )}
+          />
         </View>
         <View style={localStyles.listContainer}>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={chooseBtn ? CompleteBooking : CancelBooking}
+            data={selectedOption == 'Cancel'?BookingCancelList:selectedOption == 'Complete'?BookingCompleteList:BookingList}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            // keyExtractor={(item) => item.id}
           />
         </View>
+        <BookingDetailsModal  
+ visible={modalMenuVisible}
+ onClose={() => setmodalMenuVisible(false)}
+ data={BookingData}
+        />
       </ScrollView>
     </View>
   );
 }
-
-const CompleteBooking = [
-  {
-    id: '1',
-    name: 'Marrakech Quad',
-    Details: 'JIBOU RES SAADIENNE IMM P NR 15 ...',
-    img: require('../../assets/Cropping/img3.png'),
-    status: 'Completed',
-    Time: 'March 26, 2024',
-  },
-  {
-    id: '2',
-    name: 'Marrakech Quad',
-    Details: 'JIBOU RES SAADIENNE IMM P NR 15 ...',
-    img: require('../../assets/Cropping/img3.png'),
-    status: 'Completed',
-    Time: 'March 26, 2024',
-  },
-  {
-    id: '4',
-    name: 'Marrakech Quad',
-    Details: 'JIBOU RES SAADIENNE IMM P NR 15 ...',
-    img: require('../../assets/Cropping/img3.png'),
-    status: 'Completed',
-    Time: 'March 26, 2024',
-  },
-];
-
-const CancelBooking = [
-  {
-    id: '1',
-    name: 'Marrakech Quad',
-    Details: 'JIBOU RES SAADIENNE IMM P NR 15 ...',
-    img: require('../../assets/Cropping/img3.png'),
-    status: 'Canceled',
-    Time: 'March 26, 2024',
-  },
-  {
-    id: '2',
-    name: 'Marrakech Quad',
-    Details: 'JIBOU RES SAADIENNE IMM P NR 15 ...',
-    img: require('../../assets/Cropping/img3.png'),
-    status: 'Canceled',
-    Time: 'March 26, 2024',
-  },
-];
 
 const localStyles = StyleSheet.create({
   container: {
@@ -176,6 +228,7 @@ const localStyles = StyleSheet.create({
   },
   itemImage: {
     height: 100,
+    borderRadius: 10,
     width: 100,
     borderColor: '#7756FC',
   },
@@ -256,3 +309,14 @@ const localStyles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
 });
+const BList = [
+  {
+    name: 'Pending',
+  },
+  {
+    name: 'Complete',
+  },
+  {
+    name: 'Cancel',
+  },
+];

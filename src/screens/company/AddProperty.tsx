@@ -17,7 +17,7 @@ import TextInputField from '../../configs/TextInput';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch, useSelector} from 'react-redux';
 import {add_property, get_category} from '../../redux/feature/featuresSlice';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Loading from '../../configs/Loader';
 import DatePicker from 'react-native-date-picker';
 
@@ -44,11 +44,13 @@ export default function AddProperty() {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [currentPicker, setCurrentPicker] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({});
-
+  const navigation = useNavigation()
   useEffect(() => {
     dispatch(get_category());
   }, [isFocused]);
 
+
+  
   const handleSave = () => {
     const errors = {};
     if (!Title) errors.Title = true;
@@ -69,8 +71,6 @@ export default function AddProperty() {
       errorToast('All fields are required.');
       return;
     }
-   
-    
     let data = new FormData();
     data.append('cat_id', CategoryId);
     data.append('company_id', user?.id);
@@ -87,17 +87,16 @@ export default function AddProperty() {
     data.append('lunch_end', formatTime(LunchEnd))
     data.append('dinner_start', formatTime(DinnerStart))
     data.append('dinner_end',formatTime(DinnerEnd))
-    data.append('image','{"name": "image92.png", "type": "image/jpeg", "uri": "file:///storage/emulated/0/Android/data/com.insidemarrakech/cache/temp/1716554124102.jpg"}')
-
-    // ApiImages.forEach((image, index) => {
-    //   data.append(`images[${index}]`, {
-    //     uri: image.uri,
-    //     type: image.type,
-    //     name: image.name,
-    //   });
-    // });
+    ApiImages.forEach((image, index) => {
+      data.append(`image[${index}]`,image);
+    })
+    const params ={
+    data:data,
+    navigation:navigation
   
-    dispatch(add_property(data));
+  }
+
+    dispatch(add_property(params));
   };
 
   const openImageLibrary = () => {
@@ -206,6 +205,7 @@ export default function AddProperty() {
   };
 
   return (
+    
     <View style={styles.container}>
       {isLoading && <Loading />}
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -289,6 +289,8 @@ export default function AddProperty() {
           ]}>
           <TextInputField
             placeholder="Mobile number"
+            keyboardType={'number-pad'}
+            
             value={MobileNumber}
             onChangeText={setMobileNumber}
           />
@@ -396,14 +398,16 @@ export default function AddProperty() {
           <TextInputField
             placeholder="Price"
             value={Price}
+            keyboardType={'number-pad'}
             onChangeText={setPrice}
           />
         </View>
-        <View style={{height: hp(10)}} />
+        <View style={{height: hp(15)}} />
       </ScrollView>
       <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
         <Text style={styles.saveButtonText}>Post Add</Text>
       </TouchableOpacity>
+      <View style={{height: hp(2)}} />
     </View>
   );
 }

@@ -11,7 +11,7 @@ import {
 import React, { useState } from 'react';
 import GoldRight from '../../assets/svg/GoldRight.svg';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import Pin from '../../assets/svg/BlackPin.svg';
 import Call from '../../assets/svg/call.svg';
@@ -20,10 +20,15 @@ import Star from '../../assets/svg/Star.svg';
 import { styles } from '../../configs/Styles';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import DateModal from '../Modal/DateModal';
+import MenuModal from '../Modal/MenuModal';
 
 export default function PlaceDetails() {
+  const route = useRoute();
+  const { item } = route.params;
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalMenuVisible, setmodalMenuVisible] = useState(false);
+  
   return (
     <View style={localStyles.container}>
       <ScrollView>
@@ -41,11 +46,11 @@ export default function PlaceDetails() {
 
         <View style={localStyles.contentContainer}>
           <View style={localStyles.titleContainer}>
-            <Text style={localStyles.titleText}>Marrakech Quad Biking</Text>
+            <Text style={localStyles.titleText}>{item.name}</Text>
           </View>
           <View style={localStyles.addressContainer}>
             <Pin />
-            <Text style={localStyles.addressText}>192 Rue Tachenbacht, Marrakech 40000</Text>
+            <Text style={[localStyles.addressText,{marginLeft:5,}]}>{item.address}</Text>
           </View>
 
           <View style={localStyles.star}>
@@ -60,18 +65,26 @@ export default function PlaceDetails() {
               <Text style={localStyles.ratingText}>5.0</Text>
             </View>
 
-            <Text style={localStyles.priceText}>From MAD 165,3</Text>
+            <Text style={localStyles.priceText}>Price {item.amount}</Text>
           </View>
 
           <View style={localStyles.buttonsContainer}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate(ScreenNameEnum.BOOKING_DETAILS);
+               
+                setModalVisible(true)
+               
               }}
               style={localStyles.btn}>
               <Text style={localStyles.btnText}>BOOK</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={localStyles.btn}>
+            <TouchableOpacity 
+             onPress={() => {
+               
+              setmodalMenuVisible(true)
+             
+            }}
+            style={localStyles.btn}>
               <Text style={localStyles.btnText}>MENU</Text>
             </TouchableOpacity>
           </View>
@@ -85,13 +98,13 @@ export default function PlaceDetails() {
 
           <View style={localStyles.galleryContainer}>
             <FlatList
-              data={GalleryData}
+              data={item.document_gallery}
               showsHorizontalScrollIndicator={false}
               horizontal
               renderItem={({ item }) => (
                 <View>
                   <Image
-                    source={item.Img}
+                    source={{uri:item.image}}
                     resizeMode="contain"
                     style={localStyles.galleryImage}
                   />
@@ -104,7 +117,7 @@ export default function PlaceDetails() {
             <TouchableOpacity style={localStyles.contactButton}>
               <Call />
               <Text style={localStyles.contactButtonText}>
-                Book online or call: +212 679-419149
+                Book online or call: {item.book_online_mobile_number}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -118,33 +131,23 @@ export default function PlaceDetails() {
           </View>
 
           <View style={localStyles.descriptionContainer}>
-            <Text style={localStyles.sectionTitle}>Agafay Desert</Text>
-            <Text style={localStyles.descriptionText}>
-              Lorem ipsum dolor sit amet consectetur. A purus parturient sed
-              enim erat. Mattis eget tincidunt dolor consequat molestie ante.
-              Nibh consequat at sed magna turpis lectus. Mi urna libero sit
-              pellentesque orci in lectus. Eu mauris pretium elit fusce laoreet
-              vestibulum interdum amet sagittis. Adipiscing at sit mi purus
-              sodales. Ut luctus facilisis imperdiet massa purus nulla iaculis
-              consectetur in. Scelerisque consectetur euismod ultrices nibh
-              consectetur massa sed eu. Faucibus cras blandit cras.
+            <Text style={localStyles.sectionTitle}>{item.title}</Text>
+            <Text style={localStyles.descriptionText}>{item.description}
             </Text>
           </View>
         </View>
-        <TouchableOpacity style={localStyles.bookButton}>
-          <Text style={localStyles.bookButtonText}>BOOK</Text>
-        </TouchableOpacity>
+       
         <View style={localStyles.openingHoursContainer}>
           <Text style={localStyles.sectionTitle}>Opening hours</Text>
-          <Text style={localStyles.openingHoursText}>Open 7 days a week</Text>
+          <Text style={localStyles.openingHoursText}>Open {item.opening_hours} days a week</Text>
         </View>
         <View style={localStyles.scheduleContainer}>
-          <Text style={localStyles.scheduleText}>Lunch</Text>
-          <Text style={localStyles.scheduleText}>12h-15h</Text>
+          <Text style={localStyles.scheduleText}>Lunch start</Text>
+          <Text style={localStyles.scheduleText}>{item.lunch_start} - {item.lunch_end}</Text>
         </View>
         <View style={localStyles.scheduleContainer}>
           <Text style={localStyles.scheduleText}>Dinner</Text>
-          <Text style={localStyles.scheduleText}>7pm-2am</Text>
+          <Text style={localStyles.scheduleText}>{item.dinner_start} - {item.dinner_end}</Text>
         </View>
         <View style={localStyles.exploreContainer}>
           <ImageBackground
@@ -168,7 +171,7 @@ export default function PlaceDetails() {
 
         <View style={localStyles.sectionContainer}>
           <Text style={localStyles.sectionTitle}>How to get to</Text>
-          <Text style={localStyles.sectionTitle}>Agafay Desert</Text>
+          <Text style={localStyles.sectionTitle}>{item.title}</Text>
         </View>
         <ImageBackground
           style={localStyles.mapImageBackground}
@@ -181,6 +184,12 @@ export default function PlaceDetails() {
         <DateModal
               visible={modalVisible}
               onClose={() => setModalVisible(false)}
+              data={item}
+            />
+        <MenuModal
+              visible={modalMenuVisible}
+              onClose={() => setmodalMenuVisible(false)}
+              data={item}
             />
       </ScrollView>
     </View>
@@ -296,6 +305,7 @@ const localStyles = StyleSheet.create({
   galleryImage: {
     height: 100,
     width: 100,
+    borderRadius:10,
     marginHorizontal: 10,
   },
   contactContainer: {

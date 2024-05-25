@@ -21,8 +21,9 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import DateModal from '../Modal/DateModal';
 import {useDispatch, useSelector} from 'react-redux';
-import {get_category} from '../../redux/feature/featuresSlice';
+import {get_all_property, get_category, get_privacy_policy} from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
+import { all } from 'axios';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
@@ -31,64 +32,71 @@ export default function Home() {
   const isFocused = useIsFocused();
 
   const category = useSelector(state => state.feature.CategoryList);
+  const all_property = useSelector(state => state.feature.allProperty);
   const isLoading = useSelector(state => state.feature.isLoading);
   const dispatch = useDispatch();
-
+const navigation = useNavigation()
   useEffect(() => {
     dispatch(get_category());
-  }, [isFocused]);
+    dispatch(get_all_property());
+  }, [isFocused,user]);
 
-  const navigation = useNavigation();
 
-  const renderList = ({item}) => (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate(ScreenNameEnum.PLACE_DETAILS);
-      }}
-      style={[styles.shadow, styles.itemContainer]}>
-        <Image source={item.img} style={styles.itemImage} resizeMode="cover" />
-        {user?.type === 'Company' &&
-        <TouchableOpacity style={{ position: 'absolute',
-        right:20,
-        top:20,}}>
-          <Image  source={require('../../assets/Cropping/Icon.png')}  style={{
-           
+
+  const renderList = ({ item }) => {
+    // Check if document_gallery array exists and is not empty
+    if (item.document_gallery && item.document_gallery.length > 0) {
+      // Check if the first object in document_gallery has the image property
+      const firstImage = item.document_gallery[0].image;
+      if (firstImage) {
+        return (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(ScreenNameEnum.PLACE_DETAILS,{item:item});
+            }}
+            style={[styles.shadow, styles.itemContainer]}
+          >
+            <Image source={{ uri: firstImage }} 
             
-            height:40,width:40}}/>
+            style={styles.itemImage} resizeMode="cover" />
+            {user?.type === 'Company' &&
+              <TouchableOpacity style={{ position: 'absolute', right: 20, top: 20 }}>
+                <Image source={require('../../assets/Cropping/Icon.png')} style={{ height: 40, width: 40 }} />
+              </TouchableOpacity>
+            }
+            <Text style={styles.itemTitle}>{item.name}</Text>
+            <View style={styles.detailsContainer}>
+              <Pin />
+              <Text style={styles.itemDetails}>{item.address}</Text>
+            </View>
+            <View style={styles.userContainer}>
+              <View style={styles.userTextContainer}>
+                <Text style={styles.itemUser}>Today 2</Text>
+                <User />
+                <Down />
+              </View>
+              <TouchableOpacity style={styles.updateButton}>
+                <Text style={styles.updateButtonText}>Update</Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              showsHorizontalScrollIndicator={false}
+              data={item.subTime}
+              horizontal
+              renderItem={({ item, index }) => (
+                <View style={styles.subTimeContainer}>
+                  <Text style={styles.subTimeText}>{item.time}</Text>
+                </View>
+              )}
+            />
           </TouchableOpacity>
-
-        }
-
-      <Text style={styles.itemTitle}>{item.title}</Text>
-      <View style={styles.detailsContainer}>
-        <Pin />
-        <Text style={styles.itemDetails}>{item.details}</Text>
-      </View>
-      <View style={styles.userContainer}>
-        <View style={styles.userTextContainer}>
-          <Text style={styles.itemUser}>{item.user}</Text>
-          <User />
-          <Down />
-        </View>
-
-        <TouchableOpacity
-         
-          style={styles.updateButton}>
-          <Text style={styles.updateButtonText}>Update</Text>
-        </TouchableOpacity>
-      </View>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        data={item.subTime}
-        horizontal
-        renderItem={({item, index}) => (
-          <View style={styles.subTimeContainer}>
-            <Text style={styles.subTimeText}>{item.time}</Text>
-          </View>
-        )}
-      />
-    </TouchableOpacity>
-  );
+        );
+      }
+    }
+    // If document_gallery is empty or image property is undefined, return null or a placeholder
+    return null;
+  };
+  
 
   return (
     <View style={styles.container}>
@@ -155,7 +163,7 @@ export default function Home() {
 
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={Post}
+              data={all_property}
               renderItem={renderList}
             />
             <Modal visible={isVisible} animationType="slide" transparent={true}>
@@ -367,6 +375,8 @@ const styles = StyleSheet.create({
   itemImage: {
     height: hp(20),
     width: '100%',
+    borderRadius:10,
+    marginBottom:30
   },
   itemTitle: {
     fontFamily: 'Federo-Regular',
