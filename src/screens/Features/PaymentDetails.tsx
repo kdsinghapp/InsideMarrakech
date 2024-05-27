@@ -20,7 +20,7 @@ import AddPlus from '../../assets/svg/Add.svg';
 import Box from '../../assets/svg/checkBox.svg';
 import {RadioButton} from 'react-native-radio-buttons-group';
 import {useDispatch, useSelector} from 'react-redux';
-import { add_booking } from '../../redux/feature/featuresSlice';
+import {add_booking} from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
 
 export default function PaymentDetails() {
@@ -52,7 +52,7 @@ export default function PaymentDetails() {
     address,
     selectedDate,
     selectedGuestCount,
-    Property
+    Property,
   } = route.params;
 
   console.log('====================================');
@@ -80,40 +80,41 @@ export default function PaymentDetails() {
   const handleItemSelect = index => {
     setSelectedItemIndex(index);
   };
-const dispatch= useDispatch()
+  const dispatch = useDispatch();
   const submitBooking = () => {
     const params = {
-      data:{
-      user_id: user.id,
-      property_id: Property.id,
-      first_name: firstName,
-      last_name: lastName,
-      mobile: phoneNumber,
-      driver_id: '',
-      language: language,
-      address: address,
-      lat: '',
-      lon: '',
-      amount: '150',
-      GuestList: travelers,
-      created_date: selectedDate,
-      email: email,
+      data: {
+        user_id: user.id,
+        company_id: Property.company_id,
+        property_id: Property.id,
+        first_name: firstName,
+        last_name: lastName,
+        mobile: phoneNumber,
+        driver_id: '',
+        language: language,
+        address: address,
+        lat: '',
+        lon: '',
+        amount: '150',
+        GuestList: travelers,
+        created_date: selectedDate,
+        email: email,
       },
-      navigation:navigation
+      navigation: navigation,
     };
-    dispatch(add_booking(params))
+    dispatch(add_booking(params));
   };
 
   return (
     <View style={styles.container}>
-      {isLoading ?<Loading />:null}
+      {isLoading ? <Loading /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader titile="Booking Details" width={18} />
 
         <View style={styles.bookingContainer}>
           <View style={styles.bookingImageContainer}>
             <Image
-                  source={{uri:Property.document_gallery[0].image}}
+              source={{uri: Property.document_gallery[0].image}}
               style={styles.bookingImage}
               resizeMode="contain"
             />
@@ -123,9 +124,7 @@ const dispatch= useDispatch()
               <Text style={styles.bookingTitle}>{Property.name}</Text>
               <Text style={styles.bookingPrice}>$ {Property.amount}</Text>
             </View>
-            <Text style={styles.bookingAddress}>
-              {Property.address}
-            </Text>
+            <Text style={styles.bookingAddress}>{Property.address}</Text>
             <View style={styles.ratingContainer}>
               <DarkStar height={20} width={20} />
               <DarkStar height={20} width={20} />
@@ -139,14 +138,18 @@ const dispatch= useDispatch()
 
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>Total</Text>
-          <Text style={styles.totalAmount}>$ {Property.amount*selectedGuestCount}</Text>
+          <Text style={styles.totalAmount}>
+            $ {Property.amount * selectedGuestCount}
+          </Text>
         </View>
 
         <View style={styles.paymentTitleContainer}>
           <Text style={styles.paymentTitle}>Payment Details</Text>
         </View>
         <View style={styles.creditDebitTitleContainer}>
-          <Text style={styles.creditDebitTitle}>Select Credit & Debit Cards</Text>
+          <Text style={styles.creditDebitTitle}>
+            Select Credit & Debit Cards
+          </Text>
         </View>
         <View style={styles.cardListContainer}>
           <FlatList
@@ -339,7 +342,7 @@ const styles = StyleSheet.create({
   },
   bookingImage: {
     height: 80,
-borderRadius:10,
+    borderRadius: 10,
     width: 80,
   },
   bookingDetails: {
@@ -426,7 +429,7 @@ borderRadius:10,
     backgroundColor: '#fff',
     padding: 10,
     borderRadius: 10,
-   
+
     marginHorizontal: 10,
     shadowColor: '#000',
     shadowOffset: {

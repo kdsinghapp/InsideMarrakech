@@ -16,12 +16,14 @@ import {errorToast} from '../../configs/customToast';
 import TextInputField from '../../configs/TextInput';
 import {Dropdown} from 'react-native-element-dropdown';
 import {useDispatch, useSelector} from 'react-redux';
-import {add_property, get_category} from '../../redux/feature/featuresSlice';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {add_property, get_category, update_property} from '../../redux/feature/featuresSlice';
+import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
 import Loading from '../../configs/Loader';
 import DatePicker from 'react-native-date-picker';
 
-export default function AddProperty() {
+export default function updateProperty() {
+  const routes = useRoute();
+  const {item} = routes.params;
   const [selectedImages, setSelectedImages] = useState([]);
   const [ApiImages, setApiImages] = useState([]);
   const [Title, setTitle] = useState('');
@@ -45,16 +47,46 @@ export default function AddProperty() {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [currentPicker, setCurrentPicker] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({});
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   useEffect(() => {
     dispatch(get_category());
   }, [isFocused]);
+  useEffect(() => {
+    setLocation(item.address);
+    setPrice(item.amount);
+    setMobileNumber(item.book_online_mobile_number);
+    setDescription(item.description);
+    setDinnerEnd(new Date(item.dinner_end));
+    setDinnerStart(new Date(item.dinner_start));
+    setCategoryId(item.cat_id);
+    //  setLat(item.lat);
+    // setLon(item.lon);
 
+    setSelectedImages(
+      item.document_gallery?.map((image, index) => ({
+        id: index + 1,
+        name: `image${user?.id}${selectedImages.length + index + 1}.png`,
+        image:{uri:image.image}
+      })) || []
+    ); 
+    setApiImages(
+      item.document_gallery?.map((image, index) => ({
+        "type": "image/jpeg",
+        name: `image${user?.id}${selectedImages.length + index + 1}.png`,
+        uri:image.image
+      })) || []
+    ); 
+    setLunchEnd(new Date(item.lunch_end));
+    setLunchStart(new Date(item.lunch_start));
+    setName(item.name);
+    setOpeningHours(new Date(item.opening_hours));
+    setTitle(item.title);
+  }, [item]);
 
-  
   const handleSave = () => {
     const errors = {};
     if (!Title) errors.Title = true;
+    if (!name) errors.name = true;
     if (!CategoryId) errors.CategoryId = true;
     if (!Description) errors.Description = true;
     if (!Location) errors.Location = true;
@@ -73,6 +105,7 @@ export default function AddProperty() {
       return;
     }
     let data = new FormData();
+    data.append('property_id', item.id);
     data.append('cat_id', CategoryId);
     data.append('company_id', user?.id);
     data.append('name', name);
@@ -89,17 +122,25 @@ export default function AddProperty() {
     data.append('dinner_start', DinnerStart.toString())
     data.append('dinner_end',DinnerEnd.toString())
     ApiImages.forEach((image, index) => {
-      data.append(`image[${index}]`,image);
-    })
-    const params ={
-    data:data,
-    navigation:navigation
-  
-  }
+      data.append(`image[${index}]`, image);
+    });
+    const params = {
+      data: data,
+      navigation: navigation,
+    };
 
-    dispatch(add_property(params));
+    dispatch(update_property(params));
   };
 
+  ApiImages.forEach((image, index) => {
+  
+    console.log(image);
+    
+  });
+
+
+  console.log(ApiImages);
+  
   const openImageLibrary = () => {
     if (selectedImages.length >= 10) {
       errorToast('Maximum Limit Reached');
@@ -143,11 +184,12 @@ export default function AddProperty() {
       image => image.id !== id,
     );
     setSelectedImages(updatedSelectedImages);
+    setApiImages(updatedSelectedImages)
   };
   const renderItem = ({item}) => (
     <TouchableOpacity onPress={() => openImageLibrary()}>
       {item.image != null ? (
-        <View style={{position: 'relative'}}>
+        <View style={{position: 'relative', marginTop: 20}}>
           <Image
             source={item.image}
             resizeMode="contain"
@@ -202,11 +244,11 @@ export default function AddProperty() {
   };
 
   const formatTime = date => {
+    
     return date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
   };
 
   return (
-    
     <View style={styles.container}>
       {isLoading && <Loading />}
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -268,8 +310,8 @@ export default function AddProperty() {
             itemContainerStyle={{marginTop: 10}}
             containerStyle={{marginTop: 30, borderRadius: 10}}
             showsVerticalScrollIndicator={false}
-            valueField="name"
-            value={Category}
+            valueField="id"
+            value={CategoryId}
             onChange={item => {
               setCategoryId(item.id);
               setCategory(item.name);
@@ -301,7 +343,6 @@ export default function AddProperty() {
           <TextInputField
             placeholder="Mobile number"
             keyboardType={'number-pad'}
-            
             value={MobileNumber}
             onChangeText={setMobileNumber}
           />
@@ -416,7 +457,7 @@ export default function AddProperty() {
         <View style={{height: hp(15)}} />
       </ScrollView>
       <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
-        <Text style={styles.saveButtonText}>Post Add</Text>
+        <Text style={styles.saveButtonText}>Update</Text>
       </TouchableOpacity>
       <View style={{height: hp(2)}} />
     </View>

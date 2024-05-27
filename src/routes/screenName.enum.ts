@@ -43,6 +43,8 @@ enum ScreenNameEnum {
   CompanyBooking='CompanyBooking',
   CProfile ='CProfile',
   CbookingDetails='CbookingDetails',
+  AddMenu='AddMenu',
+  updateProperty='updateProperty',
 
 // chat
 

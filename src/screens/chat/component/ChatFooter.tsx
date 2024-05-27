@@ -73,9 +73,7 @@ export default function ChatFooter() {
       };
   return (
     <View style={styles.inputContainer}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Emoji />
-          </TouchableOpacity>
+          
           <TextInput
          keyboardType='email-address'
             placeholder="Type..."
@@ -98,6 +96,7 @@ export default function ChatFooter() {
 
 const styles = StyleSheet.create({
     inputContainer: {
+      marginHorizontal:5,
         paddingHorizontal: 20,
         bottom:20,
         flexDirection: 'row',

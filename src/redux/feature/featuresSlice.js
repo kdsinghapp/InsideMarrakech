@@ -18,7 +18,10 @@ const initialState = {
   CBookingCompleteList: [],
   CBookingCancelList: [],
   allProperty: null,
-  MenuList: null,
+  CompanyProperty: null,
+  MenuList: [],
+  propertyDetail:[],
+  ChatUser:[],
 };
 
 export const update_notification = createAsyncThunk(
@@ -138,20 +141,21 @@ export const get_Company_booking_list = createAsyncThunk(
         config,
       );
       console.log(
-        '==============get_user_booking_list===response===================',
+        '==============get_Company_booking_list===response===================',
         response.data,
       );
+
       if (response.data.status === '1') {
-        console.log(
-          '==============get_user_booking_list======================',
-        );
+        return response.data.data;
+      } else {
+        return thunkApi.rejectWithValue(response.data.data);
       }
-      return response.data.data;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
   },
 );
+
 export const get_Company_Canclebooking_list = createAsyncThunk(
   'get_Company_Canclebooking_list',
   async (params, thunkApi) => {
@@ -166,6 +170,7 @@ export const get_Company_Canclebooking_list = createAsyncThunk(
         '==============get_Company_Canclebooking_list======================',
         params,
       );
+
       const response = await API.post(
         '/get_company_booking_list',
         params,
@@ -173,16 +178,16 @@ export const get_Company_Canclebooking_list = createAsyncThunk(
       );
 
       if (response.data.status === '1') {
-        console.log(
-          '==============get_Company_Canclebooking_list== success====================',
-        );
+        return response.data.data;
+      } else {
+        return thunkApi.rejectWithValue(response.data.data);
       }
-      return response.data.data;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
   },
 );
+
 export const get_Company_Completebooking_list = createAsyncThunk(
   'get_Company_Completebooking_list',
   async (params, thunkApi) => {
@@ -193,28 +198,59 @@ export const get_Company_Completebooking_list = createAsyncThunk(
           Accept: 'application/json',
         },
       };
-      console.log(
-        '==============get_Company_Completebooking_list======================',
-        params,
-      );
+
       const response = await API.post(
         '/get_company_booking_list',
         params,
         config,
       );
+      console.log(
+        '==============get_Company_Completebooking_list==response====================',
+        response.data,
+      );
 
       if (response.data.status === '1') {
-        console.log(
-          '==============get_Company_Completebooking_list== success====================',
-        );
+        return response.data.data;
+      } else {
+        return thunkApi.rejectWithValue(response.data.data);
       }
-
-      return response.data.data;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
   },
 );
+export const get_property_detail = createAsyncThunk(
+  'get_property_detail',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+
+      const response = await API.post(
+        '/get_property_detail',
+        params,
+        config,
+      );
+      console.log(
+        '==============get_property_detail==response====================',
+        response.data,
+      );
+
+      if (response.data.status === '1') {
+        return response.data.data;
+      } else {
+        return thunkApi.rejectWithValue(response.data.data);
+      }
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
 export const booking_request_accept_reject = createAsyncThunk(
   'booking_request_accept_reject',
   async (params, thunkApi) => {
@@ -300,6 +336,7 @@ export const add_property = createAsyncThunk(
       const config = {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
         },
       };
 
@@ -312,6 +349,81 @@ export const add_property = createAsyncThunk(
         params.navigation.goBack();
         console.log(
           '==============add_property======================',
+          response.data,
+        );
+        successToast(response.data.message);
+      } else {
+        errorToast(response.data.message);
+      }
+      return response.data;
+    } catch (error) {
+      errorToast('Network error');
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+export const update_property = createAsyncThunk(
+  'update_property',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+
+      console.log('=============update_property=======================');
+      console.log(params.data);
+   
+      const response = await API.post('/update_property', params.data, config);
+
+      console.log(
+        '==============update_property======================',
+        response.data,
+      );
+      if (response.data.status === '1') {
+        successToast(response.data.message)
+        params.navigation.goBack();
+       
+        successToast(response.data.message);
+      } else {
+        errorToast(response.data.message);
+      }
+      return response.data;
+    } catch (error) {
+      errorToast('Network error');
+      console.log(error);
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+export const add_property_menu = createAsyncThunk(
+  'add_property_menu',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      console.log('=============add_property_menu=======================');
+      console.log(params.data);
+      console.log('====================================');
+      const response = await API.post(
+        '/add_property_menu',
+        params.data,
+        config,
+      );
+
+      if (response.data.status === '1') {
+        params.navigation.goBack();
+        console.log(
+          '==============add_property_menu======================',
           response.data,
         );
         successToast(response.data.message);
@@ -405,6 +517,67 @@ export const get_privacy_policy = createAsyncThunk(
     }
   },
 );
+export const delete_property = createAsyncThunk(
+  'delete_property',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+      let data = new FormData();
+data.append('property_id', params.property_id);
+data.append('company_id', params.company_id);
+
+      console.log('=============delete_property=======================',params,);
+
+      const response = await API.post('/delete_property',data,config);
+
+      if (response.data.status === '1') {
+        successToast(response.data.message)
+        params.navigation.goBack()
+      } else {
+        errorToast(response.data.message)
+      }
+      return response.data.data;
+    } catch (error) {
+      console.log('Error:', error);
+      errorToast('Network Error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+export const get_chat_user = createAsyncThunk(
+  'get_chat_user',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+      let data = new FormData();
+data.append('user_id', params.user_id);
+
+
+      console.log('=============get_chat_user=======================',params,);
+
+      const response = await API.post('/get_chat_user',data,config);
+      console.log('=============get_chat_user=======================',response.data,);
+      if (response.data.status === '1') {
+       
+      } else {
+        errorToast('No Chat Found')
+      }
+      return response.data.data;
+    } catch (error) {
+      console.log('Error:', error);
+      errorToast('Network Error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
 
 export const get_terms_conditions = createAsyncThunk(
   'get_terms_conditions',
@@ -449,6 +622,42 @@ export const get_all_property = createAsyncThunk(
     }
   },
 );
+export const get_company_all_property = createAsyncThunk(
+  'get_company_all_property',
+  async (params, thunkApi) => {
+    try {
+      console.log(
+        '=============get_all_property=======================',
+        params,
+      );
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+
+      let data = new FormData();
+      data.append('company_id', params.company_id);
+      const response = await API.post(
+        '/get_company_all_property',
+        data,
+        config,
+      );
+
+      if (response.data.status === '1') {
+        return response.data.data;
+      } else {
+        return thunkApi.rejectWithValue(response.data.data);
+      }
+   
+    } catch (error) {
+      console.log('Error:', error);
+      //errorToast('Network Error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
 
 export const get_category = createAsyncThunk(
   'get_category',
@@ -473,7 +682,7 @@ export const get_category = createAsyncThunk(
 );
 
 export const get_property_menu = createAsyncThunk(
-  'get_property_menu',
+  'feature/get_property_menu',
   async (params, thunkApi) => {
     try {
       const config = {
@@ -482,18 +691,20 @@ export const get_property_menu = createAsyncThunk(
           Accept: 'application/json',
         },
       };
+
       console.log(
-        '==============get_property_menu======================',
+        '==============get_property_menu call======================',
         params,
       );
-      const response = await API.post('/get_property_menu', params, config);
 
+      const response = await API.post('/get_property_menu', params, config);
       if (response.data.status === '1') {
+        return response.data.data;
       } else {
+        return thunkApi.rejectWithValue(response.data.data);
       }
-      return response.data.data;
     } catch (error) {
-      return thunkApi.rejectWithValue(error);
+      return thunkApi.rejectWithValue(response.data.data);
     }
   },
 );
@@ -560,6 +771,21 @@ const FeatureSlice = createSlice({
       state.isError = true;
       state.isSuccess = false;
     });
+    builder.addCase(get_chat_user.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_chat_user.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.ChatUser = action.payload 
+    });
+    builder.addCase(get_chat_user.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+      state.ChatUser = []
+    });
     builder.addCase(booking_request_accept_reject.pending, state => {
       state.isLoading = true;
     });
@@ -589,6 +815,22 @@ const FeatureSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
+      state.MenuList = [];
+    });
+    builder.addCase(get_property_detail.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_property_detail.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.propertyDetail = action.payload;
+    });
+    builder.addCase(get_property_detail.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+      state.propertyDetail = [];
     });
     builder.addCase(get_Company_booking_list.pending, state => {
       state.isLoading = true;
@@ -603,6 +845,7 @@ const FeatureSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
+      state.CBookingList = [];
     });
     builder.addCase(get_Company_Completebooking_list.pending, state => {
       state.isLoading = true;
@@ -622,6 +865,7 @@ const FeatureSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
+        state.CBookingCompleteList = [];
       },
     );
     builder.addCase(get_Company_Canclebooking_list.pending, state => {
@@ -642,6 +886,7 @@ const FeatureSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
+        state.CBookingCancelList = [];
       },
     );
 
@@ -658,6 +903,32 @@ const FeatureSlice = createSlice({
       state.isError = true;
       state.isSuccess = false;
     });
+    builder.addCase(delete_property.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(delete_property.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+    });
+    builder.addCase(delete_property.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(update_property.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(update_property.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+    });
+    builder.addCase(update_property.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
     builder.addCase(add_property.pending, state => {
       state.isLoading = true;
     });
@@ -667,6 +938,19 @@ const FeatureSlice = createSlice({
       state.isError = false;
     });
     builder.addCase(add_property.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(add_property_menu.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(add_property_menu.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+    });
+    builder.addCase(add_property_menu.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
@@ -725,6 +1009,22 @@ const FeatureSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
+      state.allProperty = []
+    });
+    builder.addCase(get_company_all_property.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_company_all_property.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.CompanyProperty = action.payload;
+    });
+    builder.addCase(get_company_all_property.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+      state.CompanyProperty = []
     });
     builder.addCase(get_category.pending, state => {
       state.isLoading = true;

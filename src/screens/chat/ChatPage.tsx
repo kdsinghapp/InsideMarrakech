@@ -1,14 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, TextInput, FlatList, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import SearchIcon from '../../assets/svg/search.svg';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import ProfileHeader from '../../configs/ProfileHeader';
+import { useDispatch, useSelector } from 'react-redux';
+import { get_chat_user } from '../../redux/feature/featuresSlice';
+import Loading from '../../configs/Loader';
 
 export default function ChatPage() {
   const navigation = useNavigation();
+const ChatUser = useSelector(state => state.feature.ChatUser)
+const isLoading = useSelector(state => state.feature.isLoading)
+const user = useSelector(state => state.auth.userData)
+const isFocuse = useIsFocused();
+const dispatch = useDispatch()
+useEffect(()=>{
 
+getChatuser()
+
+},[isFocuse,user])
+
+
+const getChatuser =async()=>{
+  const params = {
+    user_id:'1'
+  }
+  dispatch(get_chat_user(params))
+
+}
+console.log('====================================');
+console.log(ChatUser);
+console.log('====================================');
   const RecentListItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
@@ -33,6 +57,8 @@ export default function ChatPage() {
 
   return (
     <View style={styles.container}>
+
+      {isLoading?<Loading />:null}
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader titile="Message" width={26} />
         <View style={styles.searchContainer}>
@@ -45,14 +71,16 @@ export default function ChatPage() {
             />
           </View>
         </View>
-        <View style={styles.listContainer}>
+      {ChatUser && 
+       <View style={styles.listContainer}>
           <FlatList
-            data={data}
+            data={ChatUser}
             renderItem={RecentListItem}
             keyExtractor={item => item.id}
             ListFooterComponent={() => <View style={styles.footer} />}
           />
         </View>
+}
       </ScrollView>
     </View>
   );

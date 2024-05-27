@@ -21,9 +21,14 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import DateModal from '../Modal/DateModal';
 import {useDispatch, useSelector} from 'react-redux';
-import {get_all_property, get_category, get_privacy_policy} from '../../redux/feature/featuresSlice';
+import {
+  get_all_property,
+  get_category,
+  get_company_all_property,
+  get_privacy_policy,
+} from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
-import { all } from 'axios';
+import {all} from 'axios';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
@@ -33,17 +38,18 @@ export default function Home() {
 
   const category = useSelector(state => state.feature.CategoryList);
   const all_property = useSelector(state => state.feature.allProperty);
+  const CompanyProperty = useSelector(state => state.feature.CompanyProperty);
   const isLoading = useSelector(state => state.feature.isLoading);
   const dispatch = useDispatch();
-const navigation = useNavigation()
+  const navigation = useNavigation();
+
   useEffect(() => {
     dispatch(get_category());
     dispatch(get_all_property());
-  }, [isFocused,user]);
+    get_Companyproperty();
+  }, [isFocused, user]);
 
-
-
-  const renderList = ({ item }) => {
+  const renderList = ({item}) => {
     // Check if document_gallery array exists and is not empty
     if (item.document_gallery && item.document_gallery.length > 0) {
       // Check if the first object in document_gallery has the image property
@@ -52,18 +58,15 @@ const navigation = useNavigation()
         return (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(ScreenNameEnum.PLACE_DETAILS,{item:item});
+              navigation.navigate(ScreenNameEnum.PLACE_DETAILS, {item: item});
             }}
-            style={[styles.shadow, styles.itemContainer]}
-          >
-            <Image source={{ uri: firstImage }} 
-            
-            style={styles.itemImage} resizeMode="cover" />
-            {user?.type === 'Company' &&
-              <TouchableOpacity style={{ position: 'absolute', right: 20, top: 20 }}>
-                <Image source={require('../../assets/Cropping/Icon.png')} style={{ height: 40, width: 40 }} />
-              </TouchableOpacity>
-            }
+            style={[styles.shadow, styles.itemContainer]}>
+            <Image
+              source={{uri: firstImage}}
+              style={styles.itemImage}
+              resizeMode="cover"
+            />
+
             <Text style={styles.itemTitle}>{item.name}</Text>
             <View style={styles.detailsContainer}>
               <Pin />
@@ -75,20 +78,11 @@ const navigation = useNavigation()
                 <User />
                 <Down />
               </View>
+
               <TouchableOpacity style={styles.updateButton}>
                 <Text style={styles.updateButtonText}>Update</Text>
               </TouchableOpacity>
             </View>
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              data={item.subTime}
-              horizontal
-              renderItem={({ item, index }) => (
-                <View style={styles.subTimeContainer}>
-                  <Text style={styles.subTimeText}>{item.time}</Text>
-                </View>
-              )}
-            />
           </TouchableOpacity>
         );
       }
@@ -96,7 +90,77 @@ const navigation = useNavigation()
     // If document_gallery is empty or image property is undefined, return null or a placeholder
     return null;
   };
+  const renderCompanyList = ({item}) => {
+    // Check if document_gallery and its first element exist
+    const firstImage = item.document_gallery && item.document_gallery.length > 0 ? item.document_gallery[item.document_gallery.length -1].image : null;
   
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate(ScreenNameEnum.PLACE_DETAILS, {item: item});
+        }}
+        style={[styles.shadow, styles.itemContainer]}>
+        {/* Check if item.image is not empty or undefined */}
+        {item.image == '' || item.image == undefined ? (
+          <Image
+            source={{uri: firstImage}}
+            style={styles.itemImage}
+            resizeMode="cover"
+          />
+        ) : (
+          <Image
+            source={require('../../assets/Cropping/empty.jpg')}
+            style={styles.itemImage}
+            resizeMode="cover"
+          />
+        )}
+        <TouchableOpacity 
+          onPress={()=>{
+            navigation.navigate(ScreenNameEnum.updateProperty,{item:item})
+          }}
+          style={{position: 'absolute', right: 20, top: 20}}>
+          <Image
+            source={require('../../assets/Cropping/Icon.png')}
+            style={{height: 40, width: 40}}
+          />
+        </TouchableOpacity>
+  
+        <Text style={styles.itemTitle}>{item.name}</Text>
+        <View style={styles.detailsContainer}>
+          <Pin />
+          <Text style={styles.itemDetails}>{item.address}</Text>
+        </View>
+  
+        <View style={styles.userContainer}>
+          <View style={styles.userTextContainer}>
+            <Text style={[styles.itemUser, {color: '#fff'}]}></Text>
+          </View>
+  
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(ScreenNameEnum.AddMenu, {item: item});
+            }}
+            style={{
+              backgroundColor: '#C59745',
+              paddingHorizontal: 10,
+              paddingVertical: 10,
+              borderRadius: 10,
+            }}>
+            <Text style={[styles.updateButtonText, {color: '#fff'}]}>
+              Add Menu
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+  
+  const get_Companyproperty = () => {
+    const params = {
+      company_id: user?.id,
+    };
+    dispatch(get_company_all_property(params));
+  };
 
   return (
     <View style={styles.container}>
@@ -240,14 +304,13 @@ const navigation = useNavigation()
                 </View>
               </TouchableOpacity>
             </Modal>
-           
           </>
         )}
         {user?.type === 'Company' && (
-          <>
-              <View style={styles.title}>
-          <Text style={styles.titleText}>My Activity </Text>
-        </View>
+          <View style={{flex: 1}}>
+            <View style={styles.title}>
+              <Text style={styles.titleText}>My Activity </Text>
+            </View>
             <View style={styles.bannerContainer}>
               <FlatList
                 showsHorizontalScrollIndicator={false}
@@ -278,12 +341,10 @@ const navigation = useNavigation()
 
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={Post}
-              renderItem={renderList}
+              data={CompanyProperty}
+              renderItem={renderCompanyList}
             />
-     
-            
-          </>
+          </View>
         )}
       </ScrollView>
     </View>
@@ -293,7 +354,6 @@ const navigation = useNavigation()
 const styles = StyleSheet.create({
   title: {
     marginVertical: 20,
-  
   },
   titleText: {
     fontFamily: 'Federo-Regular',
@@ -375,8 +435,8 @@ const styles = StyleSheet.create({
   itemImage: {
     height: hp(20),
     width: '100%',
-    borderRadius:10,
-    marginBottom:30
+    borderRadius: 10,
+    marginBottom: 30,
   },
   itemTitle: {
     fontFamily: 'Federo-Regular',

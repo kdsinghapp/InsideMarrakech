@@ -141,7 +141,7 @@ export default function Booking() {
     <View style={localStyles.container}>
       {isLoading ? <Loading /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader titile="Booking" width={25} />
+        <ProfileHeader title="Booking" width={25} />
         <View style={{height: hp(5), marginTop: 20}}>
           <FlatList
             data={BList}

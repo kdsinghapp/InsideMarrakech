@@ -1,3 +1,4 @@
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,7 +8,6 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
 import BlackPin from '../../assets/svg/BlackPin.svg';
 import {
   heightPercentageToDP as hp,
@@ -21,12 +21,10 @@ import {
   get_Company_Canclebooking_list,
   get_Company_Completebooking_list,
   get_Company_booking_list,
-  get_user_booking_list,
 } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
 
 export default function CompanyBooking() {
-  const [chooseBtn, setChooseBtn] = useState(true);
   const [selectedOption, setSelectedOption] = useState('Pending');
   const user = useSelector(state => state.auth.userData);
   const isLoading = useSelector(state => state.feature.isLoading);
@@ -42,121 +40,107 @@ export default function CompanyBooking() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-
   useEffect(() => {
-    get_booking_list();
-  }, [user, selectedOption,BookingStatus]);
-  const get_booking_list = async () => {
+    fetchBookingList();
+  }, [user, selectedOption, isFocused]);
+
+
+ 
+  const fetchBookingList = async () => {
     const params = {
-      // user_id: user?.id,
-      company_id: '1',
+      company_id: user?.id,
       status: selectedOption,
-    };
+    }; 
+if(selectedOption === 'Pending'){
 
-    await dispatch(get_Company_booking_list(params));
-  };
-  const Completebooking_list = async () => {
-    const params = {
-      // user_id: user?.id,
-      company_id: '1',
-      status: selectedOption,
-    };
-
-    await dispatch(get_Company_Completebooking_list(params));
-  };
-
-  const Cancelbooking_list = async () => {
-    const params = {
-      // user_id: user?.id,
-      company_id: '1',
-      status: selectedOption,
-    };
-
-    await dispatch(get_Company_Canclebooking_list(params));
+  await dispatch(get_Company_booking_list(params));
+}
+else if(selectedOption === 'Complete'){
+  await dispatch(get_Company_Completebooking_list(params));
+}
+else{
+  await dispatch(get_Company_Canclebooking_list(params));
+}
   };
 
-  const getListData = async type => {
-    
+  const handleBookingStatusChange = async (id, status) => {
+    const params = {
+      booking_id: id,
+      status: status,
+    };
+    await dispatch(booking_request_accept_reject(params));
+    setTimeout(() => {
+      fetchBookingList();
+    }, 2000);
+  };
+
+  const handleTabChange = type => {
     setSelectedOption(type);
-    if (selectedOption == 'Cancel') {
-      Cancelbooking_list();
-    } else if (selectedOption == 'Complete') {
-      Completebooking_list();
-    } else {
-      get_booking_list();
-    }
+    fetchBookingList();
   };
 
   const renderItem = ({item}) => (
     <TouchableOpacity
-      onPress={() => {
-        navigation.navigate(ScreenNameEnum.CbookingDetails);
-      }}
+      onPress={() => navigation.navigate(ScreenNameEnum.CbookingDetails)}
       style={[styles.shadow, styles.itemContainer]}>
       <View style={styles.itemRow}>
         <View style={styles.itemImageContainer}>
-          <Image
-            source={{uri:item.user_data.image}}
-            style={styles.itemImage}
-            resizeMode="cover"
-          />
+          {item.user_data.image != '' ? (
+            <Image
+              source={{uri: item.user_data.image}}
+              style={styles.itemImage}
+              resizeMode="cover"
+            />
+          ) : (
+            <Image
+              source={require('../../assets/Cropping/empty.jpg')}
+              style={styles.itemImage}
+              resizeMode="cover"
+            />
+          )}
         </View>
         <View style={styles.itemDetailsContainer}>
           <View style={styles.itemNameRow}>
-            <Text style={styles.itemName}>{item.user_data.first_name} {item.user_data.last_name}</Text>
+            <Text style={styles.itemName}>
+              {item.user_data.first_name} {item.user_data.last_name}
+            </Text>
           </View>
           <View style={styles.itemDetailsRow}>
             <BlackPin />
             <Text style={styles.itemDetails}>{item.address}</Text>
           </View>
           <View style={{marginTop: 10}}>
-            <Text style={[styles.itemTime,{fontSize:14}]}>$ {item.amount}</Text>
+            <Text style={[styles.itemTime, {fontSize: 14}]}>
+              $ {item.amount}
+            </Text>
           </View>
         </View>
       </View>
-      <View style={styles.itemFooter}>
-        <TouchableOpacity
-          onPress={() => {
-            BookingStatus(item.id,'Complete ')
-          }}
-          style={[
-            styles.statusButton,
-            {backgroundColor: '#34A853', borderRadius: 10},
-            styles.shadow,
-          ]}>
-          <Text style={styles.statusButtonText}>Accept</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            BookingStatus(item.id,'Cancel')
-          }}
-          style={[
-            styles.statusButton,
-            {backgroundColor: 'red', borderRadius: 10},
-            styles.shadow,
-          ]}>
-          <Text style={styles.statusButtonText}>Reject</Text>
-        </TouchableOpacity>
-      </View>
+      {selectedOption === 'Pending' && (
+        <View style={styles.itemFooter}>
+          <TouchableOpacity
+            onPress={() => handleBookingStatusChange(item.id, 'Complete')}
+            style={[
+              styles.statusButton,
+              {backgroundColor: '#34A853', borderRadius: 10},
+              styles.shadow,
+            ]}>
+            <Text style={styles.statusButtonText}>Accept</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleBookingStatusChange(item.id, 'Cancel')}
+            style={[
+              styles.statusButton,
+              {backgroundColor: 'red', borderRadius: 10},
+              styles.shadow,
+            ]}>
+            <Text style={styles.statusButtonText}>Reject</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </TouchableOpacity>
   );
 
-
-
-  const BookingStatus = async (id, type) => {
-    const params = {
-      booking_id: id,
-      status: type,
-    };
-  
-    await dispatch(booking_request_accept_reject(params));
-  
-    // Call get_booking_list after 2 seconds
-    setTimeout(() => {
-      get_booking_list();
-    }, 2000);
-  };
-  
   const renderItemCancleComplete = ({item}) => (
     <View style={[styles.shadow, styles.itemContainer]}>
       <View style={styles.itemRow}>
@@ -169,7 +153,9 @@ export default function CompanyBooking() {
         </View>
         <View style={styles.itemDetailsContainer}>
           <View style={styles.itemNameRow}>
-            <Text style={styles.itemName}>{item.user_data.first_name} {item.user_data.last_name}</Text>
+            <Text style={styles.itemName}>
+              {item.user_data.first_name} {item.user_data.last_name}
+            </Text>
           </View>
           <View style={styles.itemDetailsRow}>
             <BlackPin />
@@ -177,14 +163,12 @@ export default function CompanyBooking() {
           </View>
           <View style={styles.itemFooter2}>
             <TouchableOpacity
-              onPress={() => {
-                navigation.navigate(ScreenNameEnum.TRACK_ORDER);
-              }}
+              onPress={() => navigation.navigate(ScreenNameEnum.TRACK_ORDER)}
               style={[
                 styles.statusButton2,
                 {
                   backgroundColor:
-                    selectedOption == 'Cancel' ? 'red' : '#34A853',
+                    selectedOption === 'Cancel' ? 'red' : '#34A853',
                 },
                 styles.shadow,
               ]}>
@@ -198,12 +182,26 @@ export default function CompanyBooking() {
       </View>
     </View>
   );
+
+  const renderEmptyList = () => (
+    <View style={styles.emptyContainer}>
+      <Text style={styles.emptyText}>No bookings found</Text>
+    </View>
+  );
+
+  const currentData =
+    selectedOption === 'Pending'
+      ? BookingList
+      : selectedOption === 'Cancel'
+      ? BookingCancelList
+      : BookingCompleteList;
+
   return (
     <View style={styles.container}>
-      {isLoading ? <Loading /> : null}
+      {isLoading && <Loading />}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.title}>
-          <Text style={styles.titleText}>Booking </Text>
+          <Text style={styles.titleText}>Booking</Text>
         </View>
         <View style={{height: hp(5), marginTop: 20}}>
           <FlatList
@@ -212,15 +210,11 @@ export default function CompanyBooking() {
             showsHorizontalScrollIndicator={false}
             renderItem={({item}) => (
               <TouchableOpacity
-                onPress={() => {
-                  
-                  getListData(item.name)
-                  }}
+                onPress={() => handleTabChange(item.name)}
                 style={{
                   width: wp(29),
                   alignItems: 'center',
                   justifyContent: 'center',
-
                   marginLeft: 10,
                 }}>
                 <Text
@@ -232,8 +226,7 @@ export default function CompanyBooking() {
                   }}>
                   {item.name}
                 </Text>
-
-                {selectedOption == item.name && (
+                {selectedOption === item.name && (
                   <View
                     style={{
                       height: 3,
@@ -251,13 +244,14 @@ export default function CompanyBooking() {
         <View style={styles.listContainer}>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={selectedOption === 'Pending'?BookingList:selectedOption === 'Cancel'?BookingCancelList:BookingCompleteList}
+            data={currentData}
             renderItem={
               selectedOption === 'Pending'
                 ? renderItem
                 : renderItemCancleComplete
             }
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.id.toString()}
+            ListEmptyComponent={renderEmptyList}
           />
         </View>
       </ScrollView>
@@ -401,19 +395,19 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 5,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: hp(50),
+  },
+  emptyText: {
+    fontSize: 18,
+    color: '#000',
+    fontFamily: 'Federo-Regular',
   },
 });
 
-const BList = [
-  {
-    name: 'Pending',
-  },
-  {
-    name: 'Complete',
-  },
-  {
-    name: 'Cancel',
-  },
-];
+const BList = [{name: 'Pending'}, {name: 'Complete'}, {name: 'Cancel'}];

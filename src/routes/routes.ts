@@ -12,10 +12,12 @@ import Profile from "../screens/BottomTab/Profile";
 import Search from "../screens/BottomTab/Search";
 import Chat from "../screens/chat/Chat";
 import ChatPage from "../screens/chat/ChatPage";
+import AddMenu from "../screens/company/AddMenu";
 import AddProperty from "../screens/company/AddProperty";
 import CbookingDetails from "../screens/company/CbookingDetails";
 import CompanyBooking from "../screens/company/CompanyBooking";
 import CProfile from "../screens/company/CProfile";
+import updateProperty from "../screens/company/updateProperty";
 import AddTravelerDetails from "../screens/Features/AddTravelerDetails";
 import BookingDetails from "../screens/Features/BookingDetails";
 import PaymentDetails from "../screens/Features/PaymentDetails";
@@ -143,6 +145,14 @@ const _routes = {
     {
       name: ScreenNameEnum.CbookingDetails,
       Component:CbookingDetails,
+    },
+    {
+      name: ScreenNameEnum.AddMenu,
+      Component:AddMenu,
+    },
+    {
+      name: ScreenNameEnum.updateProperty,
+      Component:updateProperty,
     },
     
   ],
