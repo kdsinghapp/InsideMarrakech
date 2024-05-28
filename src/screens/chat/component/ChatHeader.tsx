@@ -8,6 +8,8 @@ import {
 export default function ChatHeader({item}) {
 
     const navigation = useNavigation()
+
+  
   return (
     <View style={styles.colorDiv}>
     <TouchableOpacity
@@ -19,8 +21,8 @@ export default function ChatHeader({item}) {
       />
     </TouchableOpacity>
     <View style={styles.headerContent}>
-      <Image source={item.img} style={styles.headerAvatar} />
-      <Text style={styles.headerText}>{item.name}</Text>
+      <Image source={{uri:item.image}} style={styles.headerAvatar}  resizeMode='cover'/>
+      <Text style={styles.headerText}>{item.company_name}</Text>
     </View>
   </View>
   )
@@ -49,7 +51,7 @@ const styles =StyleSheet.create({
         width: 20,
       },
     colorDiv: {
-        backgroundColor: '#FFF',
+        backgroundColor: '#edf2f2',
         height: hp(8),
        
         flexDirection: 'row',

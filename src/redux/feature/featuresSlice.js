@@ -520,7 +520,7 @@ export const add_chat_user = createAsyncThunk(
       );
       if (response.data.status === '1') {
        
-        params.navigation.navigate(ScreenNameEnum.CHAT_SCREEN);
+        params.navigation.navigate(ScreenNameEnum.CHAT_SCREEN,{item:{id:params.data.company_id}});
       } else {
         errorToast(response.data.message);
       }
@@ -531,6 +531,7 @@ export const add_chat_user = createAsyncThunk(
     }
   },
 );
+
 
 export const get_privacy_policy = createAsyncThunk(
   'get_privacy_policy',

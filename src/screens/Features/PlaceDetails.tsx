@@ -58,7 +58,7 @@ export default function PlaceDetails() {
 
     dispatch(get_property_detail(params));
   };
-  console.log("propertDetails:=>>>>>>>>>>>", propertDetails);
+  console.log("propertDetails:=>>>>>>>>>>>", propertDetails?.company_id);
 
 
   const timeFormate = utcDateString => {
@@ -102,12 +102,12 @@ const Add_chatUser =async()=>{
   const params ={
     data:{
       user_id:user?.id,
-      company_id:9
+      company_id:propertDetails?.company_id
     },
     navigation:navigation
   }
 
- // dispatch(add_chat_user(params))
+  dispatch(add_chat_user(params))
 }
 
 
@@ -231,7 +231,7 @@ const Add_chatUser =async()=>{
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate(ScreenNameEnum.CHAT_CONTACT_SCREEN);
+                  Add_chatUser()
                 }}
                 style={[localStyles.contactButton, localStyles.chatButton]}>
                 <Chat />

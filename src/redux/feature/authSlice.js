@@ -4,6 +4,7 @@ import ScreenNameEnum from '../../routes/screenName.enum';
 
 import {errorToast, successToast} from '../../configs/customToast';
 import {API} from '../Api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
   isLoading: false,
@@ -221,6 +222,7 @@ export const logout = createAsyncThunk('log_out', async (params, thunkApi) => {
 
     if (response.data.status == '1') {
       successToast(response.data.message);
+      await AsyncStorage.clear();
       params.navigation.navigate(ScreenNameEnum.LOGIN_SCREEN);
     } else {
       errorToast(response.data.message);

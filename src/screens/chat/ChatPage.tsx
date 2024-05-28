@@ -25,12 +25,14 @@ getChatuser()
 
 const getChatuser =async()=>{
   const params = {
-    user_id:'1'
+    user_id:user?.id
   }
   dispatch(get_chat_user(params))
 
 }
-console.log('====================================');
+
+
+console.log('================ChatUser====================');
 console.log(ChatUser);
 console.log('====================================');
   const RecentListItem = ({ item }) => (
@@ -40,18 +42,12 @@ console.log('====================================');
       }}
       style={styles.itemContainer}>
       <View>
-        <Image source={item.img} style={styles.avatar} />
+        <Image source={{uri:item.image}} style={styles.avatar} />
       </View>
       <View style={styles.itemTextContainer}>
-        <Text style={styles.itemName}>{item.name}</Text>
-        <Text style={styles.itemStatus}>{item.status}</Text>
+        <Text style={styles.itemName}>{item.company_name}</Text>
+
       </View>
-      {/* <View>
-        <Text style={styles.itemTime}>{item.time}</Text>
-        <View style={[styles.notification, item.count.length < 2 ? styles.singleDigit : null]}>
-          <Text style={styles.notificationText}>{item.count}</Text>
-        </View> 
-      </View>*/}
     </TouchableOpacity>
   );
 
@@ -59,8 +55,9 @@ console.log('====================================');
     <View style={styles.container}>
 
       {isLoading?<Loading />:null}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader titile="Message" width={26} />
+      
+        <ProfileHeader title="Chat Contact" width={26} />
+        <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.searchContainer}>
           <View style={[styles.searchBox, styles.shdow]}>
             <SearchIcon />
@@ -71,17 +68,20 @@ console.log('====================================');
             />
           </View>
         </View>
+        <View style={{}}>
       {ChatUser && 
-       <View style={styles.listContainer}>
+    
           <FlatList
             data={ChatUser}
             renderItem={RecentListItem}
-            keyExtractor={item => item.id}
+           
             ListFooterComponent={() => <View style={styles.footer} />}
           />
-        </View>
+       
 }
-      </ScrollView>
+</View>
+</ScrollView>
+   
     </View>
   );
 }
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     height: hp(10),
     padding: 10,
     marginHorizontal: 15,
-    backgroundColor: '#FFF',
+    backgroundColor: '#e6fbfc',
     borderRadius: 15,
     marginVertical: 5,
     flexDirection: 'row',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   itemTextContainer: {
-    width: '65%',
+    width: '80%',
   },
   itemName: {
     fontSize: 17,

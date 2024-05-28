@@ -6,12 +6,13 @@ import {
 } from 'react-native-responsive-screen';
 import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
-export default function ChatBody() {
+export default function ChatBody({item}) {
   const user = useSelector(state => state.auth.userData);
   const [messages, setMessages] = useState([]);
-  const number = '7869742922';
+
+  
   useEffect(() => {
-    const chatId = user.mobile + '+91' + Number(number);
+    const chatId = user?.mobile + item?.mobile;
 
     const unsubscribe = firestore()
       .collection('chats')
@@ -27,7 +28,7 @@ export default function ChatBody() {
       });
 
     return () => unsubscribe();
-  }, [user.mobile, number]);
+  }, [user?.mobile, item?.mobile]);
 
   const MessageItem = ({message}) => {
     const isSender = message.mobile === user.mobile;
