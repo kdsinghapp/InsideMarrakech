@@ -41,9 +41,7 @@ export default function BookingDetails() {
     });
   }
 
-  console.log('==================Property==================');
-  console.log(Property);
-  console.log('====================================');
+
   return (
     <View style={localStyles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>

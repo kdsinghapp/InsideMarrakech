@@ -38,9 +38,7 @@ export default function PaymentDetails() {
 
   const user = useSelector(state => state.auth.userData);
   const isLoading = useSelector(state => state.feature.isLoading);
-  console.log('====================================');
-  console.log(user.id);
-  console.log('====================================');
+ 
   const route = useRoute();
   const {
     firstName,
@@ -55,33 +53,13 @@ export default function PaymentDetails() {
     Property,
   } = route.params;
 
-  console.log('====================================');
-  console.log(
-    firstName,
-    ',',
-    lastName,
-    ',',
-    email,
-    ',',
-    phoneNumber,
-    ',',
-    travelers,
-    ',',
-    language,
-    ',',
-    address,
-    ',',
-    selectedDate,
-    ',',
-    selectedGuestCount,
-  );
-  console.log('====================================');
-
   const handleItemSelect = index => {
     setSelectedItemIndex(index);
   };
   const dispatch = useDispatch();
   const submitBooking = () => {
+   const  price = Property.amount*selectedGuestCount
+
     const params = {
       data: {
         user_id: user.id,
@@ -95,13 +73,16 @@ export default function PaymentDetails() {
         address: address,
         lat: '',
         lon: '',
-        amount: '150',
+        amount:price,
         GuestList: travelers,
         created_date: selectedDate,
         email: email,
       },
+      
+      
       navigation: navigation,
     };
+ 
     dispatch(add_booking(params));
   };
 
@@ -136,6 +117,10 @@ export default function PaymentDetails() {
           </View>
         </View>
 
+        <View style={styles.totalContainer}>
+          <Text style={styles.totalText}>No Guest {selectedGuestCount}</Text>
+          
+        </View>
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>Total</Text>
           <Text style={styles.totalAmount}>

@@ -23,9 +23,12 @@ import BookingDetails from "../screens/Features/BookingDetails";
 import PaymentDetails from "../screens/Features/PaymentDetails";
 import PaymentSuccess from "../screens/Features/PaymentSuccess";
 import PlaceDetails from "../screens/Features/PlaceDetails";
+import AboutUs from "../screens/ProfileSection/AboutUs";
 import BookingTab from "../screens/ProfileSection/BookingTab";
 import ChangePassword from "../screens/ProfileSection/ChangePassword";
 import EditProfile from "../screens/ProfileSection/EditProfile";
+import FAQ from "../screens/ProfileSection/FAQ";
+import MsgNotification from "../screens/ProfileSection/MsgNotification";
 import Notification from "../screens/ProfileSection/Notification";
 import PrivacyPolicy from "../screens/ProfileSection/PrivacyPolicy";
 import Subscription from "../screens/ProfileSection/Subscription";
@@ -153,6 +156,18 @@ const _routes = {
     {
       name: ScreenNameEnum.updateProperty,
       Component:updateProperty,
+    },
+    {
+      name: ScreenNameEnum.ABOUT_US,
+      Component:AboutUs,
+    },
+    {
+      name: ScreenNameEnum.FAQ_SCREEN,
+      Component:FAQ,
+    },
+    {
+      name: ScreenNameEnum.MsgNotification,
+      Component:MsgNotification,
     },
     
   ],

@@ -24,6 +24,7 @@ import DateModal from '../Modal/DateModal';
 import MenuModal from '../Modal/MenuModal';
 import {useDispatch, useSelector} from 'react-redux';
 import {
+  add_chat_user,
   delete_property,
   get_all_property,
   get_company_all_property,
@@ -43,6 +44,8 @@ export default function PlaceDetails() {
   const isLoading = useSelector(state => state.feature.isLoading);
   const propertDetails = useSelector(state => state.feature.propertyDetail);
   const isFocuse = useIsFocused();
+
+
   useEffect(() => {
     get_property();
     dispatch(get_company_all_property());
@@ -55,7 +58,7 @@ export default function PlaceDetails() {
 
     dispatch(get_property_detail(params));
   };
-  console.log("propertDetails:", propertDetails);
+  console.log("propertDetails:=>>>>>>>>>>>", propertDetails);
 
 
   const timeFormate = utcDateString => {
@@ -84,6 +87,29 @@ export default function PlaceDetails() {
 
     dispatch(delete_property(params));
   };
+  const formatTimes = () => {
+    const [startTimeStr, endTimeStr] = propertDetails?.opening_hours?.split('/');
+    const formattedStartTime = timeFormate(startTimeStr);
+    const formattedEndTime = timeFormate(endTimeStr);
+    return {
+      startTime: formattedStartTime,
+      endTime: formattedEndTime
+    };
+  };
+const Add_chatUser =async()=>{
+
+
+  const params ={
+    data:{
+      user_id:user?.id,
+      company_id:9
+    },
+    navigation:navigation
+  }
+
+ // dispatch(add_chat_user(params))
+}
+
 
   return (
     <View style={localStyles.container}>
@@ -231,44 +257,24 @@ export default function PlaceDetails() {
           <Text style={localStyles.sectionTitle}>Opening hours</Text>
 
           <Text style={localStyles.openingHoursText}>
-            {timeFormate(propertDetails?.openig_hours)}
+            {`${formatTimes().startTime} - ${formatTimes().endTime}`}
           </Text>
         </View>
         <View style={localStyles.scheduleContainer}>
-          <Text style={localStyles.scheduleText}>Lunch start</Text>
+        <Text style={localStyles.sectionTitle}>Lunch Time</Text>
           <Text style={localStyles.scheduleText}>
             {timeFormate(propertDetails?.lunch_start)} -{' '}
             {timeFormate(propertDetails?.lunch_end)}
           </Text>
         </View>
         <View style={localStyles.scheduleContainer}>
-          <Text style={localStyles.scheduleText}>Dinner</Text>
+        <Text style={localStyles.sectionTitle}>Dinner Time</Text>
           <Text style={localStyles.scheduleText}>
             {timeFormate(propertDetails?.dinner_start)} -{' '}
             {timeFormate(propertDetails?.dinner_end)}
           </Text>
         </View>
-        {user?.type == 'User' && (
-          <View style={localStyles.exploreContainer}>
-            <ImageBackground
-              source={require('../../assets/Cropping/img2.png')}
-              style={localStyles.exploreImageBackground}
-              resizeMode="contain">
-              <View style={localStyles.exploreTextContainer}>
-                <Text style={localStyles.exploreTitle}>
-                  Exploring the Surroundings of Essaouira
-                </Text>
-                <Text style={localStyles.exploreSubtitle}>
-                  By Car, Motorbike, Motorhome, Coach, By Bike
-                </Text>
-              </View>
-
-              <TouchableOpacity style={localStyles.viewButton}>
-                <Text style={localStyles.viewButtonText}>View</Text>
-              </TouchableOpacity>
-            </ImageBackground>
-          </View>
-        )}
+       
         <View style={[localStyles.sectionContainer, {marginTop: 20}]}>
           <Text style={localStyles.sectionTitle}>How to get to</Text>
           <Text style={localStyles.sectionTitle}>{propertDetails?.title}</Text>
@@ -498,6 +504,7 @@ const localStyles = StyleSheet.create({
   openingHoursText: {
     fontFamily: 'Federo-Regular',
     fontSize: 14,
+    marginTop:10,
     color: '#777777',
     fontWeight: '400',
   },
@@ -509,6 +516,7 @@ const localStyles = StyleSheet.create({
     fontFamily: 'Federo-Regular',
     fontSize: 14,
     color: '#777777',
+    marginTop:10,
     fontWeight: '400',
   },
   exploreContainer: {

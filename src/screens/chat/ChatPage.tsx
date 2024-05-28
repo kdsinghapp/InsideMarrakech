@@ -46,12 +46,12 @@ console.log('====================================');
         <Text style={styles.itemName}>{item.name}</Text>
         <Text style={styles.itemStatus}>{item.status}</Text>
       </View>
-      <View>
+      {/* <View>
         <Text style={styles.itemTime}>{item.time}</Text>
         <View style={[styles.notification, item.count.length < 2 ? styles.singleDigit : null]}>
           <Text style={styles.notificationText}>{item.count}</Text>
-        </View>
-      </View>
+        </View> 
+      </View>*/}
     </TouchableOpacity>
   );
 

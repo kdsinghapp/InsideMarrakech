@@ -309,13 +309,24 @@ const Account = [
 
     screen: ScreenNameEnum.SUBSCRIPTION_SCREEN,
   },
-];
-const Setting = [
   {
     name: 'Notification',
 
     screen: ScreenNameEnum.NOTIFICATION_SCREEN,
   },
+];
+const Setting = [
+  {
+    name: 'FAQ',
+
+    screen: ScreenNameEnum.FAQ_SCREEN,
+  },
+  {
+    name: 'About us',
+
+    screen: ScreenNameEnum.ABOUT_US,
+  },
+ 
 ];
 
 const About = [

@@ -298,12 +298,12 @@
         {
           name: 'FAQ',
       
-          screen: ScreenNameEnum.PRIVACY_POLICY,
+          screen: ScreenNameEnum.FAQ_SCREEN,
         },
         {
           name: 'About us',
       
-          screen: ScreenNameEnum.PRIVACY_POLICY,
+          screen: ScreenNameEnum.ABOUT_US,
         },
         {
           name: 'Privacy Policy',

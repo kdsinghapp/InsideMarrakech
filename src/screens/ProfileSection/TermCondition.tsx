@@ -32,7 +32,7 @@ export default function TermCondition() {
   return (
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
-  <ProfileHeader titile={'Terms and Conditions'} width={13} />
+  <ProfileHeader title={'Terms and Conditions'} width={13} />
   <ScrollView showsVerticalScrollIndicator={false}>
     <View style={styles.imageContainer}>
       <Image

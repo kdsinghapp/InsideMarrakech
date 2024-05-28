@@ -22,6 +22,12 @@ const initialState = {
   MenuList: [],
   propertyDetail:[],
   ChatUser:[],
+  getSubscription:[],
+  AboutUs:[],
+  FAQ:[],
+  Notification:[],
+  BookingDetails:[],
+  BannerList:[]
 };
 
 export const update_notification = createAsyncThunk(
@@ -340,9 +346,7 @@ export const add_property = createAsyncThunk(
         },
       };
 
-      console.log('=============add_property=======================');
-      console.log(params.data);
-      console.log('====================================');
+ 
       const response = await API.post('/add_property', params.data, config);
 
       if (response.data.status === '1') {
@@ -455,6 +459,7 @@ export const add_booking = createAsyncThunk(
       let data = new FormData();
       data.append('user_id', params.data.user_id);
       data.append('property_id', params.data.property_id);
+      data.append('company_id', params.data.company_id);
       data.append('first_name', params.data.first_name);
       data.append('last_name', params.data.last_name);
       data.append('email', params.data.email);
@@ -473,18 +478,49 @@ export const add_booking = createAsyncThunk(
         data.append(`last_name1[${index}]`, guest.lastName);
       });
 
-      console.log('================data====================');
-      console.log(data);
-      console.log('====================================');
+      console.log('================add_booking====================',data);
+     
 
       const response = await API.post('/add_booking', data, config);
       console.log(
-        '==============add_booking======================',
+        '==============add_booking==response====================',
         response.data,
       );
       if (response.data.status === '1') {
         successToast(response.data.message);
         params.navigation.navigate(ScreenNameEnum.PAYMENT_SUCCESS);
+      } else {
+        errorToast(response.data.message);
+      }
+      return response.data;
+    } catch (error) {
+      errorToast('Network error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+export const add_chat_user = createAsyncThunk(
+  'add_chat_user',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+
+      let data = new FormData();
+      data.append('user_id', params.data.user_id);
+      data.append('company_id', params.data.company_id);
+        const response = await API.post('/add_chat_user', data, config);
+      console.log(
+        '==============add_chat_user==response====================',
+        response.data,
+      );
+      if (response.data.status === '1') {
+       
+        params.navigation.navigate(ScreenNameEnum.CHAT_SCREEN);
       } else {
         errorToast(response.data.message);
       }
@@ -503,6 +539,69 @@ export const get_privacy_policy = createAsyncThunk(
       console.log('=============get_privacy_policy=======================');
 
       const response = await API.get('/get_privacy_policy');
+
+      if (response.data.status === '1') {
+        // Do something on success
+      } else {
+        // Handle the error
+      }
+      return response.data.result;
+    } catch (error) {
+      console.log('Error:', error);
+      errorToast('Network Error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+export const get_faq = createAsyncThunk(
+  'get_faq',
+  async (params, thunkApi) => {
+    try {
+      console.log('=============get_faq=======================');
+
+      const response = await API.get('/get_faq');
+
+      if (response.data.status === '1') {
+        // Do something on success
+      } else {
+        // Handle the error
+      }
+      return response.data.result;
+    } catch (error) {
+      console.log('Error:', error);
+      errorToast('Network Error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+export const get_about_us = createAsyncThunk(
+  'get_about_us',
+  async (params, thunkApi) => {
+    try {
+      console.log('=============get_about_us=======================');
+
+      const response = await API.get('/get_about_us');
+
+      if (response.data.status === '1') {
+        // Do something on success
+      } else {
+        // Handle the error
+      }
+      return response.data.result;
+    } catch (error) {
+      console.log('Error:', error);
+      errorToast('Network Error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+export const get_subscription = createAsyncThunk(
+  'get_subscription',
+  async (params, thunkApi) => {
+    try {
+      console.log('=============get_subscription=======================');
+
+      const response = await API.get('/get_subscription');
 
       if (response.data.status === '1') {
         // Do something on success
@@ -537,6 +636,37 @@ data.append('company_id', params.company_id);
       if (response.data.status === '1') {
         successToast(response.data.message)
         params.navigation.goBack()
+      } else {
+        errorToast(response.data.message)
+      }
+      return response.data.data;
+    } catch (error) {
+      console.log('Error:', error);
+      errorToast('Network Error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+export const delete_notification = createAsyncThunk(
+  'delete_notification',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+      let data = new FormData();
+data.append('id', params.id);
+
+
+      console.log('=============delete_notification=======================',params,);
+
+      const response = await API.post('/delete_notification',data,config);
+
+      if (response.data.status === '1') {
+        successToast(response.data.message)
+        
       } else {
         errorToast(response.data.message)
       }
@@ -654,7 +784,45 @@ export const get_company_all_property = createAsyncThunk(
     } catch (error) {
       console.log('Error:', error);
       //errorToast('Network Error');
-      return thunkApi.rejectWithValue(error);
+      return thunkApi.rejectWithValue([]);
+      
+    }
+  },
+);
+export const get_user_notification = createAsyncThunk(
+  'get_user_notification',
+  async (params, thunkApi) => {
+    try {
+      console.log(
+        '=============get_user_notification=======================',
+        params,
+      );
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+
+      let data = new FormData();
+      data.append('user_id', params.user_id);
+      const response = await API.post(
+        '/get_user_notification',
+        data,
+        config,
+      );
+
+      if (response.data.status === '1') {
+        return response.data.data;
+      } else {
+        return thunkApi.rejectWithValue(response.data.data);
+      }
+   
+    } catch (error) {
+      console.log('Error:', error);
+      //errorToast('Network Error');
+      return thunkApi.rejectWithValue([]);
+      
     }
   },
 );
@@ -682,7 +850,7 @@ export const get_category = createAsyncThunk(
 );
 
 export const get_property_menu = createAsyncThunk(
-  'feature/get_property_menu',
+  'get_property_menu',
   async (params, thunkApi) => {
     try {
       const config = {
@@ -698,6 +866,64 @@ export const get_property_menu = createAsyncThunk(
       );
 
       const response = await API.post('/get_property_menu', params, config);
+      if (response.data.status === '1') {
+        return response.data.data;
+      } else {
+        return thunkApi.rejectWithValue(response.data.data);
+      }
+    } catch (error) {
+      return thunkApi.rejectWithValue(response.data.data);
+    }
+  },
+);
+export const get_banner = createAsyncThunk(
+  'get_banner',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+
+     
+
+      const response = await API.get('/get_banner',);
+      console.log(
+        '==============get_banner call======================',
+        response.data,
+      );
+      if (response.data.status === '1') {
+        return response.data.result;
+      } else {
+        return thunkApi.rejectWithValue(response.data.result);
+      }
+    } catch (error) {
+      return thunkApi.rejectWithValue(response.data.result);
+    }
+  },
+);
+export const get_company_booking_detail = createAsyncThunk(
+  'get_company_booking_detail',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+      console.log('===========get_company_booking_detail=========================',params);
+     
+      
+      let data = new FormData();
+      data.append('booking_id', params.booking_id);
+      
+    
+
+      const response = await API.post('/get_company_booking_detail', data, config);
+      console.log('====================get_company_booking_detail================',response.data);
       if (response.data.status === '1') {
         return response.data.data;
       } else {
@@ -726,6 +952,19 @@ const FeatureSlice = createSlice({
       state.isError = true;
       state.isSuccess = false;
     });
+    builder.addCase(add_chat_user.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(add_chat_user.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+    });
+    builder.addCase(add_chat_user.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
     builder.addCase(get_user_booking_list.pending, state => {
       state.isLoading = true;
     });
@@ -736,6 +975,20 @@ const FeatureSlice = createSlice({
       state.BookingList = action.payload.length ? action.payload : [];
     });
     builder.addCase(get_user_booking_list.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(get_company_booking_detail.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_company_booking_detail.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.BookingDetails = action.payload 
+    });
+    builder.addCase(get_company_booking_detail.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
@@ -767,6 +1020,34 @@ const FeatureSlice = createSlice({
       state.BookingCancelList = action.payload.length ? action.payload : [];
     });
     builder.addCase(get_user_Canclebooking_list.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(get_user_notification.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_user_notification.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.Notification = action.payload.length ? action.payload : [];
+    });
+    builder.addCase(get_user_notification.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(get_banner.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_banner.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.BannerList = action.payload
+    });
+    builder.addCase(get_banner.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
@@ -916,6 +1197,19 @@ const FeatureSlice = createSlice({
       state.isError = true;
       state.isSuccess = false;
     });
+    builder.addCase(delete_notification.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(delete_notification.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+    });
+    builder.addCase(delete_notification.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
     builder.addCase(update_property.pending, state => {
       state.isLoading = true;
     });
@@ -982,6 +1276,34 @@ const FeatureSlice = createSlice({
       state.isError = true;
       state.isSuccess = false;
     });
+    builder.addCase(get_about_us.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_about_us.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.AboutUs = action.payload;
+    });
+    builder.addCase(get_about_us.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(get_faq.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_faq.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.FAQ = action.payload;
+    });
+    builder.addCase(get_faq.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
     builder.addCase(get_terms_conditions.pending, state => {
       state.isLoading = true;
     });
@@ -992,6 +1314,20 @@ const FeatureSlice = createSlice({
       state.TermsCondition = action.payload;
     });
     builder.addCase(get_terms_conditions.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(get_subscription.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_subscription.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.getSubscription = action.payload;
+    });
+    builder.addCase(get_subscription.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;

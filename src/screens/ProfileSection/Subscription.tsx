@@ -8,22 +8,38 @@ import {
   ScrollView,
   ImageBackground,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 import ProfileHeader from '../../configs/ProfileHeader';
 import Right from '../../assets/svg/Right.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { get_subscription } from '../../redux/feature/featuresSlice';
+import Loading from '../../configs/Loader';
 
 export default function Subscription() {
   const navigation = useNavigation();
+const isFocuse = useIsFocused()
+
+  const getSubscription = useSelector(state => state.feature.getSubscription);
+  const isLoading = useSelector(state => state.feature.isLoading);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(get_subscription());
+  }, [isFocuse]);
+
+
+
 
   return (
     <View style={styles.container}>
+      {isLoading?<Loading  />:null}
       <ImageBackground
         source={require('../../assets/Cropping/sub.png')}
         style={{ flex: 1 }}
@@ -34,11 +50,11 @@ export default function Subscription() {
           <Text style={styles.title}>Upgrade to Premium</Text>
           <View style={styles.listContainer}>
             <FlatList
-              data={subscriptonData}
+              data={getSubscription}
               renderItem={({ item }) => (
                 <View style={styles.itemContainer}>
                   <Right />
-                  <Text style={styles.itemText}>{item.titile}</Text>
+                  <Text style={styles.itemText}>{item.name} ({item.type}) price:- $ {item.amount}</Text>
                 </View>
               )}
             />

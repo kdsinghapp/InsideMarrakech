@@ -23,6 +23,7 @@ import DateModal from '../Modal/DateModal';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   get_all_property,
+  get_banner,
   get_category,
   get_company_all_property,
   get_privacy_policy,
@@ -39,18 +40,46 @@ export default function Home() {
   const category = useSelector(state => state.feature.CategoryList);
   const all_property = useSelector(state => state.feature.allProperty);
   const CompanyProperty = useSelector(state => state.feature.CompanyProperty);
+  const BannerList = useSelector(state => state.feature.BannerList);
   const isLoading = useSelector(state => state.feature.isLoading);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
+  const timeFormate = utcDateString => {
+    const date = new Date(utcDateString);
+
+    // Check if the date is valid
+    if (!isNaN(date.getTime())) {
+      // Convert UTC date to local time
+      const localTimeString = date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      });
+      return localTimeString;
+    } else {
+      console.log('Invalid date string', utcDateString);
+    }
+  };
+
   useEffect(() => {
     dispatch(get_category());
+    dispatch(get_banner());
     dispatch(get_all_property());
     get_Companyproperty();
   }, [isFocused, user]);
 
   const renderList = ({item}) => {
     // Check if document_gallery array exists and is not empty
+    const formatTimes = () => {
+      const [startTimeStr, endTimeStr] = item?.opening_hours?.split('/');
+      const formattedStartTime = timeFormate(startTimeStr);
+      const formattedEndTime = timeFormate(endTimeStr);
+      return {
+        startTime: formattedStartTime,
+        endTime: formattedEndTime
+      };
+    };
     if (item.document_gallery && item.document_gallery.length > 0) {
       // Check if the first object in document_gallery has the image property
       const firstImage = item.document_gallery[0].image;
@@ -69,19 +98,36 @@ export default function Home() {
 
             <Text style={styles.itemTitle}>{item.name}</Text>
             <View style={styles.detailsContainer}>
+        
+        <Text style={styles.itemDetails}>{item.title}</Text>
+      </View>
+            <View style={styles.detailsContainer}>
               <Pin />
               <Text style={styles.itemDetails}>{item.address}</Text>
             </View>
+           
             <View style={styles.userContainer}>
               <View style={styles.userTextContainer}>
-                <Text style={styles.itemUser}>Today 2</Text>
-                <User />
-                <Down />
+                <Text style={styles.itemUser}>Price : {item.amount}</Text>
+                
               </View>
+             
 
-              <TouchableOpacity style={styles.updateButton}>
-                <Text style={styles.updateButtonText}>Update</Text>
-              </TouchableOpacity>
+             
+            </View>
+            <View style={styles.userContainer}>
+              <View style={styles.userTextContainer}>
+                <Text style={styles.itemUser}>Open Time : {formatTimes().startTime}</Text>
+                
+              </View>
+             
+              <View style={styles.userTextContainer}>
+                <Text style={styles.itemUser}>Close Time : {formatTimes().endTime}</Text>
+                
+              </View>
+             
+
+             
             </View>
           </TouchableOpacity>
         );
@@ -127,13 +173,21 @@ export default function Home() {
   
         <Text style={styles.itemTitle}>{item.name}</Text>
         <View style={styles.detailsContainer}>
+       
+          <Text style={styles.itemDetails}>{item.title}</Text>
+        </View>
+        <View style={styles.detailsContainer}>
+       
+          <Text style={styles.itemDetails}>{item.description}</Text>
+        </View>
+        <View style={styles.detailsContainer}>
           <Pin />
-          <Text style={styles.itemDetails}>{item.address}</Text>
+          <Text style={styles.itemDetails}> {item.address}</Text>
         </View>
   
         <View style={styles.userContainer}>
           <View style={styles.userTextContainer}>
-            <Text style={[styles.itemUser, {color: '#fff'}]}></Text>
+            <Text style={[styles.itemUser, {color: '#f0f0f0'}]}></Text>
           </View>
   
           <TouchableOpacity
@@ -179,6 +233,8 @@ export default function Home() {
                 <Text style={styles.categoryHeaderText}>Category</Text>
                 <BlackDown />
               </View>
+              
+
               <View style={styles.categoryList}>
                 <FlatList
                   showsHorizontalScrollIndicator={false}
@@ -198,31 +254,29 @@ export default function Home() {
               </View>
             </View>
             <View style={styles.bannerContainer}>
-              <FlatList
+          {BannerList &&    <FlatList
                 showsHorizontalScrollIndicator={false}
-                data={Banner}
+                data={BannerList}
                 horizontal
                 renderItem={({item, index}) => (
                   <View style={styles.bannerItem}>
                     <ImageBackground
-                      source={item.img}
+                      source={{uri:item.image}}
                       style={styles.bannerImage}
                       resizeMode="contain">
-                      <View style={styles.bannerTextContainer}>
-                        <Text style={styles.bannerTitle}>
-                          Exploring the Surroundings of Essaouira
-                        </Text>
-                        <Text style={styles.bannerSubtitle}>
-                          By Car, Motorbike, Motorhome, Coach, By Bike
-                        </Text>
-                      </View>
-                      <TouchableOpacity style={styles.bannerButton}>
+                     
+                      <TouchableOpacity 
+                      onPress={()=>{
+                        navigation.navigate(ScreenNameEnum.PLACE_DETAILS, {item:{id:item.property_id}});
+                      }}
+                      style={styles.bannerButton}>
                         <Text style={styles.bannerButtonText}>View</Text>
                       </TouchableOpacity>
                     </ImageBackground>
                   </View>
                 )}
               />
+                }
             </View>
 
             <FlatList
@@ -311,39 +365,14 @@ export default function Home() {
             <View style={styles.title}>
               <Text style={styles.titleText}>My Activity </Text>
             </View>
-            <View style={styles.bannerContainer}>
-              <FlatList
-                showsHorizontalScrollIndicator={false}
-                data={Banner}
-                horizontal
-                renderItem={({item, index}) => (
-                  <View style={styles.bannerItem}>
-                    <ImageBackground
-                      source={item.img}
-                      style={styles.bannerImage}
-                      resizeMode="contain">
-                      <View style={styles.bannerTextContainer}>
-                        <Text style={styles.bannerTitle}>
-                          Exploring the Surroundings of Essaouira
-                        </Text>
-                        <Text style={styles.bannerSubtitle}>
-                          By Car, Motorbike, Motorhome, Coach, By Bike
-                        </Text>
-                      </View>
-                      <TouchableOpacity style={styles.bannerButton}>
-                        <Text style={styles.bannerButtonText}>View</Text>
-                      </TouchableOpacity>
-                    </ImageBackground>
-                  </View>
-                )}
-              />
-            </View>
-
-            <FlatList
+         
+            {CompanyProperty?.length > 0 ?<FlatList
               showsVerticalScrollIndicator={false}
               data={CompanyProperty}
               renderItem={renderCompanyList}
-            />
+            />:<View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+              <Text style={{fontSize:14,color:'#000', fontFamily: 'Federo-Regular',}}>No Property Found</Text>
+              </View>}
           </View>
         )}
       </ScrollView>
@@ -427,7 +456,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     backgroundColor: '#FFF',
-    height: hp(40),
+   paddingVertical:10,
     borderRadius: 15,
     padding: 10,
     margin: 5,
@@ -459,16 +488,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 20,
+  
     paddingHorizontal: 10,
   },
   userTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop:10
   },
   itemUser: {
     fontFamily: 'Federo-Regular',
-    fontSize: 10,
+    fontSize: 14,
     fontWeight: '500',
     color: '#000',
   },
@@ -547,6 +577,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     padding: 10,
+    borderRadius:15,
   },
   bannerTextContainer: {
     width: '60%',

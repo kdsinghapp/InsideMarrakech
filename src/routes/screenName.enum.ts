@@ -29,6 +29,9 @@ enum ScreenNameEnum {
   NOTIFICATION_SCREEN = 'NOTIFICATION_SCREEN',
   PRIVACY_POLICY = 'PRIVACY_POLICY',
   TERM_CONDITION ='TERM_CONDITION',
+  ABOUT_US ='ABOUT_US',
+  FAQ_SCREEN ='FAQ_SCREEN',
+  MsgNotification ='MsgNotification',
 
  // Featurs
 

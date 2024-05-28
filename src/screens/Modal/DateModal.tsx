@@ -10,39 +10,86 @@ import {
   FlatList,
   Image,
 } from 'react-native';
-import Close from '../../assets/svg/Close.svg';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import CheckBox from 'react-native-check-box';
-import ScreenNameEnum from '../../routes/screenName.enum';
 import { useNavigation } from '@react-navigation/native';
+import ScreenNameEnum from '../../routes/screenName.enum';
+import { errorToast } from '../../configs/customToast';
 
 const DateModal = ({ visible, onClose, data }) => {
   const screenHeight = Dimensions.get('screen').height;
   const translateY = useRef(new Animated.Value(screenHeight)).current;
-
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedGuestCount, setSelectedGuestCount] = useState(null);
+  const navigation = useNavigation();
+
+  // Utility functions
+  const getDayName = (date) => {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return days[date.getDay()];
+  };
+
+  const getMonthName = (monthIndex) => {
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    return months[monthIndex];
+  };
+
+  const formatBookingDate = (date) => {
+    return `${getDayName(date)} ${date.getDate()} ${getMonthName(date.getMonth())}`;
+  };
+
+  const generateBookingDates = (year, monthIndex) => {
+    const dates = [];
+    const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+
+    for (let i = 1; i <= daysInMonth; i++) {
+      dates.push(formatBookingDate(new Date(year, monthIndex, i)));
+    }
+
+    return dates;
+  };
+
+  const years = Array.from({ length: 5 }, (_, index) => new Date().getFullYear() + index);
+  const months = Array.from({ length: 12 }, (_, index) => getMonthName(index));
+  const bookingDates = selectedMonth !== null ? generateBookingDates(selectedYear, selectedMonth) : [];
+
+  // Guest count data
+  const Guests = [
+    { count: '1' },
+    { count: '2' },
+    { count: '3' },
+    { count: '4' },
+    { count: '5' },
+    { count: '6' },
+    { count: '7' },
+  ];
 
 
-  console.log('=================data===================');
-  console.log(data);
-  console.log('====================================');
   const handleNext = () => {
+    if (selectedYear === null || selectedMonth === null || selectedDate === null || selectedGuestCount === null) {
+      errorToast('All fields are required.');
+      return;
+    }
     if (selectedDate !== null && selectedGuestCount !== null) {
-      const selectedDateString = date[selectedDate].date;
+      const selectedDateString = bookingDates[selectedDate];
       const selectedGuestCountString = Guests[selectedGuestCount].count;
+     
       navigation.navigate(ScreenNameEnum.BOOKING_DETAILS, {
         selectedDate: selectedDateString,
         selectedGuestCount: selectedGuestCountString,
-        Property:data
+        Property: data,
       });
       onClose(); // Close the modal after navigating
     }
   };
-  const navigation = useNavigation();
+
   useEffect(() => {
     if (visible) {
       openModal();
@@ -69,54 +116,119 @@ const DateModal = ({ visible, onClose, data }) => {
 
   return (
     <Modal visible={visible} transparent>
-      <View
-       
-        activeOpacity={1}
-        style={styles.container}
-      >
+      <View style={styles.container}>
         <Animated.View
           style={[
             styles.modal,
-            {
-              transform: [{ translateY: translateY }],
-            },
+            { transform: [{ translateY: translateY }] },
           ]}
         >
           <TouchableOpacity
-          onPress={()=>{
-            onClose()
-          }}
-          style={{ alignItems:'flex-end',marginRight:20}}>
-<Image  source={require('../../assets/Cropping/Close2x.png')}  style={{height:30,width:30}}/>
+            onPress={onClose}
+            style={{ alignItems: 'flex-end', marginRight: 20 }}
+          >
+            <Image
+              source={require('../../assets/Cropping/Close2x.png')}
+              style={{ height: 30, width: 30 }}
+            />
           </TouchableOpacity>
           <View style={{ marginTop: 20, marginHorizontal: 15 }}>
-            <Text style={styles.title}>Date</Text>
+            <Text style={styles.title}>Year</Text>
             <View style={styles.optionContainer}>
               <FlatList
-                data={date}
+                data={years}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item, index }) => (
                   <TouchableOpacity
                     style={[
-                      styles.dateOption,
-                      selectedDate === index && styles.selectedOption,
+                      styles.yearOption,
+                      selectedYear === item && styles.selectedOption,
                     ]}
-                    onPress={() => setSelectedDate(index)}
+                    onPress={() => {
+                      setSelectedYear(item);
+                      setSelectedMonth(null); // Reset selected month and date when year changes
+                      setSelectedDate(null);
+                    }}
                   >
                     <Text
                       style={[
-                        styles.dateText,
-                        selectedDate === index && styles.selectedText,
+                        styles.yearText,
+                        selectedYear === item && styles.selectedText,
                       ]}
                     >
-                      {item.date}
+                      {item}
                     </Text>
                   </TouchableOpacity>
                 )}
                 keyExtractor={(item, index) => index.toString()}
               />
             </View>
+            {selectedYear !== null && (
+              <>
+                <Text style={styles.title}>Month</Text>
+                <View style={styles.optionContainer}>
+                  <FlatList
+                    data={months}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({ item, index }) => (
+                      <TouchableOpacity
+                        style={[
+                          styles.monthOption,
+                          selectedMonth === index && styles.selectedOption,
+                        ]}
+                        onPress={() => {
+                          setSelectedMonth(index);
+                          setSelectedDate(null); // Reset selected date when month changes
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.monthText,
+                            selectedMonth === index && styles.selectedText,
+                          ]}
+                        >
+                          {item}
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                  />
+                </View>
+              </>
+            )}
+            {selectedMonth !== null && (
+              <>
+                <Text style={styles.title}>Date</Text>
+                <View style={styles.optionContainer}>
+                  <FlatList
+                    data={bookingDates}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({ item, index }) => (
+                      <TouchableOpacity
+                        style={[
+                          styles.dateOption,
+                          selectedDate === index && styles.selectedOption,
+                        ]}
+                        onPress={() => setSelectedDate(index)}
+                      >
+                        <Text
+                          style={[
+                            styles.dateText,
+                            selectedDate === index && styles.selectedText,
+                          ]}
+                        >
+                          {item}
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                  />
+                </View>
+              </>
+            )}
             <Text style={styles.title}>Guests</Text>
             <View style={styles.optionContainer}>
               <FlatList
@@ -149,11 +261,7 @@ const DateModal = ({ visible, onClose, data }) => {
               />
             </View>
           </View>
-
-          <TouchableOpacity onPress={() => {
-handleNext()
-
-          }} style={styles.searchButton}>
+          <TouchableOpacity onPress={handleNext} style={styles.searchButton}>
             <Text style={styles.searchButtonText}>Next</Text>
           </TouchableOpacity>
         </Animated.View>
@@ -173,7 +281,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    minHeight: hp(50),
+    minHeight: hp(70),
     elevation: 5,
   },
   title: {
@@ -184,6 +292,38 @@ const styles = StyleSheet.create({
   },
   optionContainer: {
     marginTop: 10,
+  },
+  yearOption: {
+    borderWidth: 1,
+    paddingVertical: 10,
+    marginRight: 10,
+    paddingHorizontal: 10,
+    marginVertical: 20,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  yearText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#000',
+  },
+  monthOption: {
+    borderWidth: 1,
+    paddingVertical: 10,
+    marginRight: 10,
+    paddingHorizontal: 10,
+    marginVertical: 20,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  monthText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#000',
   },
   dateOption: {
     borderWidth: 1,
@@ -249,51 +389,3 @@ const styles = StyleSheet.create({
 });
 
 export default DateModal;
-
-const date = [
-  {
-    date: 'Wednesday 20 March',
-  },
-  {
-    date: 'Thursday 21 March',
-  },
-  {
-    date: 'Friday 22 March',
-  },
-  {
-    date: 'Saturday 23 March',
-  },
-  {
-    date: 'Sunday 24 March',
-  },
-  {
-    date: 'Monday 25 March',
-  },
-  {
-    date: 'Tuesday 26 March',
-  },
-];
-
-const Guests = [
-  {
-    count: '1',
-  },
-  {
-    count: '2',
-  },
-  {
-    count: '3',
-  },
-  {
-    count: '4',
-  },
-  {
-    count: '5',
-  },
-  {
-    count: '6',
-  },
-  {
-    count: '7',
-  },
-];

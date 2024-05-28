@@ -30,7 +30,8 @@ export default function AddProperty() {
   const [Description, setDescription] = useState('');
   const [Location, setLocation] = useState('');
   const [MobileNumber, setMobileNumber] = useState('');
-  const [OpeningHours, setOpeningHours] = useState(new Date());
+  const [OpenTime, setOpenTime] = useState(new Date());
+  const [CloseTime, setCloseTime] = useState(new Date());
   const [LunchStart, setLunchStart] = useState(new Date());
   const [LunchEnd, setLunchEnd] = useState(new Date());
   const [DinnerStart, setDinnerStart] = useState(new Date());
@@ -59,7 +60,8 @@ export default function AddProperty() {
     if (!Description) errors.Description = true;
     if (!Location) errors.Location = true;
     if (!MobileNumber) errors.MobileNumber = true;
-    if (!OpeningHours) errors.OpeningHours = true;
+    if (!OpenTime) errors.OpenTime = true;
+    if (!CloseTime) errors.CloseTime = true;
     if (!LunchStart) errors.LunchStart = true;
     if (!LunchEnd) errors.LunchEnd = true;
     if (!DinnerStart) errors.DinnerStart = true;
@@ -83,7 +85,7 @@ export default function AddProperty() {
     data.append('description', Description);
     data.append('book_online_mobile_number', MobileNumber);
     data.append('title', Title);
-    data.append('opening_hours', OpeningHours.toString())
+    data.append('opening_hours', `${OpenTime.toString()}/${CloseTime.toString()}`)
     data.append('lunch_start',LunchStart.toString())
     data.append('lunch_end', LunchEnd.toString())
     data.append('dinner_start', DinnerStart.toString())
@@ -196,6 +198,12 @@ export default function AddProperty() {
         break;
       case 'DinnerEnd':
         setDinnerEnd(date);
+        break;
+      case 'OpenTime':
+        setOpenTime(date);
+        break;
+      case 'CloseTime':
+        setCloseTime(date);
         break;
     }
     setDatePickerVisibility(false);
@@ -317,19 +325,39 @@ export default function AddProperty() {
             onChangeText={setLocation}
           />
         </View>
-        <View style={styles.labelContainerWithMargin}>
-          <Text style={styles.labelText}>Opening Hours</Text>
+        
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
+            <Text style={styles.labelText}>Open Time</Text>
+          </View>
+          <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
+            <Text style={styles.labelText}>Close Time</Text>
+          </View>
         </View>
-        <TouchableOpacity
-          style={[
-            styles.txtInput,
-            fieldErrors.OpeningHours && styles.errorInput,
-          ]}
-          onPress={() => showDatePicker('OpeningHours')}>
-          <Text style={{fontSize: 14, color: '#000', fontWeight: '600'}}>
-            {formatTime(OpeningHours)}
-          </Text>
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <TouchableOpacity
+            style={[
+              styles.txtInput,
+              {width: '45%'},
+              fieldErrors.OpenTime && styles.errorInput,
+            ]}
+            onPress={() => showDatePicker('OpenTime')}>
+            <Text style={{fontSize: 14, color: '#000', fontWeight: '600'}}>
+              {formatTime(OpenTime)}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.txtInput,
+              {width: '45%'},
+              fieldErrors.CloseTime && styles.errorInput,
+            ]}
+            onPress={() => showDatePicker('CloseTime')}>
+            <Text style={{fontSize: 14, color: '#000', fontWeight: '600'}}>
+              {formatTime(CloseTime)}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
             <Text style={styles.labelText}>Lunch Start Time</Text>

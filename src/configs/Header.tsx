@@ -31,7 +31,11 @@ export default function Header() {
    >
     <Msg />
    </TouchableOpacity>
-   <TouchableOpacity>
+   <TouchableOpacity
+   onPress={()=>{
+    navigation.navigate(ScreenNameEnum.MsgNotification)
+   }}
+   >
     <Bell />
    </TouchableOpacity>
    </View>
