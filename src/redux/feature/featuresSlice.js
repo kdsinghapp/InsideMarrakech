@@ -27,7 +27,8 @@ const initialState = {
   FAQ:[],
   Notification:[],
   BookingDetails:[],
-  BannerList:[]
+  BannerList:[],
+  FavList:[]
 };
 
 export const update_notification = createAsyncThunk(
@@ -533,6 +534,35 @@ export const add_chat_user = createAsyncThunk(
 );
 
 
+export const get_user_wishlist = createAsyncThunk(
+  'get_user_wishlist',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+      console.log('=============get_user_wishlist=======================',params);
+      let data = new FormData();
+      data.append('user_id', params?.user_id);
+      
+      const response = await API.post('/get_user_wishlist',data,config);
+      console.log('=============get_user_wishlist=======================',response.data);
+      if (response.data.status === '1') {
+        // Do something on success
+      } else {
+        // Handle the error
+      }
+      return response.data.data;
+    } catch (error) {
+      console.log('Error:', error);
+      errorToast('Network Error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
 export const get_privacy_policy = createAsyncThunk(
   'get_privacy_policy',
   async (params, thunkApi) => {
@@ -976,6 +1006,20 @@ const FeatureSlice = createSlice({
       state.BookingList = action.payload.length ? action.payload : [];
     });
     builder.addCase(get_user_booking_list.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(get_user_wishlist.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_user_wishlist.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.FavList = action.payload.length ? action.payload : [];
+    });
+    builder.addCase(get_user_wishlist.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;

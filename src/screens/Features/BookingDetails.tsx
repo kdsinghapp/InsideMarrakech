@@ -9,6 +9,9 @@ import ScreenNameEnum from '../../routes/screenName.enum';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { errorToast } from '../../configs/customToast';
 
+import { useSelector } from 'react-redux';
+import Rating from '../../configs/Ratting';
+
 export default function BookingDetails() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -20,7 +23,7 @@ export default function BookingDetails() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-
+  const propertDetails = useSelector(state => state.feature.propertyDetail);
 
   const CheckInputData =()=>{
 
@@ -40,12 +43,13 @@ export default function BookingDetails() {
       Property
     });
   }
+  
 
 
   return (
     <View style={localStyles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader titile="Booking Details" width={18} />
+        <ProfileHeader title="Booking Details" width={18} />
 
         <View style={[styles.shadow, localStyles.bookingDetailsContainer]}>
           <View style={localStyles.imageContainer}>
@@ -62,12 +66,8 @@ export default function BookingDetails() {
             </View>
             <Text style={localStyles.bookingAddress}>{Property.address}</Text>
             <View style={localStyles.ratingContainer}>
-              <DarkStar height={20} width={20} />
-              <DarkStar height={20} width={20} />
-              <DarkStar height={20} width={20} />
-              <DarkStar height={20} width={20} />
-              <DarkStar height={20} width={20} />
-              <Text style={localStyles.ratingText}>5.0</Text>
+            <Rating rating={propertDetails?.rating} /> 
+              <Text style={localStyles.ratingText}>{propertDetails?.rating}</Text>
             </View>
           </View>
         </View>
@@ -194,8 +194,6 @@ const localStyles = StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    width: '50%',
-    justifyContent: 'space-around',
   },
   ratingText: {
     fontSize: 14,

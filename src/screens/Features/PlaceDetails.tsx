@@ -14,6 +14,7 @@ import GoldRight from '../../assets/svg/GoldRight.svg';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
 
+
 import Pin from '../../assets/svg/BlackPin.svg';
 import Call from '../../assets/svg/call.svg';
 import Chat from '../../assets/svg/chat.svg';
@@ -32,6 +33,7 @@ import {
   get_property_menu,
 } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
+import Rating from '../../configs/Ratting';
 
 export default function PlaceDetails() {
   const route = useRoute();
@@ -148,15 +150,12 @@ const Add_chatUser =async()=>{
           </View>
 
           <View style={localStyles.star}>
+      
             <View style={localStyles.starsContainer}>
-              <View style={localStyles.stars}>
-                <Star />
-                <Star />
-                <Star />
-                <Star />
-                <Star />
-              </View>
-              <Text style={localStyles.ratingText}>5.0</Text>
+            <Rating rating={propertDetails?.rating} /> 
+      
+
+              <Text style={localStyles.ratingText}>{propertDetails?.rating}</Text>
             </View>
 
             <Text style={localStyles.priceText}>
@@ -287,7 +286,7 @@ const Add_chatUser =async()=>{
           </TouchableOpacity>
         </ImageBackground>
 
-        <TouchableOpacity
+     {user?.type == 'Company'  && <TouchableOpacity
           onPress={() => {
             Alert.alert(
               'Delete Property',
@@ -310,6 +309,7 @@ const Add_chatUser =async()=>{
           style={{alignSelf: 'center', marginTop: 20}}>
           <Text style={{color: 'red'}}>Delete Property</Text>
         </TouchableOpacity>
+}
         <View style={localStyles.bottomSpace} />
         <DateModal
           visible={modalVisible}
@@ -388,6 +388,7 @@ const localStyles = StyleSheet.create({
     fontSize: 12,
     color: '#000',
     fontWeight: '800',
+    marginLeft:20
   },
   priceText: {
     fontFamily: 'Federo-Regular',

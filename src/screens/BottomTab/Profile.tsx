@@ -294,11 +294,11 @@ const Account = [
     screen: ScreenNameEnum.CHANGE_PASSWORD,
   },
 
-  {
-    name: 'WishList',
+  // {
+  //   name: 'WishList',
 
-    screen: ScreenNameEnum.WISHLIST_SCREEN,
-  },
+  //   screen: ScreenNameEnum.WISHLIST_SCREEN,
+  // },
   {
     name: 'Booking Tab',
 

@@ -17,6 +17,8 @@ import ScreenNameEnum from '../../routes/screenName.enum';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import Pin from '../../assets/svg/BlackPin.svg';
 import Box from '../../assets/svg/checkBox.svg';
+import Rating from '../../configs/Ratting';
+import { useSelector } from 'react-redux';
 
 export default function AddTravelerDetails() {
   const route = useRoute();
@@ -37,6 +39,7 @@ export default function AddTravelerDetails() {
   const [address,setAddress] =useState('')
   const [language,setLanguage] =useState('')
   const navigation = useNavigation();
+  const propertDetails = useSelector(state => state.feature.propertyDetail);
 
   // State variable to manage the number of travelers
   const [travelerCount, setTravelerCount] = useState(selectedGuestCount);
@@ -89,12 +92,8 @@ export default function AddTravelerDetails() {
             {Property.address}
             </Text>
             <View style={styles.ratingContainer}>
-              <DarkStar height={20} width={20} />
-              <DarkStar height={20} width={20} />
-              <DarkStar height={20} width={20} />
-              <DarkStar height={20} width={20} />
-              <DarkStar height={20} width={20} />
-              <Text style={styles.ratingText}>5.0</Text>
+            <Rating rating={propertDetails?.rating} /> 
+              <Text style={styles.ratingText}>{propertDetails?.rating}</Text>
             </View>
           </View>
         </View>
@@ -321,9 +320,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    width: '50%',
+   
 
-    justifyContent: 'space-around',
+   
   },
   ratingText: {
     fontSize: 14,

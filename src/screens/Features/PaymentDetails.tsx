@@ -22,6 +22,7 @@ import {RadioButton} from 'react-native-radio-buttons-group';
 import {useDispatch, useSelector} from 'react-redux';
 import {add_booking} from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
+import Rating from '../../configs/Ratting';
 
 export default function PaymentDetails() {
   const [isVisible, setIsVisible] = useState(false);
@@ -35,6 +36,7 @@ export default function PaymentDetails() {
   const [cvv, setCvv] = useState('');
   const navigation = useNavigation();
   const [cardHolderName, setCardHolderName] = useState('');
+  const propertDetails = useSelector(state => state.feature.propertyDetail);
 
   const user = useSelector(state => state.auth.userData);
   const isLoading = useSelector(state => state.feature.isLoading);
@@ -107,12 +109,8 @@ export default function PaymentDetails() {
             </View>
             <Text style={styles.bookingAddress}>{Property.address}</Text>
             <View style={styles.ratingContainer}>
-              <DarkStar height={20} width={20} />
-              <DarkStar height={20} width={20} />
-              <DarkStar height={20} width={20} />
-              <DarkStar height={20} width={20} />
-              <DarkStar height={20} width={20} />
-              <Text style={styles.ratingText}>5.0</Text>
+            <Rating rating={propertDetails?.rating} /> 
+              <Text style={styles.ratingText}>{propertDetails?.rating}</Text>
             </View>
           </View>
         </View>
@@ -360,8 +358,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    width: '50%',
-    justifyContent: 'space-around',
+   
   },
   ratingText: {
     fontSize: 14,

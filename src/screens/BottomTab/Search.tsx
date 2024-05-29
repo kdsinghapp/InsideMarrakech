@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,77 +14,107 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import SearchIcon from '../../assets/svg/search.svg';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import ProfileHeader from '../../configs/ProfileHeader';
 import Pin from '../../assets/svg/Pin.svg';
-import User from '../../assets/svg/user.svg';
-import Down from '../../assets/svg/BlackDown.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { get_all_property } from '../../redux/feature/featuresSlice';
 
 export default function Search() {
   const navigation = useNavigation();
+  const user = useSelector(state => state.auth.userData);
+  const all_property = useSelector(state => state.feature.allProperty);
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
 
-  const renderList = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate(ScreenNameEnum.PLACE_DETAILS);
-      }}
-      style={[styles.shadow, styles.itemContainer]}
-    >
-      <Image
-        source={item.img}
-        style={styles.itemImage}
-        resizeMode="cover"
-      />
+  const [searchQuery, setSearchQuery] = useState('');
 
-      <Text style={styles.itemTitle}>
-        {item.title}
-      </Text>
-      <View style={styles.detailsContainer}>
-        <Pin />
-        <Text style={styles.itemDetails}>
-          {item.details}
-        </Text>
-      </View>
-      <View style={styles.userContainer}>
-        <View style={styles.userTextContainer}>
-          <Text style={styles.itemUser}>
-            {item.user}
-          </Text>
-          <User />
-          <Down />
-        </View>
+  useEffect(() => {
+    dispatch(get_all_property());
+  }, [isFocused, user]);
 
-        <TouchableOpacity
-          onPress={() => {
-            setModalVisible(true);
-          }}
-          style={styles.updateButton}
-        >
-          <Text style={styles.updateButtonText}>
-            Update
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        data={item.subTime}
-        horizontal
-        renderItem={({ item, index }) => (
-          <View style={styles.subTimeContainer}>
-            <Text style={styles.subTimeText}>
-              {item.time}
-            </Text>
-          </View>
-        )}
-      />
-    </TouchableOpacity>
+  const renderList = ({ item }) => {
+    const formatTimes = () => {
+      const [startTimeStr, endTimeStr] = item?.opening_hours?.split('/');
+      const formattedStartTime = timeFormate(startTimeStr);
+      const formattedEndTime = timeFormate(endTimeStr);
+      return {
+        startTime: formattedStartTime,
+        endTime: formattedEndTime
+      };
+    };
+
+    if (item.document_gallery && item.document_gallery.length > 0) {
+      const firstImage = item.document_gallery[0].image;
+      if (firstImage) {
+        return (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(ScreenNameEnum.PLACE_DETAILS, { item: item });
+            }}
+            style={[styles.shadow, styles.itemContainer]}>
+            <Image
+              source={{ uri: firstImage }}
+              style={styles.itemImage}
+              resizeMode="cover"
+            />
+
+            <Text style={styles.itemTitle}>{item.name}</Text>
+            <View style={styles.detailsContainer}>
+              <Text style={styles.itemDetails}>{item.title}</Text>
+            </View>
+            <View style={styles.detailsContainer}>
+              <Pin />
+              <Text style={styles.itemDetails}>{item.address}</Text>
+            </View>
+
+            <View style={styles.userContainer}>
+              <View style={styles.userTextContainer}>
+                <Text style={styles.itemUser}>Price : {item.amount}</Text>
+              </View>
+            </View>
+            <View style={styles.userContainer}>
+              <View style={styles.userTextContainer}>
+                <Text style={styles.itemUser}>Open Time : {formatTimes().startTime}</Text>
+              </View>
+
+              <View style={styles.userTextContainer}>
+                <Text style={styles.itemUser}>Close Time : {formatTimes().endTime}</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        );
+      }
+    }
+    return null;
+  };
+
+  const timeFormate = utcDateString => {
+    const date = new Date(utcDateString);
+
+    if (!isNaN(date.getTime())) {
+      const localTimeString = date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      });
+      return localTimeString;
+    } else {
+      console.log('Invalid date string', utcDateString);
+    }
+  };
+
+  const filteredProperties = all_property?.filter(
+    item =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader titile="Search" width={30} />
+        <ProfileHeader title="Search" width={30} />
         <View style={styles.searchContainer}>
           <View style={styles.search}>
             <SearchIcon />
@@ -92,15 +122,24 @@ export default function Search() {
               placeholder="Search"
               placeholderTextColor={'#000'}
               style={styles.searchInput}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
             />
           </View>
         </View>
 
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={Post}
-          renderItem={renderList}
-        />
+        {filteredProperties.length > 0 ? (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={filteredProperties}
+            renderItem={renderList}
+            keyExtractor={(item) => item.id}
+          />
+        ) : (
+          <View style={styles.noDataContainer}>
+            <Text style={styles.noDataText}>No data found</Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -205,6 +244,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginHorizontal: 20,
     borderRadius: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   searchInput: {
     marginLeft: 10,
@@ -212,21 +259,14 @@ const styles = StyleSheet.create({
     color: '#000',
     lineHeight: 18,
   },
+  noDataContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+  },
+  noDataText: {
+    fontSize: 18,
+    color: '#777',
+  },
 });
-
-const Post = [
-  {
-    title: 'Marrakech: Agafay Desert Tour with Quad',
-    details: '192 Rue Tachenbacht, Marrakech 40000',
-    img: require('../../assets/Cropping/img1.png'),
-    user: 'Today 2',
-    subTime: Array(5).fill({ time: '08:10PM' }),
-  },
-  {
-    title: 'Marrakech: Agafay Desert Tour with Quad',
-    details: '192 Rue Tachenbacht, Marrakech 40000',
-    img: require('../../assets/Cropping/img1.png'),
-    user: 'Today 2',
-    subTime: Array(5).fill({ time: '08:10PM' }),
-  },
-];

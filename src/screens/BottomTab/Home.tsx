@@ -9,6 +9,7 @@ import {
   ScrollView,
   Modal,
   StyleSheet,
+  TextInput,
 } from 'react-native';
 import Header from '../../configs/Header';
 import Searchbar from '../../configs/Searchbar';
@@ -20,6 +21,7 @@ import Down from '../../assets/svg/BlackDown.svg';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import DateModal from '../Modal/DateModal';
+import SearchIcon from '../../assets/svg/search.svg';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   get_all_property,
@@ -44,6 +46,12 @@ export default function Home() {
   const isLoading = useSelector(state => state.feature.isLoading);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+
+
+
 
   const timeFormate = utcDateString => {
     const date = new Date(utcDateString);
@@ -61,6 +69,26 @@ export default function Home() {
       console.log('Invalid date string', utcDateString);
     }
   };
+
+
+
+  const handleCategorySelect = categoryId => {
+    setSelectedCategory(categoryId);
+    setSearchQuery('');
+  };
+
+  const filteredPropertiesByCategory = selectedCategory
+    ? all_property?.filter(item => item.cat_id === selectedCategory)
+    : [];
+
+  const filteredPropertiesBySearch = searchQuery
+    ? all_property?.filter(
+        item =>
+          item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
+
 
   useEffect(() => {
     dispatch(get_category());
@@ -223,25 +251,35 @@ export default function Home() {
         <Header />
         {user?.type === 'User' && (
           <>
-            <Searchbar
-              setModal={() => {
-                setIsVisible(true);
-              }}
+           <View style={styles.searchContainer}>
+          <View style={styles.search}>
+            <SearchIcon />
+            <TextInput
+              placeholder="Search"
+              placeholderTextColor={'#000'}
+              style={styles.searchInput}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
             />
-            <View style={styles.categoryContainer}>
+          </View>
+        </View>
+        {searchQuery === '' && (      <View style={styles.categoryContainer}>
               <View style={styles.categoryHeader}>
                 <Text style={styles.categoryHeaderText}>Category</Text>
                 <BlackDown />
               </View>
               
-
+             
               <View style={styles.categoryList}>
                 <FlatList
                   showsHorizontalScrollIndicator={false}
                   data={category}
                   horizontal
                   renderItem={({item, index}) => (
-                    <TouchableOpacity style={styles.categoryItem}>
+                    <TouchableOpacity 
+                    
+                    onPress={() => handleCategorySelect(item.id)}
+                    style={styles.categoryItem}>
                       <Image
                         resizeMode="contain"
                         source={{uri: item.image}}
@@ -253,37 +291,42 @@ export default function Home() {
                 />
               </View>
             </View>
-            <View style={styles.bannerContainer}>
-          {BannerList &&    <FlatList
-                showsHorizontalScrollIndicator={false}
-                data={BannerList}
-                horizontal
-                renderItem={({item, index}) => (
-                  <View style={styles.bannerItem}>
-                    <ImageBackground
-                      source={{uri:item.image}}
-                      style={styles.bannerImage}
-                      resizeMode="contain">
-                     
-                      <TouchableOpacity 
-                      onPress={()=>{
-                        navigation.navigate(ScreenNameEnum.PLACE_DETAILS, {item:{id:item.property_id}});
-                      }}
-                      style={styles.bannerButton}>
-                        <Text style={styles.bannerButtonText}>View</Text>
-                      </TouchableOpacity>
-                    </ImageBackground>
-                  </View>
+        )}
+            {searchQuery === '' && (
+              <View style={styles.bannerContainer}>
+                {BannerList && (
+                  <FlatList
+                    showsHorizontalScrollIndicator={false}
+                    data={BannerList}
+                    horizontal
+                    renderItem={({item, index}) => (
+                      <View style={styles.bannerItem}>
+                        <ImageBackground
+                          source={{uri: item.image}}
+                          style={styles.bannerImage}
+                          resizeMode="contain">
+                          <TouchableOpacity 
+                            onPress={()=>{
+                              navigation.navigate(ScreenNameEnum.PLACE_DETAILS, {item:{id:item.property_id}});
+                            }}
+                            style={styles.bannerButton}>
+                            <Text style={styles.bannerButtonText}>View</Text>
+                          </TouchableOpacity>
+                        </ImageBackground>
+                      </View>
+                    )}
+                  />
                 )}
-              />
-                }
-            </View>
+              </View>
+            )}
 
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={all_property}
+              data={selectedCategory ? filteredPropertiesByCategory : searchQuery ? filteredPropertiesBySearch : all_property}
+
               renderItem={renderList}
             />
+            
             <Modal visible={isVisible} animationType="slide" transparent={true}>
               <TouchableOpacity
                 onPress={() => {
@@ -368,7 +411,7 @@ export default function Home() {
          
             {CompanyProperty?.length > 0 ?<FlatList
               showsVerticalScrollIndicator={false}
-              data={CompanyProperty}
+              data={filteredCompanyProperties}
               renderItem={renderCompanyList}
             />:<View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
               <Text style={{fontSize:14,color:'#000', fontFamily: 'Federo-Regular',}}>No Property Found</Text>
@@ -381,6 +424,34 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
+  searchContainer: {
+    marginTop: 10,
+    height: hp(8),
+    justifyContent: 'center',
+  },
+  search: {
+    backgroundColor: '#FFF',
+    height: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    marginHorizontal:10,
+    borderRadius: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  searchInput: {
+    marginLeft: 10,
+    fontSize: 14,
+    color: '#000',
+    lineHeight: 18,
+  },
   title: {
     marginVertical: 20,
   },
