@@ -66,7 +66,7 @@ export default function Home() {
       });
       return localTimeString;
     } else {
-      console.log('Invalid date string', utcDateString);
+     
     }
   };
 

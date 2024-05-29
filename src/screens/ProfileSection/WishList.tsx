@@ -42,7 +42,7 @@ export default function WishList() {
       });
       return localTimeString;
     } else {
-      console.log('Invalid date string', utcDateString);
+     
     }
   };
 

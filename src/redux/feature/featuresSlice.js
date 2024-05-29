@@ -74,7 +74,7 @@ export const get_user_booking_list = createAsyncThunk(
       if (response.data.status === '1') {
         return response.data.data;
       } else {
-        thunkApi.dispatch(updateBookingList([]));
+       
       }
     } catch (error) {
       return thunkApi.rejectWithValue(error);
@@ -131,6 +131,12 @@ export const get_user_Completebooking_list = createAsyncThunk(
     }
   },
 );
+
+
+
+
+
+
 export const get_Company_booking_list = createAsyncThunk(
   'get_Company_booking_list',
   async (params, thunkApi) => {
@@ -522,6 +528,43 @@ export const add_chat_user = createAsyncThunk(
       if (response.data.status === '1') {
        
         params.navigation.navigate(ScreenNameEnum.CHAT_SCREEN,{item:{id:params.data.company_id}});
+      } else {
+        errorToast(response.data.message);
+      }
+      return response.data;
+    } catch (error) {
+      errorToast('Network error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+export const add_rates = createAsyncThunk(
+  'add_rates',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+      console.log(
+        '==============add_rates==response====================',
+        params
+      );
+      let data = new FormData();
+      data.append('user_id', params.user_id);
+      data.append('property_id', params.property_id);
+     data.append('rating',params.rating);
+     data.append('review', params.review);
+        const response = await API.post('/add_rates', data, config);
+      console.log(
+        '==============add_rates==response====================',
+        response.data,
+      );
+      if (response.data.status === '1') {
+       
+       successToast(response.data.data)
       } else {
         errorToast(response.data.message);
       }
@@ -1041,13 +1084,12 @@ const FeatureSlice = createSlice({
     builder.addCase(get_user_Completebooking_list.pending, state => {
       state.isLoading = true;
     });
-    builder.addCase(
-      get_user_Completebooking_list.fulfilled,
+    builder.addCase(get_user_Completebooking_list.fulfilled,
       (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        state.BookingCompleteList = action.payload.length ? action.payload : [];
+        state.BookingCompleteList =  action.payload 
       },
     );
     builder.addCase(get_user_Completebooking_list.rejected, (state, action) => {
@@ -1062,7 +1104,7 @@ const FeatureSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.isError = false;
-      state.BookingCancelList = action.payload.length ? action.payload : [];
+      state.BookingCancelList =  action.payload 
     });
     builder.addCase(get_user_Canclebooking_list.rejected, (state, action) => {
       state.isLoading = false;
@@ -1303,6 +1345,19 @@ const FeatureSlice = createSlice({
       state.isError = false;
     });
     builder.addCase(add_booking.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(add_rates.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(add_rates.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+    });
+    builder.addCase(add_rates.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;

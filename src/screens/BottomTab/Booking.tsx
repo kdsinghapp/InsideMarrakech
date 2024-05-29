@@ -21,6 +21,7 @@ import {get_user_booking_list} from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
 import BookingDetailsModal from '../Modal/BookingDetailsModal';
 import ScreenNameEnum from '../../routes/screenName.enum';
+import AddRatingModal from '../Modal/RattingModal';
 
 export default function Booking() {
   const [chooseBtn, setChooseBtn] = useState(true);
@@ -35,8 +36,8 @@ export default function Booking() {
   );
   const isLoading = useSelector(state => state.feature.isLoading);
   const dispatch = useDispatch();
-  const [modalMenuVisible,setmodalMenuVisible] =useState(false)
-  const [BookingData,setBookingData] = useState(null)
+  const [BookingDetailVisible, setBookingDetailVisible] = useState(false);
+  const [BookingData, setBookingData] = useState(null);
   const user = useSelector(state => state.auth.userData);
   useEffect(() => {
     get_booking_list();
@@ -50,7 +51,6 @@ export default function Booking() {
     await dispatch(get_user_booking_list(params));
   };
 
-
   const Completebooking_list = async () => {
     const params = {
       user_id: user?.id,
@@ -59,7 +59,6 @@ export default function Booking() {
 
     await dispatch(get_Completebooking_list(params));
   };
-
 
   const Cancelbooking_list = async () => {
     const params = {
@@ -71,24 +70,33 @@ export default function Booking() {
   };
 
   const getListData = async type => {
+    console.log(type);
+    console.log('====================================');
     setSelectedOption(type);
-    if(selectedOption =='Cancel'){
-      Cancelbooking_list()
-    }
-    else if(selectedOption == 'Complete'){
-      Completebooking_list()
-    }
-    else{
-      get_booking_list()
+    if (selectedOption == 'Cancel') {
+      console.log('============Cancel========================');
+      Cancelbooking_list();
+    } else if (selectedOption == 'Complete') {
+      console.log('===============Complete=====================');
+      Completebooking_list();
+    } else if (selectedOption == 'Pending') {
+      console.log('==================Pending==================');
+      get_booking_list();
     }
   };
   const renderItem = ({item}) => (
-    <TouchableOpacity 
-    onPress={()=>{
-      setBookingData(item)
-      setmodalMenuVisible(true)
-    }}
-    style={[styles.shadow, localStyles.itemContainer]}>
+    <TouchableOpacity
+      onPress={() => {
+        setBookingData(item);
+
+        if (selectedOption == 'Complete') {
+          handleOpenModal();
+        }
+        if (selectedOption == 'Pending') {
+          setBookingDetailVisible(true);
+        }
+      }}
+      style={[styles.shadow, localStyles.itemContainer]}>
       <View style={localStyles.itemRow}>
         <View style={localStyles.itemImageContainer}>
           <Image
@@ -138,7 +146,20 @@ export default function Booking() {
       </View>
     </TouchableOpacity>
   );
+  const [isModalVisible, setModalVisible] = useState(false);
 
+  const handleOpenModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
+  const handleSubmitRating = ratingData => {
+    console.log('Rating submitted:', ratingData);
+    // You can also update the state or perform additional actions with the ratingData
+  };
   return (
     <View style={localStyles.container}>
       {isLoading ? <Loading /> : null}
@@ -189,15 +210,27 @@ export default function Booking() {
         <View style={localStyles.listContainer}>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={selectedOption == 'Cancel'?BookingCancelList:selectedOption == 'Complete'?BookingCompleteList:BookingList}
+            data={
+              selectedOption == 'Cancel'
+                ? BookingCancelList
+                : selectedOption == 'Complete'
+                ? BookingCompleteList
+                : BookingList
+            }
             renderItem={renderItem}
             // keyExtractor={(item) => item.id}
           />
         </View>
-        <BookingDetailsModal  
- visible={modalMenuVisible}
- onClose={() => setmodalMenuVisible(false)}
- data={BookingData}
+        <BookingDetailsModal
+          visible={BookingDetailVisible}
+          onClose={() => setmodalMenuVisible(false)}
+          data={BookingData}
+        />
+        <AddRatingModal
+          isVisible={isModalVisible}
+          onClose={handleCloseModal}
+          onSubmit={handleSubmitRating}
+          data={BookingData}
         />
       </ScrollView>
     </View>
