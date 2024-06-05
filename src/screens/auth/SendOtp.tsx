@@ -20,6 +20,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Loading from '../../configs/Loader';
 import {ResetPasswordEmail} from '../../redux/feature/authSlice';
 import {CountryPicker} from 'react-native-country-codes-picker';
+import localizationStrings from '../../utils/Localization';
 
 export default function SendOtp() {
   const navigation = useNavigation();
@@ -82,13 +83,13 @@ export default function SendOtp() {
         <View style={styles.contentContainer}>
           <View>
             <View style={styles.headerContainer}>
-              <Text style={styles.headerText}>Password Reset</Text>
+              <Text style={styles.headerText}>{localizationStrings.Pass_reset}</Text>
             </View>
             <View style={styles.subHeaderContainer}>
               <Text style={styles.subHeaderText}>
-                Please put your mobile number to reset
+                {localizationStrings.reset_txt}
               </Text>
-              <Text style={styles.subHeaderText}>your password</Text>
+              
             </View>
           </View>
           <View style={styles.tab}>
@@ -100,7 +101,7 @@ export default function SendOtp() {
             </View>
             <View style={styles.inputContainer}>
               <View>
-                <Text style={styles.inputLabel}>SMS</Text>
+                <Text style={styles.inputLabel}>{localizationStrings.sms}</Text>
               </View>
               <View style={styles.inputRow}>
                 <TouchableOpacity onPress={() => setShow(true)}>
@@ -110,7 +111,7 @@ export default function SendOtp() {
                 </TouchableOpacity>
                 <TextInput
                   style={styles.textInput}
-                  placeholder="Enter Mobile"
+                  placeholder={localizationStrings.place_mobaile}
                   maxLength={12}
                   onChangeText={txt => setMobile(txt)}
                   value={mobile}
@@ -127,11 +128,11 @@ export default function SendOtp() {
             </View>
             <View style={styles.inputContainer}>
               <View>
-                <Text style={styles.inputLabel}>Email</Text>
+                <Text style={styles.inputLabel}>{localizationStrings.email}</Text>
               </View>
               <TextInput
                 style={styles.textInput}
-                placeholder="Enter email"
+                placeholder={localizationStrings.place_email}
                 onChangeText={txt => setEmail(txt)}
                 value={Email}
               />
@@ -139,7 +140,7 @@ export default function SendOtp() {
           </View>
         </View>
         <TouchableOpacity onPress={Submit} style={styles.submitButton}>
-          <Text style={styles.submitButtonText}>Submit</Text>
+          <Text style={styles.submitButtonText}>{localizationStrings.Submit}</Text>
         </TouchableOpacity>
         <CountryPicker
           show={show}
@@ -196,6 +197,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#000',
     lineHeight: 24,
+    width:'70%'
   },
   tab: {
     marginHorizontal: 20,

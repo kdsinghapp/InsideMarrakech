@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,84 +8,53 @@ import {
   FlatList,
   StyleSheet,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
 import BlackPin from '../../assets/svg/BlackPin.svg';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
-import {styles} from '../../configs/Styles';
+import { useNavigation } from '@react-navigation/native';
+import { styles } from '../../configs/Styles';
 import ProfileHeader from '../../configs/ProfileHeader';
-import {useDispatch, useSelector} from 'react-redux';
-import {get_user_booking_list} from '../../redux/feature/featuresSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { get_user_booking_list } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
 import BookingDetailsModal from '../Modal/BookingDetailsModal';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import AddRatingModal from '../Modal/RattingModal';
+import localizationStrings from '../../utils/Localization';
 
 export default function Booking() {
-  const [chooseBtn, setChooseBtn] = useState(true);
-  const navigation = useNavigation();
   const [selectedOption, setSelectedOption] = useState('Pending');
-  const BookingList = useSelector(state => state.feature.BookingList);
-  const BookingCompleteList = useSelector(
-    state => state.feature.BookingCompleteList,
-  );
-  const BookingCancelList = useSelector(
-    state => state.feature.BookingCancelList,
-  );
-  const isLoading = useSelector(state => state.feature.isLoading);
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [BookingDetailVisible, setBookingDetailVisible] = useState(false);
   const [BookingData, setBookingData] = useState(null);
   const user = useSelector(state => state.auth.userData);
+  const BookingList = useSelector(state => state.feature.BookingList);
+  const isLoading = useSelector(state => state.feature.isLoading);
+  const [isModalVisible, setModalVisible] = useState(false);
+
   useEffect(() => {
-    get_booking_list();
-  }, [user, selectedOption]);
-  const get_booking_list = async () => {
-    const params = {
-      user_id: user?.id,
-      status: selectedOption,
-    };
-
-    await dispatch(get_user_booking_list(params));
-  };
-
-  const Completebooking_list = async () => {
-    const params = {
-      user_id: user?.id,
-      status: selectedOption,
-    };
-
-    await dispatch(get_Completebooking_list(params));
-  };
-
-  const Cancelbooking_list = async () => {
-    const params = {
-      user_id: user?.id,
-      status: selectedOption,
-    };
-
-    await dispatch(get_Cancelbooking_list(params));
-  };
+    getListData(selectedOption);
+  }, [selectedOption]);
 
   const getListData = async type => {
-    console.log(type);
-    console.log('====================================');
-    setSelectedOption(type);
-    if (selectedOption == 'Cancel') {
-      console.log('============Cancel========================');
-      Cancelbooking_list();
-    } else if (selectedOption == 'Complete') {
-      console.log('===============Complete=====================');
-      Completebooking_list();
-    } else if (selectedOption == 'Pending') {
-      console.log('==================Pending==================');
-      get_booking_list();
+
+    try {
+      const params = {
+        user_id: user?.id,
+        status: type,
+      };
+      await dispatch(get_user_booking_list(params));
+    }
+    catch (err) {
+      console.log(err);
+
     }
   };
-  const renderItem = ({item}) => (
+
+  const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
         setBookingData(item);
@@ -100,7 +70,7 @@ export default function Booking() {
       <View style={localStyles.itemRow}>
         <View style={localStyles.itemImageContainer}>
           <Image
-            source={{uri: item.image}}
+            source={{ uri: item.image }}
             style={localStyles.itemImage}
             resizeMode="contain"
           />
@@ -125,15 +95,15 @@ export default function Booking() {
                     selectedOption === 'Cancel'
                       ? 'red'
                       : selectedOption == 'Pending'
-                      ? '#f0f0f0'
-                      : '#34A853',
+                        ? '#f0f0f0'
+                        : '#34A853',
                 },
                 styles.shadow,
               ]}>
               <Text
                 style={[
                   localStyles.statusButtonText,
-                  {color: selectedOption == 'Pending' ? '#000' : '#FFF'},
+                  { color: selectedOption == 'Pending' ? '#000' : '#FFF' },
                 ]}>
                 {selectedOption}
               </Text>
@@ -146,7 +116,6 @@ export default function Booking() {
       </View>
     </TouchableOpacity>
   );
-  const [isModalVisible, setModalVisible] = useState(false);
 
   const handleOpenModal = () => {
     setModalVisible(true);
@@ -158,28 +127,25 @@ export default function Booking() {
 
   const handleSubmitRating = ratingData => {
     console.log('Rating submitted:', ratingData);
-    // You can also update the state or perform additional actions with the ratingData
   };
+
   return (
     <View style={localStyles.container}>
-      {isLoading ? <Loading /> : null}
+      {isLoading && <Loading />}
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader title="Booking" width={25} />
-        <View style={{height: hp(5), marginTop: 20}}>
+        <ProfileHeader title={localizationStrings.Booking} width={25} />
+        <View style={{ height: hp(5), marginTop: 20 }}>
           <FlatList
             data={BList}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <TouchableOpacity
-                onPress={() => {
-                  getListData(item.name);
-                }}
+                onPress={() => setSelectedOption(item.name)}
                 style={{
                   width: wp(29),
                   alignItems: 'center',
                   justifyContent: 'center',
-
                   marginLeft: 10,
                 }}>
                 <Text
@@ -191,7 +157,6 @@ export default function Booking() {
                   }}>
                   {item.name}
                 </Text>
-
                 {selectedOption == item.name && (
                   <View
                     style={{
@@ -208,22 +173,19 @@ export default function Booking() {
           />
         </View>
         <View style={localStyles.listContainer}>
-          <FlatList
+          {!isLoading && <FlatList
             showsVerticalScrollIndicator={false}
             data={
-              selectedOption == 'Cancel'
-                ? BookingCancelList
-                : selectedOption == 'Complete'
-                ? BookingCompleteList
-                : BookingList
+              BookingList
             }
             renderItem={renderItem}
-            // keyExtractor={(item) => item.id}
+            keyExtractor={item => item.id.toString()}
           />
+          }
         </View>
         <BookingDetailsModal
           visible={BookingDetailVisible}
-          onClose={() => setmodalMenuVisible(false)}
+          onClose={() => setBookingDetailVisible(false)}
           data={BookingData}
         />
         <AddRatingModal
@@ -241,6 +203,7 @@ const localStyles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
     backgroundColor: '#FFF',
+    flex: 1,
   },
   itemContainer: {
     borderRadius: 10,
@@ -319,25 +282,6 @@ const localStyles = StyleSheet.create({
     color: '#000',
     fontWeight: '500',
   },
-  toggleButtonsContainer: {
-    height: hp(10),
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-  },
-  toggleButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: wp('45%'),
-    height: 47,
-  },
-  toggleButtonText: {
-    fontSize: 16,
-    lineHeight: 27,
-    fontWeight: '500',
-    color: '#000',
-    fontFamily: 'Federo-Regular',
-  },
   listContainer: {
     marginTop: 10,
     flex: 1,
@@ -346,12 +290,12 @@ const localStyles = StyleSheet.create({
 });
 const BList = [
   {
-    name: 'Pending',
+    name:`${localizationStrings.Pending}`,
   },
   {
-    name: 'Complete',
+    name: `${localizationStrings.Complete}`,
   },
   {
-    name: 'Cancel',
+    name: `${localizationStrings.Cancel}`,
   },
 ];

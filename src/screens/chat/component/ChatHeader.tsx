@@ -8,6 +8,7 @@ import {
 export default function ChatHeader({item}) {
 
     const navigation = useNavigation()
+console.log(item);
 
   
   return (

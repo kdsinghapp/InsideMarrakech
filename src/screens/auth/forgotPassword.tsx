@@ -20,6 +20,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {errorToast} from '../../configs/customToast';
 import {CreateNewPassword} from '../../redux/feature/authSlice';
 import Loading from '../../configs/Loader';
+import localizationStrings from '../../utils/Localization';
 
 export default function forgotPassword({route}) {
   const {data} = route.params;
@@ -96,7 +97,7 @@ console.log('====================================');
                   lineHeight: 36,
                   fontFamily: 'Federo-Regular',
                 }}>
-                Create New Password
+               {localizationStrings.create_pass}
               </Text>
             </View>
             <View
@@ -112,8 +113,7 @@ console.log('====================================');
                   lineHeight: 24,
                   fontFamily: 'Federo-Regular',
                 }}>
-                Your new password must be different from previous used
-                passwords.
+               {localizationStrings.create_txt}
               </Text>
             </View>
           </View>
@@ -124,7 +124,7 @@ console.log('====================================');
                 {backgroundColor: '#FFFFFF', marginTop: 20, paddingRight: 10},
               ]}>
               <TextInputField
-                placeholder="Password"
+                placeholder={localizationStrings.Placeholder_password}
                 onChangeText={handlePassText}
                 firstLogo={true}
                 img={require('../../assets/Cropping/Lock3x.png')}
@@ -138,7 +138,7 @@ console.log('====================================');
               ]}>
               <TextInputField
                 onChangeText={handleCPassText}
-                placeholder="Password"
+                placeholder={localizationStrings.Placeholder_password}
                 firstLogo={true}
                 img={require('../../assets/Cropping/Lock3x.png')}
                 showEye={true}
@@ -166,7 +166,7 @@ console.log('====================================');
             fontFamily: 'Federo-Regular',
             lineHeight: 25,
           }}>
-          Save
+         {localizationStrings.save}
         </Text>
       </TouchableOpacity>
     </View>

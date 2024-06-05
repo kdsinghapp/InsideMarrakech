@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { get_privacy_policy } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
 import WebView from 'react-native-webview';
+import localizationStrings from '../../utils/Localization';
 
 export default function PrivacyPolicy() {
   const isFocuse = useIsFocused();
@@ -30,7 +31,7 @@ export default function PrivacyPolicy() {
   return (
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
-      <ProfileHeader title="Privacy Policy" />
+      <ProfileHeader title={localizationStrings.Privacy_policy} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.imageContainer}>
           <Image

@@ -20,6 +20,7 @@ import ProfileHeader from '../../configs/ProfileHeader';
 import Pin from '../../assets/svg/Pin.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_all_property } from '../../redux/feature/featuresSlice';
+import localizationStrings from '../../utils/Localization';
 
 export default function Search() {
   const navigation = useNavigation();
@@ -71,16 +72,16 @@ export default function Search() {
 
             <View style={styles.userContainer}>
               <View style={styles.userTextContainer}>
-                <Text style={styles.itemUser}>Price : {item.amount}</Text>
+                <Text style={styles.itemUser}>{localizationStrings.price} : {item.amount}</Text>
               </View>
             </View>
             <View style={styles.userContainer}>
               <View style={styles.userTextContainer}>
-                <Text style={styles.itemUser}>Open Time : {formatTimes().startTime}</Text>
+                <Text style={styles.itemUser}>{localizationStrings.Open_Time} : {formatTimes().startTime}</Text>
               </View>
 
               <View style={styles.userTextContainer}>
-                <Text style={styles.itemUser}>Close Time : {formatTimes().endTime}</Text>
+                <Text style={styles.itemUser}>{localizationStrings.Close_Time} : {formatTimes().endTime}</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -114,7 +115,7 @@ export default function Search() {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader title="Search" width={30} />
+        <ProfileHeader title={localizationStrings.search} width={30} />
         <View style={styles.searchContainer}>
           <View style={styles.search}>
             <SearchIcon />
@@ -128,7 +129,7 @@ export default function Search() {
           </View>
         </View>
 
-        {filteredProperties.length > 0 ? (
+        {filteredProperties?.length > 0 ? (
           <FlatList
             showsVerticalScrollIndicator={false}
             data={filteredProperties}
@@ -137,7 +138,7 @@ export default function Search() {
           />
         ) : (
           <View style={styles.noDataContainer}>
-            <Text style={styles.noDataText}>No data found</Text>
+            <Text style={styles.noDataText}>{localizationStrings.no_data_found}</Text>
           </View>
         )}
       </ScrollView>
@@ -201,7 +202,7 @@ const styles = StyleSheet.create({
   },
   itemUser: {
     fontFamily: 'Federo-Regular',
-    fontSize: 10,
+    fontSize: 14,
     fontWeight: '500',
     color: '#000',
   },

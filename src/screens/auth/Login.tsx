@@ -21,6 +21,7 @@ import { login } from '../../redux/feature/authSlice';
 import { errorToast } from '../../configs/customToast';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../configs/Loader';
+import localizationStrings from '../../utils/Localization';
 
 export default function Login() {
   const [identity, setIdentity] = useState('');
@@ -117,8 +118,8 @@ export default function Login() {
       </View>
       <View style={styles.formContainer}>
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Login</Text>
-          <Text style={styles.subHeaderText}>Enter your email and password</Text>
+          <Text style={styles.headerText}>{localizationStrings.login}</Text>
+          <Text style={styles.subHeaderText}>{localizationStrings.login_Txt}</Text>
         </View>
         <View style={styles.inputWrapper}>
           <View style={[styles.txtInput, { backgroundColor: '#FFFFFF' }]}>
@@ -127,7 +128,7 @@ export default function Login() {
               countryCode={countryCode}
               PickCountry={setCountry}
               onChangeText={handleIdentityText}
-              placeholder={'Email Address / Mobile number'}
+              placeholder={localizationStrings.Placeholder_email}
               firstLogo={true}
               img={
                 Number
@@ -139,7 +140,7 @@ export default function Login() {
           <View style={[styles.txtInput, styles.passwordInput]}>
             <TextInputField
               onChangeText={handlePassText}
-              placeholder={'Password'}
+              placeholder={localizationStrings.Placeholder_password}
               firstLogo={true}
               showEye={true}
               img={require('../../assets/Cropping/Lock3x.png')}
@@ -153,7 +154,7 @@ export default function Login() {
             }}
             style={styles.forgotPasswordButton}
           >
-            <Text style={styles.forgotPasswordText}>Forgot Your Password?</Text>
+            <Text style={styles.forgotPasswordText}>{localizationStrings.forgot}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.loginButtonContainer}>
@@ -161,7 +162,7 @@ export default function Login() {
             onPress={Login}
             style={[styles.btn, { backgroundColor: '#352C48' }]}
           >
-            <Text style={styles.loginButtonText}>LOGIN</Text>
+            <Text style={styles.loginButtonText}>{localizationStrings.login?.toUpperCase()}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.signUpContainer}>
@@ -170,15 +171,15 @@ export default function Login() {
               navigation.navigate(ScreenNameEnum.SIGNUP_SCREEN);
             }}
           >
-            <Text style={styles.signUpText}>Don't have an account? Sign Up</Text>
+            <Text style={styles.signUpText}>{localizationStrings.signup_msg}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.orContainer}>
-          <Text style={styles.orText}>OR</Text>
+          <Text style={styles.orText}>{localizationStrings.or}</Text>
         </View>
         <TouchableOpacity style={styles.googleSignInButton}>
           <Gicon />
-          <Text style={styles.googleSignInText}>Sign In with Google</Text>
+          <Text style={styles.googleSignInText}>{localizationStrings.signup_google}</Text>
         </TouchableOpacity>
       </View>
       <CountryPicker
@@ -299,7 +300,7 @@ const styles = StyleSheet.create({
   },
   orText: {
     fontSize: 16,
-    color: '#FFF',
+    color: '#000',
     fontWeight: '600',
   },
   googleSignInButton: {

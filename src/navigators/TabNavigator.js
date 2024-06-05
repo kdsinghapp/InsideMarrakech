@@ -5,6 +5,9 @@ import React, { useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import _routes from '../routes/routes';
 import { useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+import localizationStrings from '../utils/Localization';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
@@ -12,6 +15,8 @@ export default function TabNavigator() {
   const user = useSelector(state => state.auth.userData);
   const BottomTabConfig = user?.type === 'Company' ? _routes.BOTTOMTAB_ROUTE_COMPANY : _routes.BOTTOMTAB_ROUTE_USER;
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const isFocuse= useIsFocused()
+
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -33,7 +38,13 @@ export default function TabNavigator() {
       keyboardDidHideListener.remove();
     };
   }, []);
-
+  useEffect(()=>{
+    _get_lan()
+  },[isFocuse])
+  const _get_lan = async () => {
+    const Language = await AsyncStorage.getItem("Lng")
+    localizationStrings.setLanguage(Language == null ? "French" : Language);
+}
   return (
     <View style={{ flex: 1 }}>
       <Tab.Navigator

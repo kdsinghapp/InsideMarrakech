@@ -20,6 +20,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {validOtp} from '../../redux/feature/authSlice';
 import Loading from '../../configs/Loader';
+import localizationStrings from '../../utils/Localization';
 
 export default function ValidOtp({route}) {
   const {id} = route.params;
@@ -60,12 +61,12 @@ export default function ValidOtp({route}) {
       <View style={styles.contentContainer}>
         <View>
           <View style={styles.headerContainer}>
-            <Text style={styles.headerText}>Check your mail or check</Text>
-            <Text style={styles.headerText}>your cell phone</Text>
+            <Text style={styles.headerText}>{localizationStrings.otp_txt}</Text>
+            <Text style={styles.headerText}>{localizationStrings.otp_txt1}</Text>
           </View>
           <View style={styles.subHeaderContainer}>
             <Text style={styles.subHeaderText}>
-              Please put the 4 digits sent to you
+             {localizationStrings.otp_input}
             </Text>
           </View>
         </View>
@@ -99,7 +100,7 @@ export default function ValidOtp({route}) {
       <TouchableOpacity
         onPress={checkOtp}
         style={styles.submitButton}>
-        <Text style={styles.submitButtonText}>Submit</Text>
+        <Text style={styles.submitButtonText}>{localizationStrings.Submit}</Text>
       </TouchableOpacity>
     </View>
   );

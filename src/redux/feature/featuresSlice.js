@@ -1,7 +1,7 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {API} from '../Api';
-import {Alert} from 'react-native';
-import {errorToast, successToast} from '../../configs/customToast';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { API } from '../Api';
+import { Alert } from 'react-native';
+import { errorToast, successToast } from '../../configs/customToast';
 import ScreenNameEnum from '../../routes/screenName.enum';
 
 const initialState = {
@@ -20,15 +20,15 @@ const initialState = {
   allProperty: null,
   CompanyProperty: null,
   MenuList: [],
-  propertyDetail:[],
-  ChatUser:[],
-  getSubscription:[],
-  AboutUs:[],
-  FAQ:[],
-  Notification:[],
-  BookingDetails:[],
-  BannerList:[],
-  FavList:[]
+  propertyDetail: [],
+  ChatUser: [],
+  getSubscription: [],
+  AboutUs: [],
+  FAQ: [],
+  Notification: [],
+  BookingDetails: [],
+  BannerList: [],
+  FavList: []
 };
 
 export const update_notification = createAsyncThunk(
@@ -59,75 +59,35 @@ export const get_user_booking_list = createAsyncThunk(
   'get_user_booking_list',
   async (params, thunkApi) => {
     try {
-      const config = {
+      let data = new FormData();
+      data.append('user_id', params.user_id);
+      data.append('status', params.status);
+
+      const response = await fetch(`https://server-php-8-2.technorizen.com/inside/api/get_user_booking_list`, {
+        method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data',
-          Accept: 'application/json',
+          'Accept': 'application/json',
         },
-      };
+        body: data,
+      });
+
+      const responseData = await response.json();
+
       console.log(
         '==============get_user_booking_list======================',
-        params,
+        responseData.data,
       );
-      const response = await API.post('/get_user_booking_list', params, config);
 
-      if (response.data.status === '1') {
-        return response.data.data;
-      } else {
-       
-      }
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-  },
-);
-export const get_user_Canclebooking_list = createAsyncThunk(
-  'get_user_Canclebooking_list',
-  async (params, thunkApi) => {
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Accept: 'application/json',
-        },
-      };
-      console.log(
-        '==============get_user_booking_list======================',
-        params,
-      );
-      const response = await API.post('/get_user_booking_list', params, config);
+      if (responseData.status === '1') {
+        console.log('=>>>>>>>>>>>>.get_user_booking_list=>>>>>>>>>>>>', responseData);
 
-      if (response.data.status === '1') {
-        return response.data.data;
       } else {
+        return thunkApi.rejectWithValue(responseData.message);
       }
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-  },
-);
-export const get_user_Completebooking_list = createAsyncThunk(
-  'get_user_Completebooking_list',
-  async (params, thunkApi) => {
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Accept: 'application/json',
-        },
-      };
-      console.log(
-        '==============get_user_booking_list======================',
-        params,
-      );
-      const response = await API.post('/get_user_booking_list', params, config);
 
-      if (response.data.status === '1') {
-        return response.data.data;
-      } else {
-      }
+      return responseData.data;
     } catch (error) {
-      return thunkApi.rejectWithValue(error);
+      return thunkApi.rejectWithValue(error.message);
     }
   },
 );
@@ -353,7 +313,7 @@ export const add_property = createAsyncThunk(
         },
       };
 
- 
+
       const response = await API.post('/add_property', params.data, config);
 
       if (response.data.status === '1') {
@@ -389,7 +349,7 @@ export const update_property = createAsyncThunk(
 
       console.log('=============update_property=======================');
       console.log(params.data);
-   
+
       const response = await API.post('/update_property', params.data, config);
 
       console.log(
@@ -399,7 +359,7 @@ export const update_property = createAsyncThunk(
       if (response.data.status === '1') {
         successToast(response.data.message)
         params.navigation.goBack();
-       
+
         successToast(response.data.message);
       } else {
         errorToast(response.data.message);
@@ -485,8 +445,8 @@ export const add_booking = createAsyncThunk(
         data.append(`last_name1[${index}]`, guest.lastName);
       });
 
-      console.log('================add_booking====================',data);
-     
+      console.log('================add_booking====================', data);
+
 
       const response = await API.post('/add_booking', data, config);
       console.log(
@@ -520,15 +480,18 @@ export const add_chat_user = createAsyncThunk(
       let data = new FormData();
       data.append('user_id', params.data.user_id);
       data.append('company_id', params.data.company_id);
-        const response = await API.post('/add_chat_user', data, config);
+      const response = await API.post('/add_chat_user', data, config);
       console.log(
         '==============add_chat_user==response====================',
         response.data,
       );
       if (response.data.status === '1') {
-       
-        params.navigation.navigate(ScreenNameEnum.CHAT_SCREEN,{item:{id:params.data.company_id}});
-      } else {
+        params.navigation.navigate(ScreenNameEnum.CHAT_SCREEN, { item: { id: params.data.company_id } });
+      }
+      if (response.data.message == 'You are Already Added.') {
+        params.navigation.navigate(ScreenNameEnum.CHAT_SCREEN, { item: { id: params.data.company_id } });
+      }
+      else {
         errorToast(response.data.message);
       }
       return response.data;
@@ -555,16 +518,16 @@ export const add_rates = createAsyncThunk(
       let data = new FormData();
       data.append('user_id', params.user_id);
       data.append('property_id', params.property_id);
-     data.append('rating',params.rating);
-     data.append('review', params.review);
-        const response = await API.post('/add_rates', data, config);
+      data.append('rating', params.rating);
+      data.append('review', params.review);
+      const response = await API.post('/add_rates', data, config);
       console.log(
         '==============add_rates==response====================',
         response.data,
       );
       if (response.data.status === '1') {
-       
-       successToast(response.data.data)
+
+        successToast(response.data.data)
       } else {
         errorToast(response.data.message);
       }
@@ -587,12 +550,12 @@ export const get_user_wishlist = createAsyncThunk(
           Accept: 'application/json',
         },
       };
-      console.log('=============get_user_wishlist=======================',params);
+      console.log('=============get_user_wishlist=======================', params);
       let data = new FormData();
       data.append('user_id', params?.user_id);
-      
-      const response = await API.post('/get_user_wishlist',data,config);
-      console.log('=============get_user_wishlist=======================',response.data);
+
+      const response = await API.post('/get_user_wishlist', data, config);
+      console.log('=============get_user_wishlist=======================', response.data);
       if (response.data.status === '1') {
         // Do something on success
       } else {
@@ -700,12 +663,12 @@ export const delete_property = createAsyncThunk(
         },
       };
       let data = new FormData();
-data.append('property_id', params.property_id);
-data.append('company_id', params.company_id);
+      data.append('property_id', params.property_id);
+      data.append('company_id', params.company_id);
 
-      console.log('=============delete_property=======================',params,);
+      console.log('=============delete_property=======================', params,);
 
-      const response = await API.post('/delete_property',data,config);
+      const response = await API.post('/delete_property', data, config);
 
       if (response.data.status === '1') {
         successToast(response.data.message)
@@ -731,16 +694,16 @@ export const delete_notification = createAsyncThunk(
         },
       };
       let data = new FormData();
-data.append('id', params.id);
+      data.append('id', params.id);
 
 
-      console.log('=============delete_notification=======================',params,);
+      console.log('=============delete_notification=======================', params,);
 
-      const response = await API.post('/delete_notification',data,config);
+      const response = await API.post('/delete_notification', data, config);
 
       if (response.data.status === '1') {
         successToast(response.data.message)
-        
+
       } else {
         errorToast(response.data.message)
       }
@@ -762,15 +725,15 @@ export const get_chat_user = createAsyncThunk(
         },
       };
       let data = new FormData();
-data.append('user_id', params.user_id);
+      data.append('user_id', params.user_id);
 
 
-      console.log('=============get_chat_user=======================',params,);
+      console.log('=============get_chat_user=======================', params,);
 
-      const response = await API.post('/get_chat_user',data,config);
-      console.log('=============get_chat_user=======================',response.data,);
+      const response = await API.post('/get_chat_user', data, config);
+      console.log('=============get_chat_user=======================', response.data,);
       if (response.data.status === '1') {
-       
+
       } else {
         errorToast('No Chat Found')
       }
@@ -854,12 +817,12 @@ export const get_company_all_property = createAsyncThunk(
       } else {
         return thunkApi.rejectWithValue(response.data.data);
       }
-   
+
     } catch (error) {
       console.log('Error:', error);
       //errorToast('Network Error');
       return thunkApi.rejectWithValue([]);
-      
+
     }
   },
 );
@@ -891,12 +854,12 @@ export const get_user_notification = createAsyncThunk(
       } else {
         return thunkApi.rejectWithValue(response.data.data);
       }
-   
+
     } catch (error) {
       console.log('Error:', error);
       //errorToast('Network Error');
       return thunkApi.rejectWithValue([]);
-      
+
     }
   },
 );
@@ -961,7 +924,7 @@ export const get_banner = createAsyncThunk(
         },
       };
 
-     
+
 
       const response = await API.get('/get_banner',);
       console.log(
@@ -988,16 +951,16 @@ export const get_company_booking_detail = createAsyncThunk(
           Accept: 'application/json',
         },
       };
-      console.log('===========get_company_booking_detail=========================',params);
-     
-      
+      console.log('===========get_company_booking_detail=========================', params);
+
+
       let data = new FormData();
       data.append('booking_id', params.booking_id);
-      
-    
+
+
 
       const response = await API.post('/get_company_booking_detail', data, config);
-      console.log('====================get_company_booking_detail================',response.data);
+      console.log('====================get_company_booking_detail================', response.data);
       if (response.data.status === '1') {
         return response.data.data;
       } else {
@@ -1046,12 +1009,13 @@ const FeatureSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.isError = false;
-      state.BookingList = action.payload.length ? action.payload : [];
+      state.BookingList = action.payload
     });
     builder.addCase(get_user_booking_list.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
+      state.BookingList = []
     });
     builder.addCase(get_user_wishlist.pending, state => {
       state.isLoading = true;
@@ -1074,43 +1038,15 @@ const FeatureSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.isError = false;
-      state.BookingDetails = action.payload 
+      state.BookingDetails = action.payload
     });
     builder.addCase(get_company_booking_detail.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
     });
-    builder.addCase(get_user_Completebooking_list.pending, state => {
-      state.isLoading = true;
-    });
-    builder.addCase(get_user_Completebooking_list.fulfilled,
-      (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isError = false;
-        state.BookingCompleteList =  action.payload 
-      },
-    );
-    builder.addCase(get_user_Completebooking_list.rejected, (state, action) => {
-      state.isLoading = false;
-      state.isError = true;
-      state.isSuccess = false;
-    });
-    builder.addCase(get_user_Canclebooking_list.pending, state => {
-      state.isLoading = true;
-    });
-    builder.addCase(get_user_Canclebooking_list.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
-      state.isError = false;
-      state.BookingCancelList =  action.payload 
-    });
-    builder.addCase(get_user_Canclebooking_list.rejected, (state, action) => {
-      state.isLoading = false;
-      state.isError = true;
-      state.isSuccess = false;
-    });
+
+
     builder.addCase(get_user_notification.pending, state => {
       state.isLoading = true;
     });
@@ -1146,7 +1082,7 @@ const FeatureSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = true;
       state.isError = false;
-      state.ChatUser = action.payload 
+      state.ChatUser = action.payload
     });
     builder.addCase(get_chat_user.rejected, (state, action) => {
       state.isLoading = false;
@@ -1479,6 +1415,6 @@ const FeatureSlice = createSlice({
   },
 });
 
-export const {updateBookingList} = FeatureSlice.actions;
+export const { updateBookingList } = FeatureSlice.actions;
 
 export default FeatureSlice.reducer;

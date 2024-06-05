@@ -15,6 +15,7 @@ import ScreenNameEnum from '../../routes/screenName.enum';
 import {errorToast} from '../../configs/customToast';
 import Loading from '../../configs/Loader';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import localizationStrings from '../../utils/Localization';
 
 export default function SignUp() {
   const navigation = useNavigation();
@@ -125,16 +126,16 @@ export default function SignUp() {
           />
         </View>
         <View style={styles.formContainer}>
-          <Text style={styles.title}>Sign Up</Text>
+          <Text style={styles.title}>{localizationStrings.SignUp}</Text>
           <Text style={styles.subtitle}>
-            Enter your name, email, and password
+           {localizationStrings.signup_Txt}
           </Text>
           {role == 'User' && (
             <>
               <View style={styles.inputContainer}>
                 <View style={[styles.txtInput, styles.inputBackground]}>
                   <TextInputField
-                    placeholder="First Name"
+                    placeholder={localizationStrings.First_name}
                     firstLogo={true}
                     img={require('../../assets/Cropping/User2x.png')}
                     value={firstName}
@@ -145,7 +146,7 @@ export default function SignUp() {
               <View style={styles.inputContainer}>
                 <View style={[styles.txtInput, styles.inputBackground]}>
                   <TextInputField
-                    placeholder="Last Name"
+                    placeholder={localizationStrings.Last_Name}
                     firstLogo={true}
                     img={require('../../assets/Cropping/User2x.png')}
                     value={lastName}
@@ -156,7 +157,7 @@ export default function SignUp() {
               <View style={styles.inputContainer}>
                 <View style={[styles.txtInput, styles.inputBackground]}>
                   <TextInputField
-                    placeholder="Email Address"
+                  placeholder={localizationStrings.Email_Address}
                     firstLogo={true}
                     img={require('../../assets/Cropping/Email2x.png')}
                     value={email}
@@ -167,7 +168,7 @@ export default function SignUp() {
               <View style={styles.inputContainer}>
                 <View style={[styles.txtInput, styles.inputBackground]}>
                   <TextInputField
-                    placeholder="Mobile Number"
+                    placeholder={localizationStrings.mobile_num}
                     firstLogo={true}
                     img={require('../../assets/Cropping/Phone2x.png')}
                     value={mobile}
@@ -178,7 +179,7 @@ export default function SignUp() {
               <View style={styles.inputContainer}>
                 <View style={[styles.txtInput, styles.inputBackground]}>
                   <TextInputField
-                    placeholder="Password"
+                    placeholder={localizationStrings.Placeholder_password}
                     firstLogo={true}
                     img={require('../../assets/Cropping/Lock2x.png')}
                     showEye={true}
@@ -275,13 +276,13 @@ export default function SignUp() {
           <TouchableOpacity
             onPress={handleSignUp}
             style={[styles.btn, styles.signUpButton]}>
-            <Text style={styles.btnText}>Sign Up</Text>
+            <Text style={styles.btnText}>{localizationStrings.SignUp}</Text>
           </TouchableOpacity>
           <View style={styles.signInContainer}>
-            <Text style={styles.signInText}>Already have an account?</Text>
+            <Text style={styles.signInText}>{localizationStrings.Login_txt}</Text>
             <TouchableOpacity
               onPress={() => navigation.navigate(ScreenNameEnum.LOGIN_SCREEN)}>
-              <Text style={[styles.signInText, styles.signInLink]}>Login</Text>
+              <Text style={[styles.signInText, styles.signInLink]}>{localizationStrings.login}</Text>
             </TouchableOpacity>
           </View>
 

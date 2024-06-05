@@ -29,10 +29,13 @@ export default function Chat({route}) {
   const dispatch = useDispatch();
   const isFacuse = useIsFocused();
 
+console.log('item?.id=>>>chat screen>>>>>>',item?.id);
 
   useEffect(() => {
     get_userprofile();
   }, [user, isFacuse]);
+
+
 
   const get_userprofile = () => {
     const params = {

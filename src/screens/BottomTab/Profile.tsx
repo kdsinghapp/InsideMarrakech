@@ -16,6 +16,7 @@ import Loading from '../../configs/Loader';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import {useDispatch, useSelector} from 'react-redux';
 import {get_profile, logout} from '../../redux/feature/authSlice';
+import localizationStrings from '../../utils/Localization';
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ export default function Profile() {
               fontWeight: '600',
               fontFamily: 'Federo-Regular',
             }}>
-            Profile
+           {localizationStrings.Profile}
           </Text>
         </View>
         <View style={{height: hp(5), marginTop: 10}}>
@@ -105,7 +106,7 @@ export default function Profile() {
               fontWeight: '600',
               fontFamily: 'Federo-Regular',
             }}>
-            Account
+            {localizationStrings.Account}
           </Text>
         </View>
 
@@ -126,7 +127,7 @@ export default function Profile() {
               fontFamily: 'Federo-Regular',
               fontWeight: '600',
             }}>
-            Settings
+            {localizationStrings.setting}
           </Text>
         </View>
 
@@ -147,7 +148,7 @@ export default function Profile() {
               fontWeight: '600',
               fontFamily: 'Federo-Regular',
             }}>
-            About
+            {localizationStrings.about}
           </Text>
         </View>
 
@@ -226,7 +227,7 @@ export default function Profile() {
                     color: '#000',
                     fontFamily: 'Federo-Regular',
                   }}>
-                  Log Out?
+                  {localizationStrings.logout}?
                 </Text>
 
                 <View
@@ -244,7 +245,7 @@ export default function Profile() {
                         fontWeight: '400',
                         fontFamily: 'Federo-Regular',
                       }}>
-                      Are you sure you want to log out?
+                      {localizationStrings.logout_msg}
                     </Text>
                   </View>
                 </View>
@@ -270,7 +271,7 @@ export default function Profile() {
                     color: '#fff',
                     fontFamily: 'Federo-Regular',
                   }}>
-                  Log Out
+                 {localizationStrings.logout}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -283,13 +284,13 @@ export default function Profile() {
 
 const Account = [
   {
-    name: 'Edit Profile',
+    name: `${localizationStrings.Edit_profile}`,
 
     screen: ScreenNameEnum.EDIT_PROFILE,
   },
 
   {
-    name: 'Change Password',
+    name: `${localizationStrings.Change_pass}`,
 
     screen: ScreenNameEnum.CHANGE_PASSWORD,
   },
@@ -300,29 +301,29 @@ const Account = [
   //   screen: ScreenNameEnum.WISHLIST_SCREEN,
   // },
   {
-    name: 'Booking Tab',
+    name: `${localizationStrings.Booking_tab}`,
 
     screen: ScreenNameEnum.BOOKING_SCREEN,
   },
   {
-    name: 'Subscription',
+    name: `${localizationStrings.subscription}`,
 
     screen: ScreenNameEnum.SUBSCRIPTION_SCREEN,
   },
   {
-    name: 'Notification',
+    name: `${localizationStrings.notification}`,
 
     screen: ScreenNameEnum.NOTIFICATION_SCREEN,
   },
 ];
 const Setting = [
   {
-    name: 'FAQ',
+    name:`${localizationStrings.faq}`,
 
     screen: ScreenNameEnum.FAQ_SCREEN,
   },
   {
-    name: 'About us',
+    name: `${localizationStrings.about_us}`,
 
     screen: ScreenNameEnum.ABOUT_US,
   },
@@ -331,12 +332,12 @@ const Setting = [
 
 const About = [
   {
-    name: 'Privacy Policy',
+    name: `${localizationStrings.Privacy_policy}`,
 
     screen: ScreenNameEnum.PRIVACY_POLICY,
   },
   {
-    name: 'Terms And Conditions Of Use',
+    name: `${localizationStrings.tern_con}`,
 
     screen: ScreenNameEnum.TERM_CONDITION,
   },

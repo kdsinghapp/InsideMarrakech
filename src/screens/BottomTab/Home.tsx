@@ -32,6 +32,7 @@ import {
 } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
 import {all} from 'axios';
+import localizationStrings from '../../utils/Localization';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
@@ -136,7 +137,7 @@ export default function Home() {
            
             <View style={styles.userContainer}>
               <View style={styles.userTextContainer}>
-                <Text style={styles.itemUser}>Price : {item.amount}</Text>
+                <Text style={styles.itemUser}>{localizationStrings.price} : {item.amount}</Text>
                 
               </View>
              
@@ -145,12 +146,12 @@ export default function Home() {
             </View>
             <View style={styles.userContainer}>
               <View style={styles.userTextContainer}>
-                <Text style={styles.itemUser}>Open Time : {formatTimes().startTime}</Text>
+                <Text style={styles.itemUser}>{localizationStrings.Open_Time} : {formatTimes().startTime}</Text>
                 
               </View>
              
               <View style={styles.userTextContainer}>
-                <Text style={styles.itemUser}>Close Time : {formatTimes().endTime}</Text>
+                <Text style={styles.itemUser}> {localizationStrings.Close_Time} : {formatTimes().endTime}</Text>
                 
               </View>
              
@@ -164,78 +165,78 @@ export default function Home() {
     // If document_gallery is empty or image property is undefined, return null or a placeholder
     return null;
   };
-  const renderCompanyList = ({item}) => {
-    // Check if document_gallery and its first element exist
-    const firstImage = item.document_gallery && item.document_gallery.length > 0 ? item.document_gallery[item.document_gallery.length -1].image : null;
+  // const renderCompanyList = ({item}) => {
+  //   // Check if document_gallery and its first element exist
+  //   const firstImage = item.document_gallery && item.document_gallery.length > 0 ? item.document_gallery[item.document_gallery.length -1].image : null;
   
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate(ScreenNameEnum.PLACE_DETAILS, {item: item});
-        }}
-        style={[styles.shadow, styles.itemContainer]}>
-        {/* Check if item.image is not empty or undefined */}
-        {item.image == '' || item.image == undefined ? (
-          <Image
-            source={{uri: firstImage}}
-            style={styles.itemImage}
-            resizeMode="cover"
-          />
-        ) : (
-          <Image
-            source={require('../../assets/Cropping/empty.jpg')}
-            style={styles.itemImage}
-            resizeMode="cover"
-          />
-        )}
-        <TouchableOpacity 
-          onPress={()=>{
-            navigation.navigate(ScreenNameEnum.updateProperty,{item:item})
-          }}
-          style={{position: 'absolute', right: 20, top: 20}}>
-          <Image
-            source={require('../../assets/Cropping/Icon.png')}
-            style={{height: 40, width: 40}}
-          />
-        </TouchableOpacity>
+  //   return (
+  //     <TouchableOpacity
+  //       onPress={() => {
+  //         navigation.navigate(ScreenNameEnum.PLACE_DETAILS, {item: item});
+  //       }}
+  //       style={[styles.shadow, styles.itemContainer]}>
+  //       {/* Check if item.image is not empty or undefined */}
+  //       {item.image == '' || item.image == undefined ? (
+  //         <Image
+  //           source={{uri: firstImage}}
+  //           style={styles.itemImage}
+  //           resizeMode="cover"
+  //         />
+  //       ) : (
+  //         <Image
+  //           source={require('../../assets/Cropping/empty.jpg')}
+  //           style={styles.itemImage}
+  //           resizeMode="cover"
+  //         />
+  //       )}
+  //       <TouchableOpacity 
+  //         onPress={()=>{
+  //           navigation.navigate(ScreenNameEnum.updateProperty,{item:item})
+  //         }}
+  //         style={{position: 'absolute', right: 20, top: 20}}>
+  //         <Image
+  //           source={require('../../assets/Cropping/Icon.png')}
+  //           style={{height: 40, width: 40}}
+  //         />
+  //       </TouchableOpacity>
   
-        <Text style={styles.itemTitle}>{item.name}</Text>
-        <View style={styles.detailsContainer}>
+  //       <Text style={styles.itemTitle}>{item.name}</Text>
+  //       <View style={styles.detailsContainer}>
        
-          <Text style={styles.itemDetails}>{item.title}</Text>
-        </View>
-        <View style={styles.detailsContainer}>
+  //         <Text style={styles.itemDetails}>{item.title}</Text>
+  //       </View>
+  //       <View style={styles.detailsContainer}>
        
-          <Text style={styles.itemDetails}>{item.description}</Text>
-        </View>
-        <View style={styles.detailsContainer}>
-          <Pin />
-          <Text style={styles.itemDetails}> {item.address}</Text>
-        </View>
+  //         <Text style={styles.itemDetails}>{item.description}</Text>
+  //       </View>
+  //       <View style={styles.detailsContainer}>
+  //         <Pin />
+  //         <Text style={styles.itemDetails}> {item.address}</Text>
+  //       </View>
   
-        <View style={styles.userContainer}>
-          <View style={styles.userTextContainer}>
-            <Text style={[styles.itemUser, {color: '#f0f0f0'}]}></Text>
-          </View>
+  //       <View style={styles.userContainer}>
+  //         <View style={styles.userTextContainer}>
+  //           <Text style={[styles.itemUser, {color: '#f0f0f0'}]}></Text>
+  //         </View>
   
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate(ScreenNameEnum.AddMenu, {item: item});
-            }}
-            style={{
-              backgroundColor: '#C59745',
-              paddingHorizontal: 10,
-              paddingVertical: 10,
-              borderRadius: 10,
-            }}>
-            <Text style={[styles.updateButtonText, {color: '#fff'}]}>
-              Add Menu
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </TouchableOpacity>
-    );
-  };
+  //         <TouchableOpacity
+  //           onPress={() => {
+  //             navigation.navigate(ScreenNameEnum.AddMenu, {item: item});
+  //           }}
+  //           style={{
+  //             backgroundColor: '#C59745',
+  //             paddingHorizontal: 10,
+  //             paddingVertical: 10,
+  //             borderRadius: 10,
+  //           }}>
+  //           <Text style={[styles.updateButtonText, {color: '#fff'}]}>
+  //             Add Menu
+  //           </Text>
+  //         </TouchableOpacity>
+  //       </View>
+  //     </TouchableOpacity>
+  //   );
+  // };
   
   const get_Companyproperty = () => {
     const params = {
@@ -255,7 +256,7 @@ export default function Home() {
           <View style={styles.search}>
             <SearchIcon />
             <TextInput
-              placeholder="Search"
+              placeholder={localizationStrings.search}
               placeholderTextColor={'#000'}
               style={styles.searchInput}
               value={searchQuery}
@@ -265,7 +266,7 @@ export default function Home() {
         </View>
         {searchQuery === '' && (      <View style={styles.categoryContainer}>
               <View style={styles.categoryHeader}>
-                <Text style={styles.categoryHeaderText}>Category</Text>
+                <Text style={styles.categoryHeaderText}>{localizationStrings.category}</Text>
                 <BlackDown />
               </View>
               
@@ -310,7 +311,7 @@ export default function Home() {
                               navigation.navigate(ScreenNameEnum.PLACE_DETAILS, {item:{id:item.property_id}});
                             }}
                             style={styles.bannerButton}>
-                            <Text style={styles.bannerButtonText}>View</Text>
+                            <Text style={styles.bannerButtonText}>{localizationStrings.View}</Text>
                           </TouchableOpacity>
                         </ImageBackground>
                       </View>
@@ -321,11 +322,11 @@ export default function Home() {
             )}
 
             <FlatList
-              showsVerticalScrollIndicator={false}
-              data={selectedCategory ? filteredPropertiesByCategory : searchQuery ? filteredPropertiesBySearch : all_property}
+                showsVerticalScrollIndicator={false}
+                data={selectedCategory ? filteredPropertiesByCategory : searchQuery ? filteredPropertiesBySearch : all_property}
 
-              renderItem={renderList}
-            />
+                renderItem={renderList}
+              />
             
             <Modal visible={isVisible} animationType="slide" transparent={true}>
               <TouchableOpacity
@@ -409,13 +410,13 @@ export default function Home() {
               <Text style={styles.titleText}>My Activity </Text>
             </View>
          
-            {CompanyProperty?.length > 0 ?<FlatList
+            {/* {CompanyProperty?.length > 0 ?<FlatList
               showsVerticalScrollIndicator={false}
               data={filteredCompanyProperties}
               renderItem={renderCompanyList}
             />:<View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
               <Text style={{fontSize:14,color:'#000', fontFamily: 'Federo-Regular',}}>No Property Found</Text>
-              </View>}
+              </View>} */}
           </View>
         )}
       </ScrollView>

@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {get_profile} from '../../redux/feature/authSlice';
 import ProfileHeader from '../../configs/ProfileHeader';
 import {update_notiification} from '../../redux/feature/featuresSlice';
+import localizationStrings from '../../utils/Localization';
 
 interface User {
   id: string;
@@ -34,20 +35,20 @@ interface NotificationItem {
 const data: NotificationItem[] = [
   {
     id: '1',
-    name: 'Booking updates',
-    Details: 'Receive important messages and updates from your tour operator',
+    name: `${localizationStrings.booking_update}`,
+    Details: `${localizationStrings.notification_txt}`,
     key: 'booking_updates',
   },
   {
     id: '2',
-    name: 'Reviews',
-    Details: 'Receive important messages and updates from your tour operator',
+    name: `${localizationStrings.reviews}`,
+    Details: `${localizationStrings.notification_txt}`,
     key: 'reviews',
   },
   {
     id: '3',
-    name: 'Activities & Attractions',
-    Details: 'Receive important messages and updates from your tour operator',
+    name: `${localizationStrings.activities_attraction}`,
+    Details: `${localizationStrings.notification_txt}`,
     key: 'tours_activities_attra',
   },
 ];
@@ -126,7 +127,7 @@ const Notification: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <ProfileHeader title="Notification" />
+      <ProfileHeader title={localizationStrings.notification}/>
       <View style={styles.listContainer}>
         <FlatList
           data={data}

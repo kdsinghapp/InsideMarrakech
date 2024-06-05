@@ -60,7 +60,7 @@ export default function PlaceDetails() {
 
     dispatch(get_property_detail(params));
   };
-  console.log("propertDetails:=>>>>>>>>>>>", propertDetails?.company_id);
+  
 
 
   const timeFormate = utcDateString => {
@@ -76,7 +76,7 @@ export default function PlaceDetails() {
       });
       return localTimeString;
     } else {
-      console.log('Invalid date string', utcDateString);
+     
     }
   };
 

@@ -13,6 +13,7 @@ import ProfileHeader from '../../configs/ProfileHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_terms_conditions } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
+import localizationStrings from '../../utils/Localization';
 
 
 export default function TermCondition() {
@@ -32,7 +33,7 @@ export default function TermCondition() {
   return (
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
-  <ProfileHeader title={'Terms and Conditions'} width={13} />
+  <ProfileHeader title={localizationStrings.tern_con} width={13} />
   <ScrollView showsVerticalScrollIndicator={false}>
     <View style={styles.imageContainer}>
       <Image

@@ -17,6 +17,7 @@
       import { get_about_us, get_faq, get_terms_conditions } from '../../redux/feature/featuresSlice';
       import Loading from '../../configs/Loader';
       import Collapsible from 'react-native-collapsible';
+import localizationStrings from '../../utils/Localization';
       
       export default function FAQ() {
       
@@ -57,7 +58,7 @@
         return (
           <View style={styles.container}>
             {isLoading ? <Loading /> : null}
-        <ProfileHeader title={'About Us'} width={25} />
+        <ProfileHeader title={localizationStrings.faq} width={30} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.imageContainer}>
             <Image
@@ -67,8 +68,8 @@
             />
           </View>
           <View  style={{justifyContent:'center',alignItems:'center'}}>
-            <Text style={{fontSize:22,fontWeight:'600',color:'#000', fontFamily: 'Federo-Regular',}}>FAQ</Text>
-            <Text style={{fontSize:16,fontWeight:'600',color:'#000',marginTop:10, fontFamily: 'Federo-Regular',}}>Most common question about our services</Text>
+            <Text style={{fontSize:22,fontWeight:'600',color:'#000', fontFamily: 'Federo-Regular',}}>{localizationStrings.faq}</Text>
+            <Text style={{fontSize:16,fontWeight:'600',color:'#000',marginTop:10, fontFamily: 'Federo-Regular',}}>{localizationStrings.faq_txt}</Text>
           </View>
           <View  style={{marginTop:30}}>
           <FlatList

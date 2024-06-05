@@ -6,6 +6,7 @@ import {
 } from 'react-native-responsive-screen';
 import RightArrow from '../assets/svg/RightArrow.svg';
 import {useNavigation} from '@react-navigation/native';
+import localizationStrings from '../utils/Localization';
 export default function ProfileHeader({title = '',width=20}) {
   const navigation = useNavigation();
   return (
@@ -17,7 +18,7 @@ export default function ProfileHeader({title = '',width=20}) {
         style={{flexDirection: 'row', alignItems: 'center'}}>
         <RightArrow height={15} Width={15} />
         <Text style={{fontFamily: 'Federo-Regular',fontSize: 14, color: '#000', fontWeight: '500'}}>
-          Back
+         {localizationStrings.Back}
         </Text>
       </TouchableOpacity>
 

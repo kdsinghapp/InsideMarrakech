@@ -1,18 +1,26 @@
-import {View, Text, FlatList, StyleSheet, Image} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
-export default function ChatBody({item}) {
+export default function ChatBody({ item }) {
   const user = useSelector(state => state.auth.userData);
   const [messages, setMessages] = useState([]);
 
-  
+  const chatId = '' + user?.id + item?.id
+
+
+  console.log(chatId);
+console.log('chatId=>>>>>>>>>>>>>',chatId);
   useEffect(() => {
-    const chatId = user?.mobile + item?.mobile;
+    const chatId = '' + user?.id + item?.id
+
+
+    console.log(chatId);
+console.log('chatId=>>>>>>>>>>>>>',chatId);
 
     const unsubscribe = firestore()
       .collection('chats')
@@ -24,15 +32,21 @@ export default function ChatBody({item}) {
           id: doc.id,
           ...doc.data(),
         }));
+
+
         setMessages(messages);
+        console.log('messages=>>>>>>>>>>>>>>>>>>>>>>',messages);
+
       });
 
     return () => unsubscribe();
   }, [user?.mobile, item?.mobile]);
 
-  const MessageItem = ({message}) => {
-    const isSender = message.mobile === user.mobile;
+  const MessageItem = ({ message }) => {
+    const isSender = message.sender_id === user?.id;
     return (
+
+
       <View
         style={[
           styles.messageContainer,
@@ -45,7 +59,7 @@ export default function ChatBody({item}) {
             isSender ? styles.senderContent : styles.receiverContent,
           ]}>
           {message.image ? (
-            <Image source={{uri: message.image}} style={styles.messageImage} />
+            <Image source={{ uri: message.image }} style={styles.messageImage} />
           ) : (
             <Text style={isSender ? styles.senderText : styles.receiverText}>
               {message.text}
@@ -54,6 +68,13 @@ export default function ChatBody({item}) {
         </View>
         {isSender && <Image source={require('../../../assets/Cropping/img3.png')} style={styles.avatar} />}
       </View>
+
+
+
+
+
+
+
     );
   };
   return (
@@ -61,9 +82,9 @@ export default function ChatBody({item}) {
       <FlatList
         showsVerticalScrollIndicator={false}
         data={messages}
-        renderItem={({item}) => <MessageItem message={item} />}
-        keyExtractor={item => item.id}
-        ListFooterComponent={<View style={{height: hp(5)}} />}
+        renderItem={({ item }) => <MessageItem message={item} />}
+
+        ListFooterComponent={<View style={{ height: hp(5) }} />}
       />
     </View>
   );
@@ -126,7 +147,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   ListContainer: {
-    flex:1,
+    flex: 1,
     paddingVertical: 10,
   },
 });

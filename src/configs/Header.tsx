@@ -7,6 +7,7 @@ import Msg from '../assets/svg/Msg.svg'
 import Bell from '../assets/svg/Bell.svg'
 import { useNavigation } from '@react-navigation/native'
 import ScreenNameEnum from '../routes/screenName.enum'
+import localizationStrings from '../utils/Localization'
 export default function Header() {
 
   const navigation = useNavigation()
@@ -15,7 +16,7 @@ export default function Header() {
     justifyContent:'space-between',
     alignItems:'center',paddingHorizontal:15}}>
    <View style={{}}>
-    <Text style={{fontFamily: 'Federo-Regular',fontSize:12,fontWeight:'500',color:'#000'}}>Cuurent location  </Text>
+    <Text style={{fontFamily: 'Federo-Regular',fontSize:12,fontWeight:'500',color:'#000'}}>{localizationStrings.current_location}</Text>
 <View style={{flexDirection:'row'}}>
   <Pin />
   <Text style={{fontFamily: 'Federo-Regular',fontSize:14,fontWeight:'500',color:'#000',marginHorizontal:2}}>Marrakesh</Text>

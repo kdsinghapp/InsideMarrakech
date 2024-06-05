@@ -12,8 +12,8 @@ export default function ChatFooter({ item }) {
     const user = useSelector(state => state.auth.userData);
     const [messageText, setMessageText] = useState('');
     const [loading, setLoading] = useState(false);
-console.log('=================item?.mobile===================',item?.mobile);
-console.log('===============user?.mobile =====================',user?.mobile );
+console.log('=================item?.mobile===================',item?.id);
+console.log('===============user?.mobile =====================',user?.id );
     const onSend = async () => {
         setLoading(true);
         if (messageText.trim() === '') {
@@ -26,6 +26,8 @@ console.log('===============user?.mobile =====================',user?.mobile );
                 text: messageText,
                 createdAt: firestore.FieldValue.serverTimestamp(),
                 mobile: user?.mobile,
+                sender_id:user?.id,
+                reciver_id:item?.id
             };
 
             setMessageText('');
@@ -39,15 +41,11 @@ console.log('===============user?.mobile =====================',user?.mobile );
     const sendMessage = async (messageData) => {
         await firestore()
             .collection('chats')
-            .doc('' + user?.mobile + item?.mobile)
+            .doc('' + user?.id + item?.id)
             .collection('message')
             .add(messageData);
 
-        await firestore()
-            .collection('chats')
-            .doc('' + item?.mobile + user?.mobile)
-            .collection('message')
-            .add(messageData);
+       
 
         setLoading(false); // Reset loading state
     };
@@ -85,9 +83,9 @@ console.log('===============user?.mobile =====================',user?.mobile );
                 value={messageText}
                 onChangeText={setMessageText}
             />
-            <TouchableOpacity style={styles.iconButton} onPress={sendImage}>
+            {/* <TouchableOpacity style={styles.iconButton} onPress={sendImage}>
                 <Gallery />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity onPress={onSend} style={styles.iconButton}>
                 {loading ? <ActivityIndicator size={20} color={'skyblue'} /> : <Send />}
             </TouchableOpacity>
