@@ -17,6 +17,7 @@
       import ScreenNameEnum from '../../routes/screenName.enum';
       import {useDispatch, useSelector} from 'react-redux';
       import {get_profile, logout} from '../../redux/feature/authSlice';
+import localizationStrings from '../../utils/Localization';
       
       export default function CProfile() {
         const dispatch = useDispatch();
@@ -94,7 +95,7 @@
                     fontWeight: '600',
                     fontFamily: 'Federo-Regular',
                   }}>
-                  Profile
+                  {localizationStrings.Profile}
                 </Text>
               </View>
               <View style={{height: hp(5), marginTop: 10}}>
@@ -106,7 +107,7 @@
                     fontWeight: '600',
                     fontFamily: 'Federo-Regular',
                   }}>
-                  Account
+                 {localizationStrings.Account}
                 </Text>
               </View>
       
@@ -130,7 +131,7 @@
                     fontWeight: '600',
                     fontFamily: 'Federo-Regular',
                   }}>
-                  About
+                 {localizationStrings.about}
                 </Text>
               </View>
       
@@ -162,7 +163,7 @@
                     fontWeight: '600',
                     fontFamily: 'Federo-Regular',
                   }}>
-                  Log Out
+                 {localizationStrings.logout}
                 </Text>
               </TouchableOpacity>
       
@@ -209,7 +210,7 @@
                           color: '#000',
                           fontFamily: 'Federo-Regular',
                         }}>
-                        Log Out?
+                       {localizationStrings.logout}
                       </Text>
       
                       <View
@@ -253,7 +254,7 @@
                           color: '#fff',
                           fontFamily: 'Federo-Regular',
                         }}>
-                        Log Out
+                       {localizationStrings.logout}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -266,28 +267,28 @@
       
       const Account = [
         {
-          name: 'Personal Info',
+          name: `${localizationStrings.Personal_Info}`,
       
           screen: ScreenNameEnum.EDIT_PROFILE,
         },
       
         {
-          name: 'Change Password',
+          name: `${localizationStrings.Change_pass}`,
       
           screen: ScreenNameEnum.CHANGE_PASSWORD,
         },
        {
-          name: 'Booking Tab',
+        name: `${localizationStrings.Booking_tab}`,
       
           screen: ScreenNameEnum.CompanyBooking,
         },
         {
-          name: 'Subscription',
+          name: `${localizationStrings.subscription}`,
       
           screen: ScreenNameEnum.SUBSCRIPTION_SCREEN,
         },
         {
-            name: 'Notification',
+          name: `${localizationStrings.notification}`,
         
             screen: ScreenNameEnum.NOTIFICATION_SCREEN,
           },
@@ -296,22 +297,22 @@
       
       const About = [
         {
-          name: 'FAQ',
+          name:`${localizationStrings.faq}`,
       
           screen: ScreenNameEnum.FAQ_SCREEN,
         },
         {
-          name: 'About us',
+          name: `${localizationStrings.about_us}`,
       
           screen: ScreenNameEnum.ABOUT_US,
         },
         {
-          name: 'Privacy Policy',
+          name: `${localizationStrings.Privacy_policy}`,
       
           screen: ScreenNameEnum.PRIVACY_POLICY,
         },
         {
-          name: 'Terms And Conditions Of Use',
+          name: `${localizationStrings.tern_con}`,
       
           screen: ScreenNameEnum.TERM_CONDITION,
         },

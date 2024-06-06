@@ -20,6 +20,7 @@ import {add_property, get_category} from '../../redux/feature/featuresSlice';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Loading from '../../configs/Loader';
 import DatePicker from 'react-native-date-picker';
+import localizationStrings from '../../utils/Localization';
 
 export default function AddProperty() {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -219,10 +220,10 @@ export default function AddProperty() {
       {isLoading && <Loading />}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.title}>
-          <Text style={styles.titleText}>Add Property</Text>
+          <Text style={styles.titleText}>{localizationStrings.a_propert}</Text>
         </View>
         <View style={styles.subtitle}>
-          <Text style={styles.subtitleText}>Photo</Text>
+          <Text style={styles.subtitleText}>{localizationStrings.photo}</Text>
         </View>
         <View>
           <FlatList
@@ -240,27 +241,27 @@ export default function AddProperty() {
           />
         </View>
         <View style={styles.labelContainerWithMargin}>
-          <Text style={styles.labelText}>Name</Text>
+          <Text style={styles.labelText}>{localizationStrings.name}</Text>
         </View>
         <View style={[styles.txtInput, fieldErrors.Title && styles.errorInput]}>
           <TextInputField
-            placeholder="name"
+            placeholder={localizationStrings.name}
             value={name}
             onChangeText={setName}
           />
         </View>
         <View style={styles.labelContainerWithMargin}>
-          <Text style={styles.labelText}>Title</Text>
+          <Text style={styles.labelText}>{localizationStrings.title}</Text>
         </View>
         <View style={[styles.txtInput, fieldErrors.Title && styles.errorInput]}>
           <TextInputField
-            placeholder="Title"
+            placeholder={localizationStrings.title}
             value={Title}
             onChangeText={setTitle}
           />
         </View>
         <View style={styles.labelContainerWithMargin}>
-          <Text style={styles.labelText}>Category</Text>
+          <Text style={styles.labelText}>{localizationStrings.category}</Text>
         </View>
         <View
           style={[
@@ -269,7 +270,7 @@ export default function AddProperty() {
           ]}>
           <Dropdown
             data={category}
-            placeholder="Select category"
+            placeholder={localizationStrings.S_category}
             style={{width: '100%'}}
             maxHeight={200}
             labelField="name"
@@ -285,7 +286,7 @@ export default function AddProperty() {
           />
         </View>
         <View style={styles.labelContainerWithMargin}>
-          <Text style={styles.labelText}>Description</Text>
+          <Text style={styles.labelText}>{localizationStrings.Description}</Text>
         </View>
         <View
           style={[
@@ -293,13 +294,13 @@ export default function AddProperty() {
             fieldErrors.Description && styles.errorInput,
           ]}>
           <TextInputField
-            placeholder="Description"
+            placeholder={localizationStrings.Description}
             value={Description}
             onChangeText={setDescription}
           />
         </View>
         <View style={styles.labelContainerWithMargin}>
-          <Text style={styles.labelText}>Mobile number</Text>
+          <Text style={styles.labelText}>{localizationStrings.Mobile_number}</Text>
         </View>
         <View
           style={[
@@ -307,7 +308,7 @@ export default function AddProperty() {
             fieldErrors.MobileNumber && styles.errorInput,
           ]}>
           <TextInputField
-            placeholder="Mobile number"
+            placeholder={localizationStrings.Mobile_number}
             keyboardType={'number-pad'}
             
             value={MobileNumber}
@@ -315,12 +316,12 @@ export default function AddProperty() {
           />
         </View>
         <View style={styles.labelContainerWithMargin}>
-          <Text style={styles.labelText}>Location</Text>
+          <Text style={styles.labelText}>{localizationStrings.location}</Text>
         </View>
         <View
           style={[styles.txtInput, fieldErrors.Location && styles.errorInput]}>
           <TextInputField
-            placeholder="Location"
+            placeholder={localizationStrings.location}
             value={Location}
             onChangeText={setLocation}
           />
@@ -328,10 +329,10 @@ export default function AddProperty() {
         
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
-            <Text style={styles.labelText}>Open Time</Text>
+            <Text style={styles.labelText}>{localizationStrings.Open_Time}</Text>
           </View>
           <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
-            <Text style={styles.labelText}>Close Time</Text>
+            <Text style={styles.labelText}>{localizationStrings.Close_Time}</Text>
           </View>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -360,10 +361,10 @@ export default function AddProperty() {
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
-            <Text style={styles.labelText}>Lunch Start Time</Text>
+            <Text style={styles.labelText}>{localizationStrings.lunch_s_time}</Text>
           </View>
           <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
-            <Text style={styles.labelText}>Lunch End Time</Text>
+            <Text style={styles.labelText}>{localizationStrings.lunch_e_time}</Text>
           </View>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -392,10 +393,10 @@ export default function AddProperty() {
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
-            <Text style={styles.labelText}>Dinner Start Time</Text>
+            <Text style={styles.labelText}>{localizationStrings.dinner_s_time}</Text>
           </View>
           <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
-            <Text style={styles.labelText}>Dinner End Time</Text>
+            <Text style={styles.labelText}>{localizationStrings.dinner_e_time}</Text>
           </View>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -431,11 +432,11 @@ export default function AddProperty() {
           onCancel={() => setDatePickerVisibility(false)}
         />
         <View style={styles.labelContainerWithMargin}>
-          <Text style={styles.labelText}>Price</Text>
+          <Text style={styles.labelText}>{localizationStrings.price}</Text>
         </View>
         <View style={[styles.txtInput, fieldErrors.Price && styles.errorInput]}>
           <TextInputField
-            placeholder="Price"
+            placeholder={localizationStrings.price}
             value={Price}
             keyboardType={'number-pad'}
             onChangeText={setPrice}
@@ -444,7 +445,7 @@ export default function AddProperty() {
         <View style={{height: hp(15)}} />
       </ScrollView>
       <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
-        <Text style={styles.saveButtonText}>Post Add</Text>
+        <Text style={styles.saveButtonText}>{localizationStrings.add_p}</Text>
       </TouchableOpacity>
       <View style={{height: hp(2)}} />
     </View>

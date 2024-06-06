@@ -21,6 +21,7 @@ import Right from '../../assets/svg/Right.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_subscription } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
+import localizationStrings from '../../utils/Localization';
 
 export default function Subscription() {
   const navigation = useNavigation();
@@ -44,17 +45,17 @@ const isFocuse = useIsFocused()
         source={require('../../assets/Cropping/sub.png')}
         style={{ flex: 1 }}
       >
-        <ProfileHeader title="Subscription" width={22} />
+        <ProfileHeader title={localizationStrings.subscription} width={22} />
 
         <View style={styles.contentContainer}>
-          <Text style={styles.title}>Upgrade to Premium</Text>
+          <Text style={styles.title}>{localizationStrings.upgrad_pre}</Text>
           <View style={styles.listContainer}>
             <FlatList
               data={getSubscription}
               renderItem={({ item }) => (
                 <View style={styles.itemContainer}>
                   <Right />
-                  <Text style={styles.itemText}>{item.name} ({item.type}) price:- $ {item.amount}</Text>
+                  <Text style={styles.itemText}>{item.name} ({item.type}) {localizationStrings.price}:- $ {item.amount}</Text>
                 </View>
               )}
             />
@@ -70,7 +71,7 @@ const isFocuse = useIsFocused()
         </View>
 
         <TouchableOpacity style={styles.upgradeButton}>
-          <Text style={styles.upgradeButtonText}>Upgrade Now</Text>
+          <Text style={styles.upgradeButtonText}>{localizationStrings.up_now}</Text>
         </TouchableOpacity>
       </ImageBackground>
     </View>

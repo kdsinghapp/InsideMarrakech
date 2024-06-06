@@ -8,6 +8,7 @@ import ProfileHeader from '../../configs/ProfileHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_chat_user } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
+import localizationStrings from '../../utils/Localization';
 
 export default function ChatPage() {
   const navigation = useNavigation();
@@ -56,13 +57,13 @@ console.log('====================================');
 
       {isLoading?<Loading />:null}
       
-        <ProfileHeader title="Chat Contact" width={26} />
+        <ProfileHeader title={localizationStrings.c_contact} width={26} />
         <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.searchContainer}>
           <View style={[styles.searchBox, styles.shdow]}>
             <SearchIcon />
             <TextInput
-              placeholder="Search"
+              placeholder={localizationStrings.search}
               placeholderTextColor={'#000'}
               style={styles.searchInput}
             />

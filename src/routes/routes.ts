@@ -36,6 +36,7 @@ import TermCondition from "../screens/ProfileSection/TermCondition";
 import WishList from "../screens/ProfileSection/WishList";
 import SplashScreen from "../screens/SplashScreen";
 import WellcomeScreen from "../screens/WellcomeScreen";
+import localizationStrings from "../utils/Localization";
 import ScreenNameEnum from "./screenName.enum";
 
 
@@ -196,7 +197,7 @@ BOTTOMTAB_ROUTE_USER:[
       name: ScreenNameEnum.HOME_SCREEN,
       Component:Home,
       logo:require('../assets/Cropping/Home1.png'),
-      lable:'Home',
+      lable:`${localizationStrings.Home}`,
       logo2:require('../assets/Cropping/Home2x.png'),
     },
     {
@@ -204,7 +205,7 @@ BOTTOMTAB_ROUTE_USER:[
       Component:Search,
       logo:require('../assets/Cropping/Search2x.png'),
       logo2:require('../assets/Cropping/Search2x.png'),
-      lable:'Search'
+      lable:`${localizationStrings.search}`,
     },
     
     {
@@ -212,7 +213,7 @@ BOTTOMTAB_ROUTE_USER:[
       Component:Booking,
       logo:require('../assets/Cropping/Booking2x.png'),
       logo2:require('../assets/Cropping/BookingActive2.png'),
-      lable:'Booking'
+      lable:`${localizationStrings.Booking}`,
     },
   
     {
@@ -220,7 +221,7 @@ BOTTOMTAB_ROUTE_USER:[
       Component:Profile,
       logo:require('../assets/Cropping/Profile2x.png'),
       logo2:require('../assets/Cropping/ProfileActive2.png'),
-      lable:'Profile'
+      lable:`${localizationStrings.Profile}`,
     },
 
  
@@ -230,7 +231,7 @@ BOTTOMTAB_ROUTE_USER:[
       name: ScreenNameEnum.HOME_SCREEN,
       Component:Home,
       logo:require('../assets/Cropping/Home1.png'),
-      lable:'Home',
+      lable:`${localizationStrings.Home}`,
       logo2:require('../assets/Cropping/Home2x.png'),
     },
    
@@ -240,7 +241,7 @@ BOTTOMTAB_ROUTE_USER:[
       Component:CompanyBooking,
       logo:require('../assets/Cropping/bag-2.png'),
       logo2:require('../assets/Cropping/bag-2a.png'),
-      lable:'Booking'
+      lable:`${localizationStrings.Booking}`,
     },
   
     {
@@ -255,14 +256,14 @@ BOTTOMTAB_ROUTE_USER:[
       Component:ChatPage,
       logo:require('../assets/Cropping/message-notif.png'),
       logo2:require('../assets/Cropping/Chats_1.png'),
-      lable:'Message'
+      lable:`${localizationStrings.messages}`,
     },
     {
       name: ScreenNameEnum.CProfile,
       Component:CProfile,
       logo:require('../assets/Cropping/Profile2x.png'),
       logo2:require('../assets/Cropping/ProfileActive2.png'),
-      lable:'Profile'
+      lable:`${localizationStrings.Profile}`,
     },
 
  

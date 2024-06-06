@@ -180,7 +180,7 @@ export default function Profile() {
               fontWeight: '600',
               fontFamily: 'Federo-Regular',
             }}>
-            Log Out
+            {localizationStrings.logout}
           </Text>
         </TouchableOpacity>
 

@@ -407,7 +407,7 @@ export default function Home() {
         {user?.type === 'Company' && (
           <View style={{flex: 1}}>
             <View style={styles.title}>
-              <Text style={styles.titleText}>My Activity </Text>
+              <Text style={styles.titleText}>{localizationStrings.my_activity}</Text>
             </View>
          
             {/* {CompanyProperty?.length > 0 ?<FlatList
@@ -415,7 +415,7 @@ export default function Home() {
               data={filteredCompanyProperties}
               renderItem={renderCompanyList}
             />:<View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-              <Text style={{fontSize:14,color:'#000', fontFamily: 'Federo-Regular',}}>No Property Found</Text>
+              <Text style={{fontSize:14,color:'#000', fontFamily: 'Federo-Regular',}}>{localizationStrings.No_P_found}</Text>
               </View>} */}
           </View>
         )}

@@ -16,6 +16,7 @@ import TextInputField from '../../configs/TextInput';
 import ProfileHeader from '../../configs/ProfileHeader';
 import Loading from '../../configs/Loader';
 import { useNavigation } from '@react-navigation/native';
+import localizationStrings from '../../utils/Localization';
 
 interface User {
   id: string;
@@ -63,11 +64,11 @@ const ChangePassword: React.FC = () => {
     <View style={styles.container}>
 
     {isLoding ?<Loading />:null}
-      <ProfileHeader title="Change Password" width={13} />
+      <ProfileHeader title={localizationStrings.Change_pass} width={13} />
 
       <View style={[styles.txtInput, { marginTop: 40 }]}>
         <TextInputField
-          placeholder="Current Password"
+          placeholder={localizationStrings.current_pass}
           firstLogo={true}
           img={require('../../assets/Cropping/Lock3x.png') as ImageSourcePropType}
           showEye={true}
@@ -77,7 +78,7 @@ const ChangePassword: React.FC = () => {
       </View>
       <View style={[styles.txtInput, { marginTop: 20 }]}>
         <TextInputField
-          placeholder="New Password"
+          placeholder={localizationStrings.confirm_pass}
           firstLogo={true}
           img={require('../../assets/Cropping/Lock3x.png') as ImageSourcePropType}
           showEye={true}
@@ -99,7 +100,7 @@ const ChangePassword: React.FC = () => {
     
 
       <TouchableOpacity style={styles.saveButton} onPress={handleChangePassword}>
-        <Text style={styles.saveButtonText}>Save</Text>
+        <Text style={styles.saveButtonText}>{localizationStrings.save}</Text>
       </TouchableOpacity>
     </View>
   );

@@ -20,6 +20,7 @@ import Loading from '../../configs/Loader';
 import {update_profile} from '../../redux/feature/featuresSlice';
 import {get_profile} from '../../redux/feature/authSlice';
 import {useNavigation} from '@react-navigation/native';
+import localizationStrings from '../../utils/Localization';
 
 export default function EditProfile() {
   const user = useSelector(state => state.auth.userData);
@@ -146,7 +147,7 @@ export default function EditProfile() {
     <View style={Styles.container}>
       {isLoading ? <Loading /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader title="Edit Profile" width={21} />
+        <ProfileHeader title={localizationStrings.Edit_profile} width={21} />
         <TouchableOpacity
           onPress={() => {
             openImageLibrary();
@@ -169,21 +170,21 @@ export default function EditProfile() {
         {user?.type == 'User' && (
           <>
             <View style={Styles.sectionHeader}>
-              <Text style={Styles.sectionHeaderText}>Public</Text>
+              <Text style={Styles.sectionHeaderText}>{localizationStrings.public}</Text>
             </View>
             <View style={Styles.row}>
               <View style={Styles.labelContainer}>
-                <Text style={Styles.labelText}>First Name</Text>
+                <Text style={Styles.labelText}>{localizationStrings.First_name}</Text>
               </View>
               <View style={Styles.labelContainer}>
-                <Text style={Styles.labelText}>Last Name</Text>
+                <Text style={Styles.labelText}>{localizationStrings.Last_Name}</Text>
               </View>
             </View>
             <View style={Styles.row}>
               <View style={Styles.inputContainer}>
                 <View style={Styles.txtInput}>
                   <TextInputField
-                    placeholder="First Name"
+                    placeholder={localizationStrings.First_name}
                     value={firstName}
                     onChangeText={setFirstName}
                   />
@@ -192,7 +193,7 @@ export default function EditProfile() {
               <View style={Styles.inputContainer}>
                 <View style={Styles.txtInput}>
                   <TextInputField
-                    placeholder="Last Name"
+                    placeholder={localizationStrings.Last_Name}
                     value={lastName}
                     onChangeText={setLastName}
                   />
@@ -200,7 +201,7 @@ export default function EditProfile() {
               </View>
             </View>
             <View style={Styles.labelContainerWithMargin}>
-              <Text style={Styles.labelText}>DOB</Text>
+              <Text style={Styles.labelText}>{localizationStrings.dob}</Text>
             </View>
             <View
               style={[
@@ -233,11 +234,11 @@ export default function EditProfile() {
             </View>
 
             <View style={Styles.labelContainerWithMargin}>
-              <Text style={Styles.labelText}>Home Town</Text>
+              <Text style={Styles.labelText}>{localizationStrings.home_town}</Text>
             </View>
             <View style={Styles.txtInput}>
               <TextInputField
-                placeholder="Home Town"
+                placeholder={localizationStrings.home_town}
                 value={homeTown}
                 onChangeText={setHomeTown}
               />
@@ -247,35 +248,35 @@ export default function EditProfile() {
         {user?.type == 'Company' && (
           <>
             <View style={Styles.sectionHeader}>
-              <Text style={Styles.sectionHeaderText}>Company Details</Text>
+              <Text style={Styles.sectionHeaderText}>{localizationStrings.c_details}</Text>
             </View>
 
             <View style={Styles.labelContainerWithMargin}>
-              <Text style={Styles.labelText}>Company Name</Text>
+              <Text style={Styles.labelText}>{localizationStrings.c_name}</Text>
             </View>
             <View style={Styles.txtInput}>
               <TextInputField
-                placeholder="Company name"
+                placeholder={localizationStrings.c_name}
                 value={CompanyName}
                 onChangeText={setCompanyName}
               />
             </View>
             <View style={Styles.labelContainerWithMargin}>
-              <Text style={Styles.labelText}>VAT number</Text>
+              <Text style={Styles.labelText}>{localizationStrings.VAT_number}</Text>
             </View>
             <View style={Styles.txtInput}>
               <TextInputField
-                placeholder="VAT number"
+                placeholder={localizationStrings.VAT_number}
                 value={VatNumber}
                 onChangeText={setVatNumber}
               />
             </View>
             <View style={Styles.labelContainerWithMargin}>
-              <Text style={Styles.labelText}>Company Address</Text>
+              <Text style={Styles.labelText}>{localizationStrings.c_address}</Text>
             </View>
             <View style={Styles.txtInput}>
               <TextInputField
-                placeholder="company address"
+                placeholder={localizationStrings.c_address}
                 value={CompanyAddress}
                 onChangeText={setCompanyAddress}
               />
@@ -283,10 +284,10 @@ export default function EditProfile() {
           </>
         )}
         <View style={Styles.sectionHeader}>
-          <Text style={Styles.sectionHeaderText}>Private</Text>
+          <Text style={Styles.sectionHeaderText}>{localizationStrings.private}</Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
-          <Text style={Styles.labelText}>Email</Text>
+          <Text style={Styles.labelText}>{localizationStrings.email}</Text>
         </View>
         <View style={Styles.txtInput}>
           <Text
@@ -301,18 +302,18 @@ export default function EditProfile() {
           </Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
-          <Text style={Styles.labelText}>Mobile Number</Text>
+          <Text style={Styles.labelText}>{localizationStrings.mobile_num}</Text>
         </View>
         <View style={Styles.txtInput}>
           <TextInputField
-            placeholder="Mobile Number"
+            placeholder={localizationStrings.mobile_num}
             value={mobileNumber}
             onChangeText={setMobileNumber}
           />
         </View>
 
         <TouchableOpacity onPress={handleSave} style={Styles.saveButton}>
-          <Text style={Styles.saveButtonText}>Save</Text>
+          <Text style={Styles.saveButtonText}>{localizationStrings.save}</Text>
         </TouchableOpacity>
         <View style={{height: 10}} />
         <DatePicker

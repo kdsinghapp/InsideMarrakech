@@ -23,6 +23,7 @@ import {
   get_Company_booking_list,
 } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
+import localizationStrings from '../../utils/Localization';
 
 export default function CompanyBooking() {
   const [selectedOption, setSelectedOption] = useState('Pending');
@@ -185,7 +186,7 @@ else{
 
   const renderEmptyList = () => (
     <View style={styles.emptyContainer}>
-      <Text style={styles.emptyText}>No bookings found</Text>
+      <Text style={styles.emptyText}>{localizationStrings.no_booking_found}</Text>
     </View>
   );
 
@@ -201,7 +202,7 @@ else{
       {isLoading && <Loading />}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.title}>
-          <Text style={styles.titleText}>Booking</Text>
+          <Text style={styles.titleText}>{localizationStrings.Booking}</Text>
         </View>
         <View style={{height: hp(5), marginTop: 20}}>
           <FlatList
@@ -410,4 +411,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const BList = [{name: 'Pending'}, {name: 'Complete'}, {name: 'Cancel'}];
+const BList = [{name: `${localizationStrings.Pending}`}, {name: `${localizationStrings.Complete}`}, {name: `${localizationStrings.Cancel}`}];

@@ -14,6 +14,7 @@
       import { useDispatch, useSelector } from 'react-redux';
       import { get_about_us, get_terms_conditions } from '../../redux/feature/featuresSlice';
       import Loading from '../../configs/Loader';
+import localizationStrings from '../../utils/Localization';
       
       
       export default function AboutUs() {
@@ -33,7 +34,7 @@
         return (
           <View style={styles.container}>
             {isLoading ? <Loading /> : null}
-        <ProfileHeader title={'About Us'} width={25} />
+        <ProfileHeader title={localizationStrings.about_us} width={25} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.imageContainer}>
             <Image
@@ -44,7 +45,7 @@
           </View>
           {AboutUs && (
             <View style={styles.descriptionContainer}>
-                <Text style={{fontSize:18,color:'#000',fontWeight:'600',marginVertical:10,  fontFamily: 'Federo-Regular',}}>{AboutUs[0]?.name}</Text>
+                <Text style={{fontSize:18,color:'#000',fontWeight:'600',marginVertical:10,  fontFamily: 'Federo-Regular',}}>{localizationStrings.about_us}</Text>
               <Text style={styles.description}>
                 {AboutUs[0]?.description.replace(/<\/?p>/g, '')}
               </Text>
