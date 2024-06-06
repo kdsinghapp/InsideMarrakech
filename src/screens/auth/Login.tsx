@@ -22,6 +22,7 @@ import { errorToast } from '../../configs/customToast';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../configs/Loader';
 import localizationStrings from '../../utils/Localization';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login() {
   const [identity, setIdentity] = useState('');
@@ -63,7 +64,13 @@ export default function Login() {
     setShow(true);
   };
 
+
+  const _get_lan = async () => {
+    const Language = await AsyncStorage.getItem("Lng")
+    localizationStrings.setLanguage(Language == null ? "French" : Language);
+}
   const Login = () => {
+    _get_lan()
     if (password.length < 8) {
       return errorToast('The password field must be at least 8 characters.');
     } else {

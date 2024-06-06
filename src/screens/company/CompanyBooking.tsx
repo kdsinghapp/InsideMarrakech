@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,8 +14,8 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import ScreenNameEnum from '../../routes/screenName.enum';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   booking_request_accept_reject,
   get_Company_Canclebooking_list,
@@ -46,22 +46,22 @@ export default function CompanyBooking() {
   }, [user, selectedOption, isFocused]);
 
 
- 
+
   const fetchBookingList = async () => {
     const params = {
       company_id: user?.id,
       status: selectedOption,
-    }; 
-if(selectedOption === 'Pending'){
+    };
+    if (selectedOption === 'Pending') {
 
-  await dispatch(get_Company_booking_list(params));
-}
-else if(selectedOption === 'Complete'){
-  await dispatch(get_Company_Completebooking_list(params));
-}
-else{
-  await dispatch(get_Company_Canclebooking_list(params));
-}
+      await dispatch(get_Company_booking_list(params));
+    }
+    else if (selectedOption === 'Complete') {
+      await dispatch(get_Company_Completebooking_list(params));
+    }
+    else {
+      await dispatch(get_Company_Canclebooking_list(params));
+    }
   };
 
   const handleBookingStatusChange = async (id, status) => {
@@ -80,7 +80,7 @@ else{
     fetchBookingList();
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => navigation.navigate(ScreenNameEnum.CbookingDetails)}
       style={[styles.shadow, styles.itemContainer]}>
@@ -88,7 +88,7 @@ else{
         <View style={styles.itemImageContainer}>
           {item.user_data.image != '' ? (
             <Image
-              source={{uri: item.user_data.image}}
+              source={{ uri: item.user_data.image }}
               style={styles.itemImage}
               resizeMode="cover"
             />
@@ -110,8 +110,8 @@ else{
             <BlackPin />
             <Text style={styles.itemDetails}>{item.address}</Text>
           </View>
-          <View style={{marginTop: 10}}>
-            <Text style={[styles.itemTime, {fontSize: 14}]}>
+          <View style={{ marginTop: 10 }}>
+            <Text style={[styles.itemTime, { fontSize: 14 }]}>
               $ {item.amount}
             </Text>
           </View>
@@ -123,7 +123,7 @@ else{
             onPress={() => handleBookingStatusChange(item.id, 'Complete')}
             style={[
               styles.statusButton,
-              {backgroundColor: '#34A853', borderRadius: 10},
+              { backgroundColor: '#34A853', borderRadius: 10 },
               styles.shadow,
             ]}>
             <Text style={styles.statusButtonText}>Accept</Text>
@@ -132,7 +132,7 @@ else{
             onPress={() => handleBookingStatusChange(item.id, 'Cancel')}
             style={[
               styles.statusButton,
-              {backgroundColor: 'red', borderRadius: 10},
+              { backgroundColor: 'red', borderRadius: 10 },
               styles.shadow,
             ]}>
             <Text style={styles.statusButtonText}>Reject</Text>
@@ -142,12 +142,12 @@ else{
     </TouchableOpacity>
   );
 
-  const renderItemCancleComplete = ({item}) => (
+  const renderItemCancleComplete = ({ item }) => (
     <View style={[styles.shadow, styles.itemContainer]}>
       <View style={styles.itemRow}>
         <View style={styles.itemImageContainer}>
           <Image
-            source={{uri: item.user_data.image}}
+            source={{ uri: item.user_data.image }}
             style={styles.itemImage}
             resizeMode="cover"
           />
@@ -194,8 +194,8 @@ else{
     selectedOption === 'Pending'
       ? BookingList
       : selectedOption === 'Cancel'
-      ? BookingCancelList
-      : BookingCompleteList;
+        ? BookingCancelList
+        : BookingCompleteList;
 
   return (
     <View style={styles.container}>
@@ -204,12 +204,12 @@ else{
         <View style={styles.title}>
           <Text style={styles.titleText}>{localizationStrings.Booking}</Text>
         </View>
-        <View style={{height: hp(5), marginTop: 20}}>
+        <View style={{ height: hp(5), marginTop: 20 }}>
           <FlatList
             data={BList}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => handleTabChange(item.name)}
                 style={{
@@ -411,4 +411,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const BList = [{name: `${localizationStrings.Pending}`}, {name: `${localizationStrings.Complete}`}, {name: `${localizationStrings.Cancel}`}];
+const BList = [{ name: `${localizationStrings.Pending}` }, { name: `${localizationStrings.Complete}` }, { name: `${localizationStrings.Cancel}` }];

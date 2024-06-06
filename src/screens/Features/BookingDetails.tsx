@@ -11,6 +11,7 @@ import { errorToast } from '../../configs/customToast';
 
 import { useSelector } from 'react-redux';
 import Rating from '../../configs/Ratting';
+import localizationStrings from '../../utils/Localization';
 
 export default function BookingDetails() {
   const navigation = useNavigation();
@@ -49,7 +50,7 @@ export default function BookingDetails() {
   return (
     <View style={localStyles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader title="Booking Details" width={18} />
+        <ProfileHeader title={localizationStrings.Booking_details} width={12} />
 
         <View style={[styles.shadow, localStyles.bookingDetailsContainer]}>
           <View style={localStyles.imageContainer}>
@@ -73,24 +74,24 @@ export default function BookingDetails() {
         </View>
 
         <View style={localStyles.totalContainer}>
-          <Text style={localStyles.totalText}>Guest No</Text>
+          <Text style={localStyles.totalText}>{localizationStrings.G_no}</Text>
           <Text style={localStyles.totalAmount}>{selectedGuestCount}</Text>
         </View>
         <View style={localStyles.totalContainer}>
-          <Text style={localStyles.totalText}>Total</Text>
+          <Text style={localStyles.totalText}>{localizationStrings.total}</Text>
           <Text style={localStyles.totalAmount}>{Property.amount*selectedGuestCount}</Text>
         </View>
 
         <View style={localStyles.contactHeader}>
-          <Text style={localStyles.contactTitle}>Contact Details</Text>
+          <Text style={localStyles.contactTitle}>{localizationStrings.Contact_d}</Text>
           <Text style={localStyles.contactSubtitle}>
-            We'll use this information to send you confirmation and updates about your booking
+          {localizationStrings.C_txt}
           </Text>
         </View>
 
         <View style={localStyles.textInputContainer}>
           <TextInputField
-            placeholder="First Name"
+            placeholder={localizationStrings.First_name}
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
@@ -100,7 +101,7 @@ export default function BookingDetails() {
         </View>
         <View style={localStyles.textInputContainer}>
           <TextInputField
-            placeholder="Last Name"
+            placeholder={localizationStrings.Last_Name}
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
@@ -110,7 +111,7 @@ export default function BookingDetails() {
         </View>
         <View style={localStyles.textInputContainer}>
           <TextInputField
-            placeholder="Email"
+            placeholder={localizationStrings.email}
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
@@ -120,7 +121,7 @@ export default function BookingDetails() {
         </View>
         <View style={localStyles.textInputContainer}>
           <TextInputField
-            placeholder="Phone Number"
+            placeholder={localizationStrings.Mobile_number}
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
@@ -134,7 +135,7 @@ export default function BookingDetails() {
          CheckInputData()
         }}
         style={[styles.tabBtn, localStyles.nextButton]}>
-        <Text style={localStyles.nextButtonText}>NEXT</Text>
+        <Text style={localStyles.nextButtonText}>{localizationStrings.next}</Text>
       </TouchableOpacity>
       </ScrollView>
       

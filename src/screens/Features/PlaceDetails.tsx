@@ -34,6 +34,7 @@ import {
 } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
 import Rating from '../../configs/Ratting';
+import localizationStrings from '../../utils/Localization';
 
 export default function PlaceDetails() {
   const route = useRoute();
@@ -170,7 +171,7 @@ const Add_chatUser =async()=>{
                   setModalVisible(true);
                 }}
                 style={localStyles.btn}>
-                <Text style={localStyles.btnText}>BOOK</Text>
+                <Text style={localStyles.btnText}>{localizationStrings.book}</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
@@ -180,7 +181,7 @@ const Add_chatUser =async()=>{
                   });
                 }}
                 style={localStyles.btn}>
-                <Text style={localStyles.btnText}>Edit</Text>
+                <Text style={localStyles.btnText}>{localizationStrings.edit}</Text>
               </TouchableOpacity>
             )}
 
@@ -189,15 +190,15 @@ const Add_chatUser =async()=>{
                 setmodalMenuVisible(true);
               }}
               style={localStyles.btn}>
-              <Text style={localStyles.btnText}>MENU</Text>
+              <Text style={localStyles.btnText}>{localizationStrings.menu}</Text>
             </TouchableOpacity>
           </View>
 
           <View style={localStyles.galleryHeaderContainer}>
-            <Text style={localStyles.galleryHeaderText}>Gallery Photos</Text>
+            <Text style={localStyles.galleryHeaderText}>{localizationStrings.G_photo}</Text>
             {user?.type == 'User' && (
               <TouchableOpacity>
-                <Text style={localStyles.seeAllText}>See all</Text>
+                <Text style={localStyles.seeAllText}>{localizationStrings.see_a}</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -224,7 +225,7 @@ const Add_chatUser =async()=>{
               <TouchableOpacity style={localStyles.contactButton}>
                 <Call />
                 <Text style={localStyles.contactButtonText}>
-                  Book online or call:{' '}
+                 {localizationStrings.B_O_call}:
                   {propertDetails?.book_online_mobile_number}
                 </Text>
               </TouchableOpacity>
@@ -234,12 +235,12 @@ const Add_chatUser =async()=>{
                 }}
                 style={[localStyles.contactButton, localStyles.chatButton]}>
                 <Chat />
-                <Text style={localStyles.contactButtonText}>Chat now</Text>
+                <Text style={localStyles.contactButtonText}>{localizationStrings.c_now}</Text>
               </TouchableOpacity>
             </View>
           )}
           <View style={localStyles.descriptionContainer}>
-            <Text style={localStyles.sectionTitle}>Title</Text>
+            <Text style={localStyles.sectionTitle}>{localizationStrings.title}</Text>
             <Text style={[localStyles.sectionTitle, {marginTop: 10}]}>
               {propertDetails?.title}
             </Text>
@@ -253,21 +254,21 @@ const Add_chatUser =async()=>{
         </View>
 
         <View style={localStyles.openingHoursContainer}>
-          <Text style={localStyles.sectionTitle}>Opening hours</Text>
+          <Text style={localStyles.sectionTitle}>{localizationStrings.O_hours}</Text>
 
           <Text style={localStyles.openingHoursText}>
             {`${formatTimes().startTime} - ${formatTimes().endTime}`}
           </Text>
         </View>
         <View style={localStyles.scheduleContainer}>
-        <Text style={localStyles.sectionTitle}>Lunch Time</Text>
+        <Text style={localStyles.sectionTitle}>{localizationStrings.L_time}</Text>
           <Text style={localStyles.scheduleText}>
             {timeFormate(propertDetails?.lunch_start)} -{' '}
             {timeFormate(propertDetails?.lunch_end)}
           </Text>
         </View>
         <View style={localStyles.scheduleContainer}>
-        <Text style={localStyles.sectionTitle}>Dinner Time</Text>
+        <Text style={localStyles.sectionTitle}>{localizationStrings.D_time}</Text>
           <Text style={localStyles.scheduleText}>
             {timeFormate(propertDetails?.dinner_start)} -{' '}
             {timeFormate(propertDetails?.dinner_end)}
@@ -275,14 +276,14 @@ const Add_chatUser =async()=>{
         </View>
        
         <View style={[localStyles.sectionContainer, {marginTop: 20}]}>
-          <Text style={localStyles.sectionTitle}>How to get to</Text>
+          <Text style={localStyles.sectionTitle}>{localizationStrings.h_t_get}</Text>
           <Text style={localStyles.sectionTitle}>{propertDetails?.title}</Text>
         </View>
         <ImageBackground
           style={localStyles.mapImageBackground}
           source={require('../../assets/Cropping/map.png')}>
           <TouchableOpacity style={localStyles.mapButton}>
-            <Text style={localStyles.mapButtonText}>OPEN IN MAPS</Text>
+            <Text style={localStyles.mapButtonText}>{localizationStrings.O_map}</Text>
           </TouchableOpacity>
         </ImageBackground>
 

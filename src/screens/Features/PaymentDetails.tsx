@@ -23,6 +23,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {add_booking} from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
 import Rating from '../../configs/Ratting';
+import localizationStrings from '../../utils/Localization';
 
 export default function PaymentDetails() {
   const [isVisible, setIsVisible] = useState(false);
@@ -92,7 +93,7 @@ export default function PaymentDetails() {
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader titile="Booking Details" width={18} />
+        <ProfileHeader title={localizationStrings.P_details} width={18} />
 
         <View style={styles.bookingContainer}>
           <View style={styles.bookingImageContainer}>
@@ -116,22 +117,22 @@ export default function PaymentDetails() {
         </View>
 
         <View style={styles.totalContainer}>
-          <Text style={styles.totalText}>No Guest {selectedGuestCount}</Text>
+          <Text style={styles.totalText}>{localizationStrings.G_no} {selectedGuestCount}</Text>
           
         </View>
         <View style={styles.totalContainer}>
-          <Text style={styles.totalText}>Total</Text>
+          <Text style={styles.totalText}>{localizationStrings.total}</Text>
           <Text style={styles.totalAmount}>
             $ {Property.amount * selectedGuestCount}
           </Text>
         </View>
 
         <View style={styles.paymentTitleContainer}>
-          <Text style={styles.paymentTitle}>Payment Details</Text>
+          <Text style={styles.paymentTitle}>{localizationStrings.P_details}</Text>
         </View>
         <View style={styles.creditDebitTitleContainer}>
           <Text style={styles.creditDebitTitle}>
-            Select Credit & Debit Cards
+            {localizationStrings.s_card}
           </Text>
         </View>
         <View style={styles.cardListContainer}>
@@ -174,16 +175,16 @@ export default function PaymentDetails() {
               <AddPlus />
             </View>
             <View style={styles.addCardTextContainer}>
-              <Text style={styles.addCardText}>Add New Card</Text>
+              <Text style={styles.addCardText}>{localizationStrings.A_card}</Text>
             </View>
           </TouchableOpacity>
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Card Number</Text>
+          <Text style={styles.inputLabel}>{localizationStrings.Card_no}</Text>
           <View style={styles.inputFieldContainer}>
             <TextInput
-              placeholder="Enter 12 digit card number"
+              placeholder="12 localizationStrings.Card_no}"
               placeholderTextColor={'#979797'}
               style={styles.inputField}
               value={cardNumber}
@@ -193,19 +194,19 @@ export default function PaymentDetails() {
 
           <View style={styles.inputRow}>
             <View style={styles.inputColumn}>
-              <Text style={styles.inputLabel}>Valid Thru</Text>
+              <Text style={styles.inputLabel}>{localizationStrings.v_date}</Text>
               <View style={styles.smallInputFieldContainer}>
                 <TextInput
-                  placeholder="Month"
+                  placeholder={localizationStrings.month}
                   style={styles.inputField}
                   value={validMonth}
                   onChangeText={setValidMonth}
                 />
               </View>
-              <Text style={styles.inputLabel}>Ex year</Text>
+              <Text style={styles.inputLabel}>{localizationStrings.E_year}</Text>
               <View style={styles.smallInputFieldContainer}>
                 <TextInput
-                  placeholder="Year"
+                  placeholder={localizationStrings.E_year}
                   style={styles.inputField}
                   value={validYear}
                   onChangeText={setValidYear}
@@ -213,7 +214,7 @@ export default function PaymentDetails() {
               </View>
             </View>
             <View style={styles.inputColumn}>
-              <Text style={styles.inputLabel}>CVV</Text>
+              <Text style={styles.inputLabel}>{localizationStrings.cvv}</Text>
               <View style={styles.cvvContainer}>
                 <TextInput
                   placeholder="CVV"
@@ -231,10 +232,10 @@ export default function PaymentDetails() {
             </View>
           </View>
 
-          <Text style={styles.inputLabel}>Card Holder’s Name</Text>
+          <Text style={styles.inputLabel}>{localizationStrings.c_H_name}</Text>
           <View style={styles.inputFieldContainer}>
             <TextInput
-              placeholder="Name on Card"
+              placeholder={localizationStrings.c_H_name}
               placeholderTextColor={'#979797'}
               style={styles.inputField}
               value={cardHolderName}
@@ -249,7 +250,7 @@ export default function PaymentDetails() {
             // navigation.navigate(ScreenNameEnum.PAYMENT_SUCCESS);
           }}
           style={styles.nextButton}>
-          <Text style={styles.nextButtonText}>Pay Now</Text>
+          <Text style={styles.nextButtonText}>{localizationStrings.P_now}</Text>
         </TouchableOpacity>
 
         <Modal visible={isVisible} animationType="slide" transparent={true}>

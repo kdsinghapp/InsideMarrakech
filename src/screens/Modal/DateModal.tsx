@@ -19,6 +19,7 @@ import CalendarPicker from 'react-native-calendar-picker';
 import moment from 'moment';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import { errorToast } from '../../configs/customToast';
+import localizationStrings from '../../utils/Localization';
 
 const DateModal = ({ visible, onClose, data }) => {
   const screenHeight = Dimensions.get('screen').height;
@@ -97,7 +98,7 @@ const DateModal = ({ visible, onClose, data }) => {
             />
           </TouchableOpacity>
           <View style={{ marginTop: 20, marginHorizontal: 15 }}>
-            <Text style={styles.title}>Select Date</Text>
+            <Text style={styles.title}>{localizationStrings.s_date}</Text>
             <CalendarPicker
               onDateChange={setSelectedDate}
               selectedDayColor="#7300e6"
@@ -105,7 +106,7 @@ const DateModal = ({ visible, onClose, data }) => {
               todayBackgroundColor="#f2e6ff"
               minDate={new Date()}
             />
-            <Text style={styles.title}>Guests</Text>
+            <Text style={styles.title}>{localizationStrings.guest}</Text>
             <View style={styles.optionContainer}>
               <FlatList
                 data={Guests}
@@ -138,7 +139,7 @@ const DateModal = ({ visible, onClose, data }) => {
             </View>
           </View>
           <TouchableOpacity onPress={handleNext} style={styles.searchButton}>
-            <Text style={styles.searchButtonText}>Next</Text>
+            <Text style={styles.searchButtonText}>{localizationStrings.next}</Text>
           </TouchableOpacity>
         </Animated.View>
       </View>

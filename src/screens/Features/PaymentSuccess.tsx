@@ -5,6 +5,7 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { styles } from '../../configs/Styles'
 import { useNavigation } from '@react-navigation/native'
 import ScreenNameEnum from '../../routes/screenName.enum'
+import localizationStrings from '../../utils/Localization'
 
 export default function PaymentSuccess() {
   const navigation = useNavigation()
@@ -24,7 +25,7 @@ export default function PaymentSuccess() {
       </View>
       
       <View style={localStyles.confirmationContainer}>
-        <Text style={localStyles.confirmationText}>Your booking is confirmed! 🎉</Text>
+        <Text style={localStyles.confirmationText}>{localizationStrings.Y_B_C} 🎉</Text>
         <Text style={localStyles.descriptionText}>Lorem ipsum dolor sit amet consectetur. Semper odio nullam neque</Text>
         <Text style={localStyles.descriptionText}>lacus sit egestas.</Text>
       </View>
@@ -34,7 +35,7 @@ export default function PaymentSuccess() {
           navigation.navigate(ScreenNameEnum.BOTTOM_TAB);
         }}
         style={localStyles.button}>
-        <Text style={localStyles.buttonText}>BACK TO HOME</Text>
+        <Text style={localStyles.buttonText}>{localizationStrings.b_home}</Text>
       </TouchableOpacity>
     </View>
   )

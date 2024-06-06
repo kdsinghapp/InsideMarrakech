@@ -22,6 +22,7 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {get_property_menu} from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
+import localizationStrings from '../../utils/Localization';
 
 const MenuModal = ({visible, onClose, data}) => {
   const screenHeight = Dimensions.get('screen').height;
@@ -95,7 +96,7 @@ const MenuModal = ({visible, onClose, data}) => {
               alignItems: 'center',
             }}>
             <Text style={[styles.title, {width: '15%'}]}></Text>
-            <Text style={styles.title}>Menu</Text>
+            <Text style={styles.title}>{localizationStrings.menu}</Text>
             <TouchableOpacity
               onPress={() => {
                 onClose();
@@ -114,7 +115,7 @@ const MenuModal = ({visible, onClose, data}) => {
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : menu?.length === 0 ? ( <>
-        <Text style={styles.emptyText}>No menu items available.</Text>
+        <Text style={styles.emptyText}>{localizationStrings.no_menu}</Text>
         <TouchableOpacity
             onPress={() => {
               onClose()

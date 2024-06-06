@@ -19,6 +19,7 @@ import Pin from '../../assets/svg/BlackPin.svg';
 import Box from '../../assets/svg/checkBox.svg';
 import Rating from '../../configs/Ratting';
 import { useSelector } from 'react-redux';
+import localizationStrings from '../../utils/Localization';
 
 export default function AddTravelerDetails() {
   const route = useRoute();
@@ -73,7 +74,7 @@ export default function AddTravelerDetails() {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader titile="Booking Details" width={18} />
+        <ProfileHeader title={localizationStrings.Booking_details} width={13} />
 
         <View style={[styles.shadow, styles.bookingDetails]}>
           <View style={styles.imageContainer}>
@@ -99,11 +100,11 @@ export default function AddTravelerDetails() {
         </View>
 
         <View style={styles.totalContainer}>
-          <Text style={styles.totalText}>Total</Text>
+          <Text style={styles.totalText}>{localizationStrings.total}</Text>
           <Text style={styles.totalText}>$ {Property.amount*selectedGuestCount}</Text>
         </View>
         <View style={styles.totalContainer}>
-          <Text style={styles.totalText}>Booking Date</Text>
+          <Text style={styles.totalText}>{localizationStrings.B_date}</Text>
           <Text style={styles.totalText}>{selectedDate}</Text>
         </View>
         {/* <TouchableOpacity
@@ -134,9 +135,9 @@ export default function AddTravelerDetails() {
 
         {travelers.map((traveler, index) => (
           <View key={index} style={styles.travelerSection}>
-            <Text style={styles.travelerTitle}>{`Traveler ${
+            <Text style={styles.travelerTitle}>{`${localizationStrings.traveler} ${
               index + 1
-            } (Adults)`}</Text>
+            } (${localizationStrings.adults})`}</Text>
             <View style={[styles.txtInput, styles.inputMargin]}>
               <TextInputField
                 placeholder="First Name"

@@ -98,12 +98,103 @@
     "dinner_s_time":"Dinner Start Time",
     "dinner_e_time":"Dinner End TIme",
     "add_p":"Add Post",
-    "c_contact":"Chat Conatct"
+    "c_contact":"Chat Conatct",
+    "edit":"Edit",
+
+    "menu":"Menu",
+    "book":"Book",
+    "A_menu":"Add Menu",
+    "G_photo":"Gallery Photo",
+    "see_a":"See all",
+    "B_O_call":"Book online or call",
+    "c_now":"Chat now",
+    "O_hours":"Opening hours",
+    "L_time":"Lunch Time",
+    "D_time":"Dinner Time",
+    "h_t_get":"Hou to get To",
+    "O_map":"Open Map",
+    "no_menu":"No menu items available.",
+    "s_date":"Select Date",
+    "next":"Next",
+    "guest":"Guests",
+    "Booking_details":"Booking Details",
+    "G_no":"Guest No",
+    "total":"Total",
+    "Contact_d":"Contact Details",
+      "C_txt":"  We'll use this information to send you confirmation and updates about your booking"
+,
+"B_date":"Booking Date",
+"traveler":"Traveler",
+"adults":"Adults",
+"language":"language",
+"address":"address",
+"P_details":"Payment Details",
+
+
+"s_card":"Select Credit & Debit Cards",
+"A_card":"Add New Card",
+"Card_no":"Card Number",
+"v_date":"Valid Thru",
+"cvv":"CVV",
+"E_year":"Ex year",
+"c_H_name":"Card Holder`Name",
+"P_now":"Pay Now",
+"month":"month",
+"b_home":"Back To Home",
+"Y_B_C":"Your booking is confirmed!"
+
+
+
+
+
+
+
+
+     
   
 
   },
 
   "French": {
+    "month":"mois",
+    "Y_B_C": "Votre réservation est confirmée!",
+    "b_home": "Retour à l'accueil",
+    "s_card": "Sélectionner les cartes de crédit et de débit",
+    "A_card": "Ajouter une nouvelle carte",
+    "Card_no": "Numéro de carte",
+    "v_date": "Valide jusqu'au",
+    "cvv": "CVV",
+    "E_year": "Année d'expiration",
+    "c_H_name": "Nom du titulaire de la carte",
+    "P_now": "Payer maintenant",
+    "P_details":"Détails de paiement",
+    "B_date": "Date de réservation",
+    "traveler": "Voyageur",
+    "adults": "Adultes",
+    "language": "Langue",
+    "address": "Adresse",
+    "Booking_details": "Détails de la réservation",
+    "C_txt":"Nous utiliserons ces informations pour vous envoyer une confirmation et des mises à jour concernant votre réservation."
+   , "G_no": "Nombre d'invités",
+    "total": "Total",
+    "Contact_d": "Détails de contact",
+    "next":"Suivant",
+    "guest":"invitées",
+    "s_date":"Sélectionner une date",
+    "no_menu":"Aucun élément de menu disponible.",
+    "edit":"Modifier",
+    "menu": "Menu",
+    "book": "Réserver",
+    "A_menu": "Ajouter un menu",
+    "G_photo": "Photo de la galerie",
+    "see_a": "Voir tout",
+    "B_O_call": "Réserver en ligne ou appeler",
+    "c_now": "Chattez maintenant",
+    "O_hours": "Heures d'ouverture",
+    "L_time": "Heure du déjeuner",
+    "D_time": "Heure du dîner",
+    "h_t_get": "Comment y arriver",
+    "O_map": "Ouvrir la carte",
     "c_contact":"Chat Contact",
     "add_p":"Ajouter une publication",
     "lunch_s_time": "Heure de début du déjeuner",
