@@ -21,6 +21,7 @@ import {update_profile} from '../../redux/feature/featuresSlice';
 import {get_profile} from '../../redux/feature/authSlice';
 import {useNavigation} from '@react-navigation/native';
 import localizationStrings from '../../utils/Localization';
+import GooglePlacesInput from '../../configs/AutoAddress';
 
 export default function EditProfile() {
   const user = useSelector(state => state.auth.userData);
@@ -236,13 +237,14 @@ export default function EditProfile() {
             <View style={Styles.labelContainerWithMargin}>
               <Text style={Styles.labelText}>{localizationStrings.home_town}</Text>
             </View>
-            <View style={Styles.txtInput}>
-              <TextInputField
+           
+              {/* <TextInputField
                 placeholder={localizationStrings.home_town}
                 value={homeTown}
                 onChangeText={setHomeTown}
-              />
-            </View>
+              /> */}
+              <GooglePlacesInput />
+          
           </>
         )}
         {user?.type == 'Company' && (

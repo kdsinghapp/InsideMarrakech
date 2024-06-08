@@ -10,6 +10,8 @@ import {
   Modal,
   StyleSheet,
   TextInput,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import Header from '../../configs/Header';
 import Searchbar from '../../configs/Searchbar';
@@ -31,7 +33,7 @@ import {
   get_privacy_policy,
 } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
-import {all} from 'axios';
+import axios, {all} from 'axios';
 import localizationStrings from '../../utils/Localization';
 
 export default function Home() {
@@ -49,6 +51,8 @@ export default function Home() {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [origin, setOrigin] = useState({ latitude: 22.701384, longitude: 75.867401 });
+  const [locationName, setLocationName] = useState('');
 
 
 

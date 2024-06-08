@@ -282,7 +282,11 @@ const Add_chatUser =async()=>{
         <ImageBackground
           style={localStyles.mapImageBackground}
           source={require('../../assets/Cropping/map.png')}>
-          <TouchableOpacity style={localStyles.mapButton}>
+          <TouchableOpacity 
+          onPress={()=>{
+            navigation.navigate(ScreenNameEnum.MAP_SCREEN)
+          }}
+          style={localStyles.mapButton}>
             <Text style={localStyles.mapButtonText}>{localizationStrings.O_map}</Text>
           </TouchableOpacity>
         </ImageBackground>

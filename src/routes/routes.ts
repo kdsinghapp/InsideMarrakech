@@ -23,6 +23,7 @@ import BookingDetails from "../screens/Features/BookingDetails";
 import PaymentDetails from "../screens/Features/PaymentDetails";
 import PaymentSuccess from "../screens/Features/PaymentSuccess";
 import PlaceDetails from "../screens/Features/PlaceDetails";
+import MapScreen from "../screens/Map";
 import AboutUs from "../screens/ProfileSection/AboutUs";
 import BookingTab from "../screens/ProfileSection/BookingTab";
 import ChangePassword from "../screens/ProfileSection/ChangePassword";
@@ -169,6 +170,10 @@ const _routes = {
     {
       name: ScreenNameEnum.MsgNotification,
       Component:MsgNotification,
+    },
+    {
+      name: ScreenNameEnum.MAP_SCREEN,
+      Component:MapScreen,
     },
     
   ],
