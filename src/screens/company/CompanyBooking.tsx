@@ -411,4 +411,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const BList = [{ name: `${localizationStrings.Pending}` }, { name: `${localizationStrings.Complete}` }, { name: `${localizationStrings.Cancel}` }];
+const BList = [{ name: localizationStrings.Pending }, { name:localizationStrings.Complete}, { name: localizationStrings.Cancel }];

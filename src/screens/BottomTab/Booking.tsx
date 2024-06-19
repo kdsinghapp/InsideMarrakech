@@ -290,12 +290,12 @@ const localStyles = StyleSheet.create({
 });
 const BList = [
   {
-    name:`${localizationStrings.Pending}`,
+    name:localizationStrings.Pending,
   },
   {
-    name: `${localizationStrings.Complete}`,
+    name: localizationStrings.Complete,
   },
   {
-    name: `${localizationStrings.Cancel}`,
+    name: localizationStrings.Cancel,
   },
 ];

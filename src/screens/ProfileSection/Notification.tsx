@@ -35,20 +35,20 @@ interface NotificationItem {
 const data: NotificationItem[] = [
   {
     id: '1',
-    name: `${localizationStrings.booking_update}`,
-    Details: `${localizationStrings.notification_txt}`,
+    name: localizationStrings.booking_update,
+    Details: localizationStrings.notification_txt,
     key: 'booking_updates',
   },
   {
     id: '2',
-    name: `${localizationStrings.reviews}`,
-    Details: `${localizationStrings.notification_txt}`,
+    name: localizationStrings.reviews,
+    Details: localizationStrings.notification_txt,
     key: 'reviews',
   },
   {
     id: '3',
-    name: `${localizationStrings.activities_attraction}`,
-    Details: `${localizationStrings.notification_txt}`,
+    name: localizationStrings.activities_attraction,
+    Details: localizationStrings.notification_txt,
     key: 'tours_activities_attra',
   },
 ];

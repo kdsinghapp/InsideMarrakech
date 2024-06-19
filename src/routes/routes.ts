@@ -202,7 +202,7 @@ BOTTOMTAB_ROUTE_USER:[
       name: ScreenNameEnum.HOME_SCREEN,
       Component:Home,
       logo:require('../assets/Cropping/Home1.png'),
-      lable:`${localizationStrings.Home}`,
+      lable:localizationStrings.Home,
       logo2:require('../assets/Cropping/Home2x.png'),
     },
     {
@@ -210,7 +210,7 @@ BOTTOMTAB_ROUTE_USER:[
       Component:Search,
       logo:require('../assets/Cropping/Search2x.png'),
       logo2:require('../assets/Cropping/Search2x.png'),
-      lable:`${localizationStrings.search}`,
+      lable:localizationStrings.search,
     },
     
     {
@@ -218,7 +218,7 @@ BOTTOMTAB_ROUTE_USER:[
       Component:Booking,
       logo:require('../assets/Cropping/Booking2x.png'),
       logo2:require('../assets/Cropping/BookingActive2.png'),
-      lable:`${localizationStrings.Booking}`,
+      lable:localizationStrings.Booking,
     },
   
     {
@@ -226,7 +226,7 @@ BOTTOMTAB_ROUTE_USER:[
       Component:Profile,
       logo:require('../assets/Cropping/Profile2x.png'),
       logo2:require('../assets/Cropping/ProfileActive2.png'),
-      lable:`${localizationStrings.Profile}`,
+      lable:localizationStrings.Profile,
     },
 
  
@@ -236,7 +236,7 @@ BOTTOMTAB_ROUTE_USER:[
       name: ScreenNameEnum.HOME_SCREEN,
       Component:Home,
       logo:require('../assets/Cropping/Home1.png'),
-      lable:`${localizationStrings.Home}`,
+      lable:localizationStrings.Home,
       logo2:require('../assets/Cropping/Home2x.png'),
     },
    
@@ -246,7 +246,7 @@ BOTTOMTAB_ROUTE_USER:[
       Component:CompanyBooking,
       logo:require('../assets/Cropping/bag-2.png'),
       logo2:require('../assets/Cropping/bag-2a.png'),
-      lable:`${localizationStrings.Booking}`,
+      lable:localizationStrings.Booking,
     },
   
     {
@@ -261,14 +261,14 @@ BOTTOMTAB_ROUTE_USER:[
       Component:ChatPage,
       logo:require('../assets/Cropping/message-notif.png'),
       logo2:require('../assets/Cropping/Chats_1.png'),
-      lable:`${localizationStrings.messages}`,
+      lable:localizationStrings.messages,
     },
     {
       name: ScreenNameEnum.CProfile,
       Component:CProfile,
       logo:require('../assets/Cropping/Profile2x.png'),
       logo2:require('../assets/Cropping/ProfileActive2.png'),
-      lable:`${localizationStrings.Profile}`,
+      lable:localizationStrings.Profile,
     },
 
  

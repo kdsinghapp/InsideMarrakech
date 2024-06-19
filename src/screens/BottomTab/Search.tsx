@@ -120,7 +120,7 @@ export default function Search() {
           <View style={styles.search}>
             <SearchIcon />
             <TextInput
-              placeholder="Search"
+              placeholder={localizationStrings.search}
               placeholderTextColor={'#000'}
               style={styles.searchInput}
               value={searchQuery}

@@ -68,7 +68,7 @@
         <View style={Styles.container}>
           {isLoading ? <Loading /> : null}
           <ScrollView showsVerticalScrollIndicator={false}>
-            <ProfileHeader titile="Booking Details" width={21} />
+            <ProfileHeader title="Booking Details" width={21} />
             <View
              
               style={Styles.profileImageContainer}>

@@ -8,6 +8,7 @@ import {
   Platform,
   Settings,
   ScrollView,
+  StyleSheet,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -17,7 +18,8 @@ import ScreenNameEnum from '../../routes/screenName.enum';
 import {useDispatch, useSelector} from 'react-redux';
 import {get_profile, logout} from '../../redux/feature/authSlice';
 import localizationStrings from '../../utils/Localization';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Dropdown } from 'react-native-element-dropdown';
 export default function Profile() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.userData);
@@ -25,7 +27,19 @@ export default function Profile() {
   const isFacuse = useIsFocused();
   const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation();
+  const [value, setValue] = useState('en');
+  const [items] = useState([
+    { label: 'English', value: 'English' },
+    { label: 'French', value: 'French' },
+    // Add more languages here
+  ]);
+  const handleChangeLanguage =async (language) => {
+    localizationStrings.setLanguage(language);
+    await AsyncStorage.setItem("Lng", language)
 
+
+    setValue(language);
+  };
   useEffect(() => {
     get_userprofile();
   }, [user, isFacuse]);
@@ -160,17 +174,29 @@ export default function Profile() {
             renderItem={renderItem}
           />
         </View>
-     
+        <Dropdown
+        style={styles.dropdown}
+        data={items}
+        labelField="label"
+        valueField="value"
+        placeholder="Select Language"
+        value={value}
+        
+        onChange={item => handleChangeLanguage(item.value)}
+      />
+  
         <TouchableOpacity
           onPress={() => {
             setIsVisible(true);
           }}
           style={{
-            height: 59,
+            height:55,
             marginTop: 15,
             //backgroundColor: '#FAFAFA',
             // alignItems: 'center',
+            borderTopWidth:0.4,
             justifyContent: 'center',
+           
           }}>
           <Text
             style={{
@@ -282,6 +308,19 @@ export default function Profile() {
   );
 }
 
+
+const styles = StyleSheet.create({
+  dropdown: {
+   
+    height:40,
+justifyContent:'center',
+    width:'100%',
+    alignSelf:'center',
+    backgroundColor:'#fff',
+   
+  
+  },
+})
 const Account = [
   {
     name: `${localizationStrings.Edit_profile}`,
