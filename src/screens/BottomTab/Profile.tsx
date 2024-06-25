@@ -29,8 +29,14 @@ export default function Profile() {
   const navigation = useNavigation();
   const [value, setValue] = useState('en');
   const [items] = useState([
-    { label: 'English', value: 'English' },
-    { label: 'French', value: 'French' },
+    { label: 'English', value: 'English', flag: require('../../assets/Cropping/usa.png') },
+    { label: 'French', value: 'French', flag: require('../../assets/Cropping/france.png') },
+    { label: 'Chinese', value: 'Chinese', flag: require('../../assets/Cropping/china.png') },
+    { label: 'Russian', value: 'Russian', flag: require('../../assets/Cropping/russia.png') },
+    { label: 'Italian', value: 'Italian', flag: require('../../assets/Cropping/italian.png') },
+    { label: 'Spanish', value: 'Spanish', flag: require('../../assets/Cropping/spain.png') },
+    { label: 'Japanese', value: 'Japanese', flag: require('../../assets/Cropping/japan.png') },
+    
     // Add more languages here
   ]);
   const handleChangeLanguage =async (language) => {
@@ -174,6 +180,13 @@ export default function Profile() {
             renderItem={renderItem}
           />
         </View>
+        <View style={{flexDirection:'row',alignItems:'center'}}>
+
+        <Image
+          style={{ height: 25, width: 25, marginTop: 10 }}
+          resizeMode="contain"
+          source={items.find(item => item.value === value)?.flag}
+        />
         <Dropdown
         style={styles.dropdown}
         data={items}
@@ -184,7 +197,7 @@ export default function Profile() {
         
         onChange={item => handleChangeLanguage(item.value)}
       />
-  
+  </View>
         <TouchableOpacity
           onPress={() => {
             setIsVisible(true);

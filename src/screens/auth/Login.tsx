@@ -181,13 +181,13 @@ export default function Login() {
             <Text style={styles.signUpText}>{localizationStrings.signup_msg}</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.orContainer}>
+        {/* <View style={styles.orContainer}>
           <Text style={styles.orText}>{localizationStrings.or}</Text>
-        </View>
-        <TouchableOpacity style={styles.googleSignInButton}>
+        </View> */}
+        {/* <TouchableOpacity style={styles.googleSignInButton}>
           <Gicon />
           <Text style={styles.googleSignInText}>{localizationStrings.signup_google}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <CountryPicker
         show={show}
