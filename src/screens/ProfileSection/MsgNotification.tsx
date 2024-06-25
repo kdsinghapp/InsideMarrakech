@@ -16,6 +16,7 @@ import ProfileHeader from '../../configs/ProfileHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { delete_notification, get_subscription, get_user_notification } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
+import localizationStrings from '../../utils/Localization';
 
     interface Item {
       id: string;
@@ -92,7 +93,7 @@ import Loading from '../../configs/Loader';
         <View style={styles.container}>
           <ScrollView showsVerticalScrollIndicator={false}>
             {isLoading?<Loading />:null}
-          <ProfileHeader title={'Notification'} width={26} />
+          <ProfileHeader title={localizationStrings.notification} width={26} />
     
           <View style={styles.notificationContainer}>
           {Notification?.length >0 ? <FlatList

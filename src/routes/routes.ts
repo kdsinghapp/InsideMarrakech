@@ -20,6 +20,8 @@ import CProfile from "../screens/company/CProfile";
 import updateProperty from "../screens/company/updateProperty";
 import AddTravelerDetails from "../screens/Features/AddTravelerDetails";
 import BookingDetails from "../screens/Features/BookingDetails";
+import FullscreenImageScreen from "../screens/Features/FullscreenImageScreen";
+import Gallery_Screen from "../screens/Features/Gallery_Screen";
 import PaymentDetails from "../screens/Features/PaymentDetails";
 import PaymentSuccess from "../screens/Features/PaymentSuccess";
 import PlaceDetails from "../screens/Features/PlaceDetails";
@@ -42,6 +44,7 @@ import ScreenNameEnum from "./screenName.enum";
 
 
 const _routes = {
+
   REGISTRATION_ROUTE: [
     {
       name: ScreenNameEnum.SPLASH_SCREEN,
@@ -175,6 +178,14 @@ const _routes = {
       name: ScreenNameEnum.MAP_SCREEN,
       Component:MapScreen,
     },
+    {
+      name: ScreenNameEnum.Gallery_Screen,
+      Component:Gallery_Screen,
+    },
+    {
+      name: ScreenNameEnum.FullscreenImageScreen,
+      Component:FullscreenImageScreen,
+    },
     
   ],
   HOME_ROUTE: [
@@ -197,83 +208,8 @@ const _routes = {
 //  ],
 
 
-BOTTOMTAB_ROUTE_USER:[
-    {
-      name: ScreenNameEnum.HOME_SCREEN,
-      Component:Home,
-      logo:require('../assets/Cropping/Home1.png'),
-      lable:localizationStrings.Home,
-      logo2:require('../assets/Cropping/Home2x.png'),
-    },
-    {
-      name: ScreenNameEnum.SEARCH_SCREEN,
-      Component:Search,
-      logo:require('../assets/Cropping/Search2x.png'),
-      logo2:require('../assets/Cropping/Search2x.png'),
-      lable:localizationStrings.search,
-    },
-    
-    {
-      name: ScreenNameEnum.BOOKING_SCREEN,
-      Component:Booking,
-      logo:require('../assets/Cropping/Booking2x.png'),
-      logo2:require('../assets/Cropping/BookingActive2.png'),
-      lable:localizationStrings.Booking,
-    },
-  
-    {
-      name: ScreenNameEnum.PROFILE_SCREEN,
-      Component:Profile,
-      logo:require('../assets/Cropping/Profile2x.png'),
-      logo2:require('../assets/Cropping/ProfileActive2.png'),
-      lable:localizationStrings.Profile,
-    },
 
- 
-  ],
-  BOTTOMTAB_ROUTE_COMPANY:[
-    {
-      name: ScreenNameEnum.HOME_SCREEN,
-      Component:Home,
-      logo:require('../assets/Cropping/Home1.png'),
-      lable:localizationStrings.Home,
-      logo2:require('../assets/Cropping/Home2x.png'),
-    },
-   
-    
-    {
-      name: ScreenNameEnum.CompanyBooking,
-      Component:CompanyBooking,
-      logo:require('../assets/Cropping/bag-2.png'),
-      logo2:require('../assets/Cropping/bag-2a.png'),
-      lable:localizationStrings.Booking,
-    },
-  
-    {
-      name: ScreenNameEnum.ADD_PROPERTY,
-      Component:AddProperty,
-      logo:require('../assets/Cropping/Cadd.png'),
-      logo2:require('../assets/Cropping/Cadd.png'),
-      lable:''
-    },
-    {
-      name: ScreenNameEnum.CHAT_CONTACT_SCREEN,
-      Component:ChatPage,
-      logo:require('../assets/Cropping/message-notif.png'),
-      logo2:require('../assets/Cropping/Chats_1.png'),
-      lable:localizationStrings.messages,
-    },
-    {
-      name: ScreenNameEnum.CProfile,
-      Component:CProfile,
-      logo:require('../assets/Cropping/Profile2x.png'),
-      logo2:require('../assets/Cropping/ProfileActive2.png'),
-      lable:localizationStrings.Profile,
-    },
-
- 
-  ]
 
 };
-
+console.log('Localization for Home:', localizationStrings.Home);
 export default _routes;

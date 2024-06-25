@@ -32,6 +32,8 @@ enum ScreenNameEnum {
   ABOUT_US ='ABOUT_US',
   FAQ_SCREEN ='FAQ_SCREEN',
   MsgNotification ='MsgNotification',
+  Gallery_Screen='Gallery_Screen',
+  FullscreenImageScreen='FullscreenImageScreen',
 
  // Featurs
 

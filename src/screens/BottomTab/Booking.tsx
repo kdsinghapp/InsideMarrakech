@@ -34,7 +34,17 @@ export default function Booking() {
   const BookingList = useSelector(state => state.feature.BookingList);
   const isLoading = useSelector(state => state.feature.isLoading);
   const [isModalVisible, setModalVisible] = useState(false);
-
+  const BList = [
+    {
+      name:localizationStrings.Pending,
+    },
+    {
+      name: localizationStrings.Complete,
+    },
+    {
+      name: localizationStrings.Cancel,
+    },
+  ];
   useEffect(() => {
     getListData(selectedOption);
   }, [selectedOption]);
@@ -288,14 +298,4 @@ const localStyles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
 });
-const BList = [
-  {
-    name:localizationStrings.Pending,
-  },
-  {
-    name: localizationStrings.Complete,
-  },
-  {
-    name: localizationStrings.Cancel,
-  },
-];
+

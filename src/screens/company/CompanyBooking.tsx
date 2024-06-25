@@ -29,6 +29,7 @@ export default function CompanyBooking() {
   const [selectedOption, setSelectedOption] = useState('Pending');
   const user = useSelector(state => state.auth.userData);
   const isLoading = useSelector(state => state.feature.isLoading);
+  const BList = [{ name: localizationStrings.Pending }, { name:localizationStrings.Complete}, { name: localizationStrings.Cancel }];
 
   const isFocused = useIsFocused();
   const BookingList = useSelector(state => state.feature.CBookingList);
@@ -411,4 +412,3 @@ const styles = StyleSheet.create({
   },
 });
 
-const BList = [{ name: localizationStrings.Pending }, { name:localizationStrings.Complete}, { name: localizationStrings.Cancel }];

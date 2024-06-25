@@ -9,79 +9,53 @@ import { useNavigation } from '@react-navigation/native'
 import ScreenNameEnum from '../routes/screenName.enum'
 import localizationStrings from '../utils/Localization'
 import Geolocation from 'react-native-geolocation-service';
+import { getCurrentLocation, locationPermission } from './helperFunction'
+import { useSelector } from 'react-redux'
 export default function Header() {
   const [origin, setOrigin] = useState({ latitude: 22.701384, longitude: 75.867401 });
   const [locationName, setLocationName] = useState('');
-
-
+  const user = useSelector(state => state.auth.userData);
   useEffect(() => {
-    requestLocationPermission();
-}, []);
+    
+    getLiveLocation()
 
-const requestLocationPermission = async () => {
-    if (Platform.OS === 'ios') {
-        Geolocation.requestAuthorization('whenInUse');
-    } else {
-        try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                {
-                    title: 'Location Permission',
-                    message: 'This app needs access to your location to show you directions.',
-                    buttonNeutral: 'Ask Me Later',
-                    buttonNegative: 'Cancel',
-                    buttonPositive: 'OK',
-                }
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-              getLiveLocation()
-                console.log('You can use the location');
-            } else {
-                console.log('Location permission denied');
-            }
-        } catch (err) {
-            console.warn(err);
+  }, [user])
+  function findCityName(response) {
+    const results = response.results;
+    for (let i = 0; i < results.length; i++) {
+      const addressComponents = results[i].address_components;
+      for (let j = 0; j < addressComponents.length; j++) {
+        const types = addressComponents[j].types;
+        if (types.includes('locality') || types.includes('administrative_area_level_2')) {
+          return addressComponents[j].long_name; // Return the city name
         }
-    }
-};
-
-const getLiveLocation = () => {
-  Geolocation.getCurrentPosition(
-    async (position) => {
-      console.log(position);
-      const { latitude, longitude } = position.coords;
-      setOrigin({ latitude, longitude });
-
-      try {
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyBQDSvBppnW59UJ0ALOlGV5aMiJl6bgk70`);
-        const responseData = await response.json();
-
-        console.log(responseData, 'responseData');
-
-        if (responseData.results && responseData.results.length > 0) {
-          // Extracting the main location from the address components
-          const mainLocation = responseData.results[0].address_components.find(component =>
-            component.types.includes('locality') || component.types.includes('administrative_area_level_1')
-          );
-          setLocationName(mainLocation ? mainLocation.long_name : 'Unknown location');
-
-          // Extracting x-goog-maps-metro-area header
-          const metroArea = response.headers.map['x-goog-maps-metro-area'];
-          console.log('Metro Area:', metroArea);
-        } else {
-          setLocationName('Unknown location');
-        }
-      } catch (error) {
-        console.error('Geocoding error:', error.message);
-        setLocationName('Error retrieving location');
       }
-    },
-    (error) => {
-      console.error(error);
-    },
-    { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-  );
-};
+    }
+    return null; // Return null if city name not found
+  }
+
+
+  const getLiveLocation = async () => {
+    const locPermissionDenied = await locationPermission();
+    if (locPermissionDenied) {
+
+      const { latitude, longitude } = await getCurrentLocation();
+      const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.GOOGLE_PLACES_API_KEY}`;
+      try {
+        const res = await fetch(url);
+        const json = await res.json();
+        console.log(json);
+        setLocationName(json)
+
+
+      } catch (e) {
+        console.log("e", e)
+      } finally {
+
+      }
+    }
+  };
+
 
   const navigation = useNavigation()
   return (
@@ -92,7 +66,7 @@ const getLiveLocation = () => {
     <Text style={{fontFamily: 'Federo-Regular',fontSize:12,fontWeight:'500',color:'#000'}}>{localizationStrings.current_location}</Text>
 <View style={{flexDirection:'row'}}>
   <Pin />
-  <Text style={{fontFamily: 'Federo-Regular',fontSize:14,fontWeight:'500',color:'#000',marginHorizontal:5}}>{locationName}</Text>
+  <Text style={{fontFamily: 'Federo-Regular',fontSize:14,fontWeight:'500',color:'#000',marginHorizontal:5}}> {locationName == '' ? 'fetching..' : findCityName(locationName)}</Text>
 <Down />
 </View>
   

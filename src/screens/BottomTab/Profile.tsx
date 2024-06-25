@@ -27,7 +27,8 @@ export default function Profile() {
   const isFacuse = useIsFocused();
   const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation();
-  const [value, setValue] = useState('en');
+  const [value, setValue] = useState('French');
+  const [languageChanged, setLanguageChanged] = useState(false);
   const [items] = useState([
     { label: 'English', value: 'English', flag: require('../../assets/Cropping/usa.png') },
     { label: 'French', value: 'French', flag: require('../../assets/Cropping/france.png') },
@@ -39,12 +40,24 @@ export default function Profile() {
     
     // Add more languages here
   ]);
+
+useEffect(()=>{
+  const handleLanguage =async () => {
+ const language = await AsyncStorage.getItem("Lng")
+
+  localizationStrings.setLanguage(language);
+  setValue(language);
+  }
+  handleLanguage();
+},[user])
+  
   const handleChangeLanguage =async (language) => {
     localizationStrings.setLanguage(language);
     await AsyncStorage.setItem("Lng", language)
 
 
     setValue(language);
+    setLanguageChanged(prev => !prev);
   };
   useEffect(() => {
     get_userprofile();
@@ -65,6 +78,67 @@ export default function Profile() {
     };
     dispatch(logout(params));
   };
+  
+const Account = [
+  {
+    name:localizationStrings.Edit_profile,
+
+    screen: ScreenNameEnum.EDIT_PROFILE,
+  },
+
+  {
+    name:localizationStrings.Change_pass,
+
+    screen: ScreenNameEnum.CHANGE_PASSWORD,
+  },
+
+  // {
+  //   name: 'WishList',
+
+  //   screen: ScreenNameEnum.WISHLIST_SCREEN,
+  // },
+  {
+    name: localizationStrings.Booking_tab,
+
+    screen: ScreenNameEnum.BOOKING_SCREEN,
+  },
+  {
+    name: localizationStrings.subscription,
+
+    screen: ScreenNameEnum.SUBSCRIPTION_SCREEN,
+  },
+  {
+    name: localizationStrings.notification,
+
+    screen: ScreenNameEnum.NOTIFICATION_SCREEN,
+  },
+];
+const Setting = [
+  {
+    name:localizationStrings.faq,
+
+    screen: ScreenNameEnum.FAQ_SCREEN,
+  },
+  {
+    name: localizationStrings.about_us,
+
+    screen: ScreenNameEnum.ABOUT_US,
+  },
+ 
+];
+
+const About = [
+  {
+    name: localizationStrings.Privacy_policy,
+
+    screen: ScreenNameEnum.PRIVACY_POLICY,
+  },
+  {
+    name: localizationStrings.tern_con,
+
+    screen: ScreenNameEnum.TERM_CONDITION,
+  },
+];
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity
@@ -136,6 +210,7 @@ export default function Profile() {
             scrollEnabled={false}
             data={Account}
             renderItem={renderItem}
+            key={`account-${languageChanged}`}
           />
         </View>
         <View style={{height: hp(5), marginTop: 10}}>
@@ -157,6 +232,7 @@ export default function Profile() {
             scrollEnabled={false}
             data={Setting}
             renderItem={renderItem}
+            key={`setting-${languageChanged}`}
           />
         </View>
         <View style={{height: hp(5), marginTop: 10}}>
@@ -178,9 +254,10 @@ export default function Profile() {
             scrollEnabled={false}
             data={About}
             renderItem={renderItem}
+            key={`about-${languageChanged}`} 
           />
         </View>
-        <View style={{flexDirection:'row',alignItems:'center'}}>
+        <View style={{flexDirection:'row',alignItems:'center',height:60,}}>
 
         <Image
           style={{ height: 25, width: 25, marginTop: 10 }}
@@ -324,7 +401,8 @@ export default function Profile() {
 
 const styles = StyleSheet.create({
   dropdown: {
-   
+   marginLeft:10,
+   marginTop:10,
     height:40,
 justifyContent:'center',
     width:'100%',
@@ -334,63 +412,3 @@ justifyContent:'center',
   
   },
 })
-const Account = [
-  {
-    name: `${localizationStrings.Edit_profile}`,
-
-    screen: ScreenNameEnum.EDIT_PROFILE,
-  },
-
-  {
-    name: `${localizationStrings.Change_pass}`,
-
-    screen: ScreenNameEnum.CHANGE_PASSWORD,
-  },
-
-  // {
-  //   name: 'WishList',
-
-  //   screen: ScreenNameEnum.WISHLIST_SCREEN,
-  // },
-  {
-    name: `${localizationStrings.Booking_tab}`,
-
-    screen: ScreenNameEnum.BOOKING_SCREEN,
-  },
-  {
-    name: `${localizationStrings.subscription}`,
-
-    screen: ScreenNameEnum.SUBSCRIPTION_SCREEN,
-  },
-  {
-    name: `${localizationStrings.notification}`,
-
-    screen: ScreenNameEnum.NOTIFICATION_SCREEN,
-  },
-];
-const Setting = [
-  {
-    name:`${localizationStrings.faq}`,
-
-    screen: ScreenNameEnum.FAQ_SCREEN,
-  },
-  {
-    name: `${localizationStrings.about_us}`,
-
-    screen: ScreenNameEnum.ABOUT_US,
-  },
- 
-];
-
-const About = [
-  {
-    name: `${localizationStrings.Privacy_policy}`,
-
-    screen: ScreenNameEnum.PRIVACY_POLICY,
-  },
-  {
-    name: `${localizationStrings.tern_con}`,
-
-    screen: ScreenNameEnum.TERM_CONDITION,
-  },
-];

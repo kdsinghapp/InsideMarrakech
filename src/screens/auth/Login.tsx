@@ -36,6 +36,7 @@ export default function Login() {
   const isLoading = useSelector(state => state.auth.isLoading);
 
   const [Number, setNumber] = useState(false);
+console.log(isLoading);
 
   const isFocus = useIsFocused();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

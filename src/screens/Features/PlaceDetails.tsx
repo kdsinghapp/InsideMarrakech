@@ -197,7 +197,13 @@ const Add_chatUser =async()=>{
           <View style={localStyles.galleryHeaderContainer}>
             <Text style={localStyles.galleryHeaderText}>{localizationStrings.G_photo}</Text>
             {user?.type == 'User' && (
-              <TouchableOpacity>
+              <TouchableOpacity
+              onPress={()=>{
+                navigation.navigate(ScreenNameEnum.Gallery_Screen,{
+                  item:propertDetails?.document_gallery
+                })
+              }}
+              >
                 <Text style={localStyles.seeAllText}>{localizationStrings.see_a}</Text>
               </TouchableOpacity>
             )}

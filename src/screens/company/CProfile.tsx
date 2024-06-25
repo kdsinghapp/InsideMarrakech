@@ -9,6 +9,7 @@
         Platform,
         Settings,
         ScrollView,
+        StyleSheet,
       } from 'react-native';
       import React, {useEffect, useState} from 'react';
       import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -18,7 +19,8 @@
       import {useDispatch, useSelector} from 'react-redux';
       import {get_profile, logout} from '../../redux/feature/authSlice';
 import localizationStrings from '../../utils/Localization';
-      
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Dropdown } from 'react-native-element-dropdown';
       export default function CProfile() {
         const dispatch = useDispatch();
         const user = useSelector(state => state.auth.userData);
@@ -26,7 +28,37 @@ import localizationStrings from '../../utils/Localization';
         const isFacuse = useIsFocused();
         const [isVisible, setIsVisible] = useState(false);
         const navigation = useNavigation();
-      
+        const [value, setValue] = useState('French');
+  const [languageChanged, setLanguageChanged] = useState(false);
+  const [items] = useState([
+    { label: 'English', value: 'English', flag: require('../../assets/Cropping/usa.png') },
+    { label: 'French', value: 'French', flag: require('../../assets/Cropping/france.png') },
+    { label: 'Chinese', value: 'Chinese', flag: require('../../assets/Cropping/china.png') },
+    { label: 'Russian', value: 'Russian', flag: require('../../assets/Cropping/russia.png') },
+    { label: 'Italian', value: 'Italian', flag: require('../../assets/Cropping/italian.png') },
+    { label: 'Spanish', value: 'Spanish', flag: require('../../assets/Cropping/spain.png') },
+    { label: 'Japanese', value: 'Japanese', flag: require('../../assets/Cropping/japan.png') },
+    
+    // Add more languages here
+  ]);
+  useEffect(()=>{
+    const handleLanguage =async () => {
+   const language = await AsyncStorage.getItem("Lng")
+  
+    localizationStrings.setLanguage(language);
+    setValue(language);
+    }
+    handleLanguage();
+  },[user])
+    
+    const handleChangeLanguage =async (language) => {
+      localizationStrings.setLanguage(language);
+      await AsyncStorage.setItem("Lng", language)
+  
+  
+      setValue(language);
+      setLanguageChanged(prev => !prev);
+    };
         useEffect(() => {
           get_userprofile();
         }, [user, isFacuse]);
@@ -76,6 +108,59 @@ import localizationStrings from '../../utils/Localization';
             </TouchableOpacity>
           );
         };
+        const Account = [
+          {
+            name: `${localizationStrings.Personal_Info}`,
+        
+            screen: ScreenNameEnum.EDIT_PROFILE,
+          },
+        
+          {
+            name: `${localizationStrings.Change_pass}`,
+        
+            screen: ScreenNameEnum.CHANGE_PASSWORD,
+          },
+         {
+          name: `${localizationStrings.Booking_tab}`,
+        
+            screen: ScreenNameEnum.CompanyBooking,
+          },
+          {
+            name: `${localizationStrings.subscription}`,
+        
+            screen: ScreenNameEnum.SUBSCRIPTION_SCREEN,
+          },
+          {
+            name: `${localizationStrings.notification}`,
+          
+              screen: ScreenNameEnum.NOTIFICATION_SCREEN,
+            },
+        ];
+     
+        
+        const About = [
+          {
+            name:`${localizationStrings.faq}`,
+        
+            screen: ScreenNameEnum.FAQ_SCREEN,
+          },
+          {
+            name: `${localizationStrings.about_us}`,
+        
+            screen: ScreenNameEnum.ABOUT_US,
+          },
+          {
+            name: `${localizationStrings.Privacy_policy}`,
+        
+            screen: ScreenNameEnum.PRIVACY_POLICY,
+          },
+          {
+            name: `${localizationStrings.tern_con}`,
+        
+            screen: ScreenNameEnum.TERM_CONDITION,
+          },
+        ];
+        
         return (
           <View style={{flex: 1, backgroundColor: '#fff', paddingHorizontal: 20}}>
             {isLoading ? <Loading /> : null}
@@ -143,7 +228,24 @@ import localizationStrings from '../../utils/Localization';
                   renderItem={renderItem}
                 />
               </View>
-           
+              <View style={{flexDirection:'row',alignItems:'center',height:50,borderBottomWidth:0.5}}>
+
+<Image
+  style={{ height: 25, width: 25, marginTop: 10 }}
+  resizeMode="contain"
+  source={items.find(item => item.value === value)?.flag}
+/>
+<Dropdown
+style={styles.dropdown}
+data={items}
+labelField="label"
+valueField="value"
+placeholder="Select Language"
+value={value}
+
+onChange={item => handleChangeLanguage(item.value)}
+/>
+</View>
               <TouchableOpacity
                 onPress={() => {
                   setIsVisible(true);
@@ -265,56 +367,18 @@ import localizationStrings from '../../utils/Localization';
         );
       }
       
-      const Account = [
-        {
-          name: `${localizationStrings.Personal_Info}`,
-      
-          screen: ScreenNameEnum.EDIT_PROFILE,
-        },
-      
-        {
-          name: `${localizationStrings.Change_pass}`,
-      
-          screen: ScreenNameEnum.CHANGE_PASSWORD,
-        },
-       {
-        name: `${localizationStrings.Booking_tab}`,
-      
-          screen: ScreenNameEnum.CompanyBooking,
-        },
-        {
-          name: `${localizationStrings.subscription}`,
-      
-          screen: ScreenNameEnum.SUBSCRIPTION_SCREEN,
-        },
-        {
-          name: `${localizationStrings.notification}`,
+    
+      const styles = StyleSheet.create({
+        dropdown: {
+         marginLeft:10,
+         marginTop:10,
+          height:40,
+      justifyContent:'center',
+          width:'100%',
+          alignSelf:'center',
+          backgroundColor:'#fff',
+         
         
-            screen: ScreenNameEnum.NOTIFICATION_SCREEN,
-          },
-      ];
-   
-      
-      const About = [
-        {
-          name:`${localizationStrings.faq}`,
-      
-          screen: ScreenNameEnum.FAQ_SCREEN,
         },
-        {
-          name: `${localizationStrings.about_us}`,
-      
-          screen: ScreenNameEnum.ABOUT_US,
-        },
-        {
-          name: `${localizationStrings.Privacy_policy}`,
-      
-          screen: ScreenNameEnum.PRIVACY_POLICY,
-        },
-        {
-          name: `${localizationStrings.tern_con}`,
-      
-          screen: ScreenNameEnum.TERM_CONDITION,
-        },
-      ];
+      })
       

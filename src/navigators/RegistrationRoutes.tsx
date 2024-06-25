@@ -1,12 +1,15 @@
 import 'react-native-gesture-handler';
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useEffect} from 'react';
 
 import ScreenNameEnum from '../routes/screenName.enum';
 import _routes from '../routes/routes';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import localizationStrings from '../utils/Localization';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createNativeStackNavigator();
 
 const RegistrationRoutes: FunctionComponent = () => {
+
   return (
     <Stack.Navigator
       initialRouteName={ScreenNameEnum.SPLASH_SCREEN}

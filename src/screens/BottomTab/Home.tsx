@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,20 +11,20 @@ import {
   StyleSheet,
   TextInput,
   Platform,
-  PermissionsAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import Header from '../../configs/Header';
 import Searchbar from '../../configs/Searchbar';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import BlackDown from '../../assets/svg/BlackDown.svg';
 import Pin from '../../assets/svg/Pin.svg';
 import User from '../../assets/svg/user.svg';
 import Down from '../../assets/svg/BlackDown.svg';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import DateModal from '../Modal/DateModal';
 import SearchIcon from '../../assets/svg/search.svg';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   get_all_property,
   get_banner,
@@ -33,7 +33,7 @@ import {
   get_privacy_policy,
 } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
-import axios, {all} from 'axios';
+import axios, { all } from 'axios';
 import localizationStrings from '../../utils/Localization';
 
 export default function Home() {
@@ -41,6 +41,7 @@ export default function Home() {
 
   const user = useSelector(state => state.auth.userData);
   const isFocused = useIsFocused();
+  const [loadingState, setLoadingState] = useState({});
 
   const category = useSelector(state => state.feature.CategoryList);
   const all_property = useSelector(state => state.feature.allProperty);
@@ -71,7 +72,7 @@ export default function Home() {
       });
       return localTimeString;
     } else {
-     
+
     }
   };
 
@@ -88,21 +89,25 @@ export default function Home() {
 
   const filteredPropertiesBySearch = searchQuery
     ? all_property?.filter(
-        item =>
-          item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.title.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      item =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.title.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : [];
 
 
   useEffect(() => {
     dispatch(get_category());
     dispatch(get_banner());
-    dispatch(get_all_property());
+    dispatch(get_all_property())
     get_Companyproperty();
   }, [isFocused, user]);
 
-  const renderList = ({item}) => {
+useEffect(()=>{
+  dispatch(get_all_property())
+},[])
+
+  const renderList = ({ item,index }) => {
     // Check if document_gallery array exists and is not empty
     const formatTimes = () => {
       const [startTimeStr, endTimeStr] = item?.opening_hours?.split('/');
@@ -120,133 +125,85 @@ export default function Home() {
         return (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(ScreenNameEnum.PLACE_DETAILS, {item: item});
+              navigation.navigate(ScreenNameEnum.PLACE_DETAILS, { item: item });
             }}
             style={[styles.shadow, styles.itemContainer]}>
-            <Image
-              source={{uri: firstImage}}
+                <Image
+              source={{ uri: firstImage }}
               style={styles.itemImage}
               resizeMode="cover"
             />
+               {loadingState[index] && (
+                          <ActivityIndicator
+                            style={styles.loadingIndicator}
+                            size="small"
+                            color="#000"
+                          />
+                        )}
+          
 
             <Text style={styles.itemTitle}>{item.name}</Text>
             <View style={styles.detailsContainer}>
-        
-        <Text style={styles.itemDetails}>{item.title}</Text>
-      </View>
+
+              <Text style={styles.itemDetails}>{item.title}</Text>
+            </View>
             <View style={styles.detailsContainer}>
               <Pin />
               <Text style={styles.itemDetails}>{item.address}</Text>
             </View>
-           
+
             <View style={styles.userContainer}>
               <View style={styles.userTextContainer}>
                 <Text style={styles.itemUser}>{localizationStrings.price} : {item.amount}</Text>
-                
-              </View>
-             
 
-             
+              </View>
+
+
+
             </View>
             <View style={styles.userContainer}>
               <View style={styles.userTextContainer}>
                 <Text style={styles.itemUser}>{localizationStrings.Open_Time} : {formatTimes().startTime}</Text>
-                
+
               </View>
-             
+
               <View style={styles.userTextContainer}>
                 <Text style={styles.itemUser}> {localizationStrings.Close_Time} : {formatTimes().endTime}</Text>
-                
-              </View>
-             
 
-             
+              </View>
+
+
+
             </View>
           </TouchableOpacity>
         );
       }
     }
-    // If document_gallery is empty or image property is undefined, return null or a placeholder
+
     return null;
   };
-  // const renderCompanyList = ({item}) => {
-  //   // Check if document_gallery and its first element exist
-  //   const firstImage = item.document_gallery && item.document_gallery.length > 0 ? item.document_gallery[item.document_gallery.length -1].image : null;
-  
-  //   return (
-  //     <TouchableOpacity
-  //       onPress={() => {
-  //         navigation.navigate(ScreenNameEnum.PLACE_DETAILS, {item: item});
-  //       }}
-  //       style={[styles.shadow, styles.itemContainer]}>
-  //       {/* Check if item.image is not empty or undefined */}
-  //       {item.image == '' || item.image == undefined ? (
-  //         <Image
-  //           source={{uri: firstImage}}
-  //           style={styles.itemImage}
-  //           resizeMode="cover"
-  //         />
-  //       ) : (
-  //         <Image
-  //           source={require('../../assets/Cropping/empty.jpg')}
-  //           style={styles.itemImage}
-  //           resizeMode="cover"
-  //         />
-  //       )}
-  //       <TouchableOpacity 
-  //         onPress={()=>{
-  //           navigation.navigate(ScreenNameEnum.updateProperty,{item:item})
-  //         }}
-  //         style={{position: 'absolute', right: 20, top: 20}}>
-  //         <Image
-  //           source={require('../../assets/Cropping/Icon.png')}
-  //           style={{height: 40, width: 40}}
-  //         />
-  //       </TouchableOpacity>
-  
-  //       <Text style={styles.itemTitle}>{item.name}</Text>
-  //       <View style={styles.detailsContainer}>
-       
-  //         <Text style={styles.itemDetails}>{item.title}</Text>
-  //       </View>
-  //       <View style={styles.detailsContainer}>
-       
-  //         <Text style={styles.itemDetails}>{item.description}</Text>
-  //       </View>
-  //       <View style={styles.detailsContainer}>
-  //         <Pin />
-  //         <Text style={styles.itemDetails}> {item.address}</Text>
-  //       </View>
-  
-  //       <View style={styles.userContainer}>
-  //         <View style={styles.userTextContainer}>
-  //           <Text style={[styles.itemUser, {color: '#f0f0f0'}]}></Text>
-  //         </View>
-  
-  //         <TouchableOpacity
-  //           onPress={() => {
-  //             navigation.navigate(ScreenNameEnum.AddMenu, {item: item});
-  //           }}
-  //           style={{
-  //             backgroundColor: '#C59745',
-  //             paddingHorizontal: 10,
-  //             paddingVertical: 10,
-  //             borderRadius: 10,
-  //           }}>
-  //           <Text style={[styles.updateButtonText, {color: '#fff'}]}>
-  //             Add Menu
-  //           </Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </TouchableOpacity>
-  //   );
-  // };
-  
+
+
+
   const get_Companyproperty = () => {
     const params = {
       company_id: user?.id,
     };
     dispatch(get_company_all_property(params));
+  };
+
+  const handleImageLoadStart = (index) => {
+    setLoadingState((prevState) => ({
+      ...prevState,
+      [index]: true,
+    }));
+  };
+
+  const handleImageLoadEnd = (index) => {
+    setLoadingState((prevState) => ({
+      ...prevState,
+      [index]: false,
+    }));
   };
 
   return (
@@ -256,39 +213,48 @@ export default function Home() {
         <Header />
         {user?.type === 'User' && (
           <>
-           <View style={styles.searchContainer}>
-          <View style={styles.search}>
-            <SearchIcon />
-            <TextInput
-              placeholder={localizationStrings.search}
-              placeholderTextColor={'#000'}
-              style={styles.searchInput}
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
-          </View>
-        </View>
-        {searchQuery === '' && (      <View style={styles.categoryContainer}>
+            <View style={styles.searchContainer}>
+              <View style={styles.search}>
+                <SearchIcon />
+                <TextInput
+                  placeholder={localizationStrings.search}
+                  placeholderTextColor={'#000'}
+                  style={styles.searchInput}
+                  value={searchQuery}
+                  onChangeText={setSearchQuery}
+                />
+              </View>
+            </View>
+            {searchQuery === '' && (<View style={styles.categoryContainer}>
               <View style={styles.categoryHeader}>
                 <Text style={styles.categoryHeaderText}>{localizationStrings.category}</Text>
                 <BlackDown />
               </View>
-              
-             
+
+
               <View style={styles.categoryList}>
                 <FlatList
                   showsHorizontalScrollIndicator={false}
                   data={category}
                   horizontal
-                  renderItem={({item, index}) => (
-                    <TouchableOpacity 
-                    
-                    onPress={() => handleCategorySelect(item.id)}
-                    style={styles.categoryItem}>
+                  renderItem={({ item, index }) => (
+                    <TouchableOpacity
+                      onPress={() => handleCategorySelect(item.id)}
+                      style={styles.categoryItem}
+                    >
+                      {loadingState[index] && (
+                        <ActivityIndicator
+                          style={styles.loadingIndicator}
+                          size="small"
+                          color="#000"
+                        />
+                      )}
                       <Image
                         resizeMode="contain"
-                        source={{uri: item.image}}
+                        source={{ uri: item.image }}
                         style={styles.categoryItemImage}
+                        onLoadStart={() => handleImageLoadStart(index)}
+                        onLoadEnd={() => handleImageLoadEnd(index)}
                       />
                       <Text style={styles.categoryItemText}>{item.name}</Text>
                     </TouchableOpacity>
@@ -296,23 +262,34 @@ export default function Home() {
                 />
               </View>
             </View>
-        )}
+            )}
             {searchQuery === '' && (
               <View style={styles.bannerContainer}>
+
                 {BannerList && (
                   <FlatList
                     showsHorizontalScrollIndicator={false}
                     data={BannerList}
+                    onLoadStart={() => handleImageLoadStart(index)}
+                    onLoadEnd={() => handleImageLoadEnd(index)}
                     horizontal
-                    renderItem={({item, index}) => (
+                    renderItem={({ item, index }) => (
                       <View style={styles.bannerItem}>
+                        {loadingState[index] && (
+                          <ActivityIndicator
+                            style={styles.loadingIndicator}
+                            size="small"
+                            color="#000"
+                          />
+                        )}
                         <ImageBackground
-                          source={{uri: item.image}}
+                          source={{ uri: item.image }}
                           style={styles.bannerImage}
-                          resizeMode="contain">
-                          <TouchableOpacity 
-                            onPress={()=>{
-                              navigation.navigate(ScreenNameEnum.PLACE_DETAILS, {item:{id:item.property_id}});
+                          resizeMode="cover">
+
+                          <TouchableOpacity
+                            onPress={() => {
+                              navigation.navigate(ScreenNameEnum.PLACE_DETAILS, { item: { id: item.property_id } });
                             }}
                             style={styles.bannerButton}>
                             <Text style={styles.bannerButtonText}>{localizationStrings.View}</Text>
@@ -324,20 +301,28 @@ export default function Home() {
                 )}
               </View>
             )}
-
             <FlatList
-                showsVerticalScrollIndicator={false}
-                data={selectedCategory ? filteredPropertiesByCategory : searchQuery ? filteredPropertiesBySearch : all_property}
+              showsVerticalScrollIndicator={false}
+              onLoadStart={() => handleImageLoadStart(index)}
+                    onLoadEnd={() => handleImageLoadEnd(index)}
+              data={
+                selectedCategory
+                  ? filteredPropertiesByCategory
+                  : searchQuery
+                    ? filteredPropertiesBySearch
+                    : all_property
+              }
+              renderItem={renderList}
+              keyExtractor={(item) => item.id}
+            />
 
-                renderItem={renderList}
-              />
-            
             <Modal visible={isVisible} animationType="slide" transparent={true}>
               <TouchableOpacity
                 onPress={() => {
                   setIsVisible(false);
                 }}
                 style={styles.modalBackground}>
+                  
                 <View style={styles.modalContent}>
                   <View style={styles.modalTitleContainer}>
                     <Text style={styles.modalTitle}>Time Range</Text>
@@ -409,18 +394,18 @@ export default function Home() {
           </>
         )}
         {user?.type === 'Company' && (
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <View style={styles.title}>
               <Text style={styles.titleText}>{localizationStrings.my_activity}</Text>
             </View>
-         
-            {/* {CompanyProperty?.length > 0 ?<FlatList
+
+            {CompanyProperty?.length > 0 ? <FlatList
               showsVerticalScrollIndicator={false}
               data={filteredCompanyProperties}
               renderItem={renderCompanyList}
-            />:<View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-              <Text style={{fontSize:14,color:'#000', fontFamily: 'Federo-Regular',}}>{localizationStrings.No_P_found}</Text>
-              </View>} */}
+            /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ fontSize: 14, color: '#000', fontFamily: 'Federo-Regular', }}>{localizationStrings.No_P_found}</Text>
+            </View>}
           </View>
         )}
       </ScrollView>
@@ -440,7 +425,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 15,
-    marginHorizontal:10,
+    marginHorizontal: 10,
     borderRadius: 15,
     shadowColor: "#000",
     shadowOffset: {
@@ -532,7 +517,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     backgroundColor: '#FFF',
-   paddingVertical:10,
+    paddingVertical: 10,
     borderRadius: 15,
     padding: 10,
     margin: 5,
@@ -564,13 +549,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-  
+
     paddingHorizontal: 10,
   },
   userTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop:10
+    marginTop: 10
   },
   itemUser: {
     fontFamily: 'Federo-Regular',
@@ -622,16 +607,18 @@ const styles = StyleSheet.create({
   },
   categoryList: {
     marginTop: 20,
+    paddingVertical: 10,
     paddingHorizontal: 10,
   },
   categoryItem: {
     padding: 5,
-    width: 100,
+   paddingHorizontal:20,
+   alignItems:'center'
   },
   categoryItemImage: {
     height: 30,
     width: 30,
-    borderRadius: 15,
+   
   },
   categoryItemText: {
     fontSize: 10,
@@ -641,19 +628,22 @@ const styles = StyleSheet.create({
   },
   bannerContainer: {
     width: '100%',
-    height: hp(25),
+    height: hp(30),
   },
   bannerItem: {
     padding: 5,
     height: hp(25),
-    width: hp(45),
+    width: hp(43),
     marginLeft: 15,
+    marginTop: 20
   },
   bannerImage: {
     width: '100%',
     height: '100%',
-    padding: 10,
-    borderRadius:15,
+    overflow: 'hidden',
+    borderRadius: 20,
+
+
   },
   bannerTextContainer: {
     width: '60%',
@@ -672,7 +662,7 @@ const styles = StyleSheet.create({
   },
   bannerButton: {
     backgroundColor: '#FFF',
-    width: '20%',
+    paddingHorizontal: 10,
     position: 'absolute',
     bottom: 40,
     left: 20,
@@ -753,13 +743,13 @@ const Post = [
     details: '192 Rue Tachenbacht, Marrakech 40000',
     img: require('../../assets/Cropping/img1.png'),
     user: 'Today 2',
-    subTime: Array(5).fill({time: '08:10PM'}),
+    subTime: Array(5).fill({ time: '08:10PM' }),
   },
   {
     title: 'Marrakech: Agafay Desert Tour with Quad',
     details: '192 Rue Tachenbacht, Marrakech 40000',
     img: require('../../assets/Cropping/img1.png'),
     user: 'Today 2',
-    subTime: Array(5).fill({time: '08:10PM'}),
+    subTime: Array(5).fill({ time: '08:10PM' }),
   },
 ];
