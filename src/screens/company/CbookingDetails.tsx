@@ -1,5 +1,5 @@
 
-    import React, {useEffect, useState} from 'react';
+    import React, {useEffect, useRef, useState} from 'react';
     import {
       View,
       Text,
@@ -20,48 +20,21 @@
     import Loading from '../../configs/Loader';
     import {update_profile} from '../../redux/feature/featuresSlice';
     import {get_profile} from '../../redux/feature/authSlice';
-    import {useNavigation} from '@react-navigation/native';
+    import {useNavigation, useRoute} from '@react-navigation/native';
     
     export default function CbookingDetails() {
-      const user = useSelector(state => state.auth.userData);
-    
-      const Updated_user = useSelector(state => state.auth.Update_user);
+      const route = useRoute()
+
+      const {item} =route.params
+
       const isLoading = useSelector(state => state.feature.isLoading);
     
       const [firstName, setFirstName] = useState('');
       const [lastName, setLastName] = useState('');
-      const [dob, setDob] = useState('');
-      const [date, setDate] = useState(new Date());
-      const [homeTown, setHomeTown] = useState('');
-      const [CompanyName, setCompanyName] = useState('');
-      const [VatNumber, setVatNumber] = useState('');
-      const [CompanyAddress, setCompanyAddress] = useState('');
-      const [email, setEmail] = useState('');
-      const [mobileNumber, setMobileNumber] = useState('');
-      const [profile, setprofile] = useState('');
+ 
       const [imageUrl, setimageUrl] = useState('');
     
-      const [open, setOpen] = useState(false);
-    
-      const dispatch = useDispatch();
- 
-      useEffect(() => {
-        if (user) {
-          setFirstName(Updated_user?.first_name);
-          setLastName(Updated_user?.last_name);
-          setDob(Updated_user?.dob);
-          setHomeTown(Updated_user?.home_town);
-          setEmail(Updated_user?.email);
-          setMobileNumber(Updated_user?.mobile);
-          setCompanyName(Updated_user?.company_name);
-          setCompanyAddress(Updated_user?.company_address);
-          setVatNumber(Updated_user?.vat_number);
-          setimageUrl(Updated_user?.image);
-        }
-      }, [user]);
-    
-      const navigation = useNavigation();
-    
+   
  
       
       return (

@@ -83,7 +83,7 @@ export default function CompanyBooking() {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate(ScreenNameEnum.CbookingDetails)}
+      onPress={() => navigation.navigate(ScreenNameEnum.CbookingDetails,{item:item})}
       style={[styles.shadow, styles.itemContainer]}>
       <View style={styles.itemRow}>
         <View style={styles.itemImageContainer}>
@@ -144,11 +144,15 @@ export default function CompanyBooking() {
   );
 
   const renderItemCancleComplete = ({ item }) => (
-    <View style={[styles.shadow, styles.itemContainer]}>
+    <TouchableOpacity 
+    onPress={()=>{
+
+    }}
+    style={[styles.shadow, styles.itemContainer]}>
       <View style={styles.itemRow}>
         <View style={styles.itemImageContainer}>
           <Image
-            source={{ uri: item.user_data.image }}
+            source={{ uri: item.user_data?.image }}
             style={styles.itemImage}
             resizeMode="cover"
           />
@@ -156,7 +160,7 @@ export default function CompanyBooking() {
         <View style={styles.itemDetailsContainer}>
           <View style={styles.itemNameRow}>
             <Text style={styles.itemName}>
-              {item.user_data.first_name} {item.user_data.last_name}
+              {item.user_data?.first_name} {item.user_data?.last_name}
             </Text>
           </View>
           <View style={styles.itemDetailsRow}>
@@ -164,8 +168,8 @@ export default function CompanyBooking() {
             <Text style={styles.itemDetails}>{item.address}</Text>
           </View>
           <View style={styles.itemFooter2}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate(ScreenNameEnum.TRACK_ORDER)}
+            <View
+              
               style={[
                 styles.statusButton2,
                 {
@@ -175,14 +179,14 @@ export default function CompanyBooking() {
                 styles.shadow,
               ]}>
               <Text style={styles.statusButtonText}>{selectedOption}</Text>
-            </TouchableOpacity>
+            </View>
             <View>
               <Text style={styles.itemTime}>{item.Time}</Text>
             </View>
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   const renderEmptyList = () => (

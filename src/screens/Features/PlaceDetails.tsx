@@ -13,7 +13,7 @@ import React, {useEffect, useState} from 'react';
 import GoldRight from '../../assets/svg/GoldRight.svg';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
-
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 
 import Pin from '../../assets/svg/BlackPin.svg';
 import Call from '../../assets/svg/call.svg';
@@ -112,7 +112,10 @@ const Add_chatUser =async()=>{
 
   dispatch(add_chat_user(params))
 }
+ const make_call =(Number)=>{
 
+  RNImmediatePhoneCall.immediatePhoneCall(Number);
+ }
 
   return (
     <View style={localStyles.container}>
@@ -228,7 +231,11 @@ const Add_chatUser =async()=>{
 
           {user?.type == 'User' && (
             <View style={localStyles.contactContainer}>
-              <TouchableOpacity style={localStyles.contactButton}>
+              <TouchableOpacity 
+              onPress={()=>{
+                make_call(propertDetails?.book_online_mobile_number)
+              }}
+              style={localStyles.contactButton}>
                 <Call />
                 <Text style={localStyles.contactButtonText}>
                  {localizationStrings.B_O_call}:
@@ -251,7 +258,7 @@ const Add_chatUser =async()=>{
               {propertDetails?.title}
             </Text>
             <Text style={[localStyles.sectionTitle, {marginTop: 20}]}>
-              Description
+              {localizationStrings.Description}
             </Text>
             <Text style={[localStyles.descriptionText, {marginTop: 10}]}>
               {propertDetails?.description}

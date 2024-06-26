@@ -4,6 +4,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { useNavigation } from '@react-navigation/native';
 import Geolocation from 'react-native-geolocation-service';
+import { useSelector } from 'react-redux';
 
 const MapScreen = () => {
     const [destination, setDestination] = useState({
@@ -14,8 +15,7 @@ const MapScreen = () => {
     const [showDirections, setShowDirections] = useState(false);
     const navigation = useNavigation();
     const mapRef = useRef(null);
-    const [compassEnabled, setCompassEnabled] = useState(true);
- 
+    const user = useSelector(state => state.auth.userData);
     useEffect(() => {
         // Fetch current location initially
         const fetchCurrentLocation = () => {
@@ -64,7 +64,9 @@ const MapScreen = () => {
     };
 
     return (
+  
         <View style={styles.container}>
+                {user?.type == 'User' ? <>
             <MapView
                     ref={mapRef}
                 provider={PROVIDER_GOOGLE}
@@ -119,7 +121,33 @@ const MapScreen = () => {
                 style={styles.backButton}>
                 <Text>Back</Text>
             </TouchableOpacity>
+            </>:  <MapView
+                    ref={mapRef}
+                provider={PROVIDER_GOOGLE}
+                
+                style={styles.map}
+                initialRegion={{
+                    latitude: destination ? destination.latitude : 22.701384,
+                    longitude: destination ? destination.longitude : 75.867401,
+                    latitudeDelta: 0.1,
+                    longitudeDelta: 0.1,
+                  
+                }}
+              scrollDuringRotateOrZoomEnabled={true}
+              
+    
+                mapType='satellite'
+            >
+              
+                <Marker
+                    coordinate={destination}
+                    title="Destination"
+                    description=""
+                />
+             
+            </MapView> }
         </View>
+  
     );
 };
 

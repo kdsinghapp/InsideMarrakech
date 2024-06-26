@@ -7,6 +7,7 @@ import {
     FlatList,
     SafeAreaView,
     Alert,
+    ActivityIndicator,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -77,6 +78,8 @@ const SelectLocation = () => {
             const existingAddress = savedAddresses.find(item => item.place_id === address.place_id);
             if (existingAddress) {
                errorToast('This address is already saved.');
+               setLocationName(address?.name); // Set the location name in context
+               navigation.goBack();
                 return;
             }
 
@@ -153,11 +156,15 @@ const SelectLocation = () => {
 
             <View style={styles.nearbyContainer}>
                 <Text style={[styles.sectionTitle, { fontSize: 16, fontWeight: '400' }]}>NEARBY LOCATIONS</Text>
-                <FlatList
-                    data={nearbyLocations.slice(0, 3)} // Show only the first 3 nearby locations
+               {nearbyLocations && <FlatList
+                    data={nearbyLocations} // Show only the first 3 nearby locations
                     renderItem={renderLocationItem}
                     keyExtractor={(item, index) => index.toString()}
-                />
+                />}
+                {nearbyLocations == null &&
+                <ActivityIndicator size={20} />
+
+                }
             </View>
 
             <TouchableOpacity

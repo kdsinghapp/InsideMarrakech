@@ -37,7 +37,6 @@ import axios, { all } from 'axios';
 import localizationStrings from '../../utils/Localization';
 
 export default function Home() {
-  const [isVisible, setIsVisible] = useState(false);
 
   const user = useSelector(state => state.auth.userData);
   const isFocused = useIsFocused();
@@ -52,9 +51,6 @@ export default function Home() {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [origin, setOrigin] = useState({ latitude: 22.701384, longitude: 75.867401 });
-  const [locationName, setLocationName] = useState('');
-
 
 
 
@@ -401,8 +397,8 @@ useEffect(()=>{
 
             {CompanyProperty?.length > 0 ? <FlatList
               showsVerticalScrollIndicator={false}
-              data={filteredCompanyProperties}
-              renderItem={renderCompanyList}
+              data={CompanyProperty}
+              renderItem={renderList}
             /> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <Text style={{ fontSize: 14, color: '#000', fontFamily: 'Federo-Regular', }}>{localizationStrings.No_P_found}</Text>
             </View>}
