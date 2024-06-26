@@ -34,6 +34,7 @@ enum ScreenNameEnum {
   MsgNotification ='MsgNotification',
   Gallery_Screen='Gallery_Screen',
   FullscreenImageScreen='FullscreenImageScreen',
+  SelectLocation='SelectLocation',
 
  // Featurs
 

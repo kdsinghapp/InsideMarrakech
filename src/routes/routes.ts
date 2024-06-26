@@ -10,6 +10,7 @@ import Booking from "../screens/BottomTab/Booking";
 import Home from "../screens/BottomTab/Home";
 import Profile from "../screens/BottomTab/Profile";
 import Search from "../screens/BottomTab/Search";
+import SelectLocation from "../screens/BottomTab/SelectLocation";
 import Chat from "../screens/chat/Chat";
 import ChatPage from "../screens/chat/ChatPage";
 import AddMenu from "../screens/company/AddMenu";
@@ -185,6 +186,10 @@ const _routes = {
     {
       name: ScreenNameEnum.FullscreenImageScreen,
       Component:FullscreenImageScreen,
+    },
+    {
+      name: ScreenNameEnum.SelectLocation,
+      Component:SelectLocation,
     },
     
   ],

@@ -11,6 +11,7 @@ import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import localizationStrings from '../utils/Localization';
 import { LanguageProvider } from '../utils/LanguageContext';
+import { LocationProvider } from '../configs/LocationContext';
 
 export default function AppNavigator() {
 
@@ -28,12 +29,14 @@ export default function AppNavigator() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <GestureHandlerRootView style={{flex: 1}}>
+        <LocationProvider>
         <LanguageProvider>
           <NavigationContainer>
             <RegistrationRoutes />
             <Toast config={toastConfig} />
           </NavigationContainer>
             </LanguageProvider>
+            </LocationProvider>
         </GestureHandlerRootView>
       </PersistGate>
     </Provider>

@@ -1,17 +1,13 @@
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
   Image,
   TouchableOpacity,
   StyleSheet,
-  TextInput,
   ScrollView,
 } from 'react-native';
-import React, { useState } from 'react';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { CountryPicker } from 'react-native-country-codes-picker';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import TextInputField from '../../configs/TextInput';
@@ -30,52 +26,54 @@ export default function Login() {
   const [show, setShow] = useState(false);
   const [countryCode, setCountryCode] = useState('');
   const [code, setCode] = useState('');
-  const role = useSelector(state => state.auth.selectedRole);
+  const [number, setNumber] = useState(false);
 
   const dispatch = useDispatch();
   const isLoading = useSelector(state => state.auth.isLoading);
+  const role = useSelector(state => state.auth.selectedRole);
 
-  const [Number, setNumber] = useState(false);
-console.log(isLoading);
-
+  const navigation = useNavigation();
   const isFocus = useIsFocused();
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const numberRegex = /^[0-9]+$/;
   const stringRegex = /^[a-zA-Z\s]*$/;
-  const navigation = useNavigation();
 
-  const handleIdentityText = value => {
+  const handleIdentityText = useCallback((value) => {
     setIdentity(value);
-    if (identity == '') {
+    if (value === '') {
       setNumber(false);
-    }
-
-    if (numberRegex.test(identity)) {
+    } else if (numberRegex.test(value)) {
       setNumber(true);
-    } else if (emailRegex.test(identity)) {
+    } else if (emailRegex.test(value)) {
       setNumber(false);
-    } else if (stringRegex.test(identity)) {
+    } else if (stringRegex.test(value)) {
       setNumber(false);
     }
-  };
-  const handlePassText = value => {
+  }, [emailRegex, numberRegex, stringRegex]);
+
+  const handlePassText = useCallback((value) => {
     setPassword(value);
-  };
-  const setCountry = value => {
+  }, []);
+
+  const setCountry = useCallback(() => {
     setShow(true);
-  };
+  }, []);
 
+  useEffect(() => {
+    const _get_lan = async () => {
+      const Language = await AsyncStorage.getItem("Lng");
+      localizationStrings.setLanguage(Language == null ? "French" : Language);
+    };
 
-  const _get_lan = async () => {
-    const Language = await AsyncStorage.getItem("Lng")
-    localizationStrings.setLanguage(Language == null ? "French" : Language);
-}
-  const Login = () => {
-    _get_lan()
+    _get_lan();
+  }, [isFocus]);
+
+  const Login = useCallback(() => {
     if (password.length < 8) {
       return errorToast('The password field must be at least 8 characters.');
     } else {
-      if (identity != '' && password != '') {
+      if (identity !== '' && password !== '') {
         if (emailRegex.test(identity)) {
           console.log('Login with Email');
           const passwordWithoutSpaces = password.replace(/\s/g, '');
@@ -92,7 +90,7 @@ console.log(isLoading);
           dispatch(login(params));
         } else if (numberRegex.test(identity)) {
           console.log('Login with Mobile ');
-          if (code == '') return errorToast('Please Select Country Code.');
+          if (code === '') return errorToast('Please Select Country Code.');
           const passwordWithoutSpaces = password.replace(/\s/g, '');
 
           const params = {
@@ -111,95 +109,88 @@ console.log(isLoading);
         errorToast('email or number password field empty');
       }
     }
-  };
+  }, [identity, password, code, emailRegex, numberRegex, role, dispatch, navigation]);
 
   return (
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
       <ScrollView>
-      <View style={styles.logoContainer}>
-        <Image
-          source={require('../../assets/Cropping/Logo3x.png')}
-          style={styles.logo}
-          resizeMode="contain"
+        <View style={styles.logoContainer}>
+          <Image
+            source={require('../../assets/Cropping/Logo3x.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </View>
+        <View style={styles.formContainer}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerText}>{localizationStrings.login}</Text>
+            <Text style={styles.subHeaderText}>{localizationStrings.login_Txt}</Text>
+          </View>
+          <View style={styles.inputWrapper}>
+            <View style={[styles.txtInput, { backgroundColor: '#FFFFFF' }]}>
+              <TextInputField
+                County={number}
+                countryCode={countryCode}
+                PickCountry={setCountry}
+                onChangeText={handleIdentityText}
+                placeholder={localizationStrings.Placeholder_email}
+                firstLogo={true}
+                img={
+                  number
+                    ? require('../../assets/Cropping/Phone2x.png')
+                    : require('../../assets/Cropping/Email3x.png')
+                }
+              />
+            </View>
+            <View style={[styles.txtInput, styles.passwordInput]}>
+              <TextInputField
+                onChangeText={handlePassText}
+                placeholder={localizationStrings.Placeholder_password}
+                firstLogo={true}
+                showEye={true}
+                img={require('../../assets/Cropping/Lock3x.png')}
+              />
+            </View>
+          </View>
+          <View style={styles.forgotPasswordContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(ScreenNameEnum.SENT_OTP);
+              }}
+              style={styles.forgotPasswordButton}
+            >
+              <Text style={styles.forgotPasswordText}>{localizationStrings.forgot}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.loginButtonContainer}>
+            <TouchableOpacity
+              onPress={Login}
+              style={[styles.btn, { backgroundColor: '#352C48' }]}
+            >
+              <Text style={styles.loginButtonText}>{localizationStrings.login?.toUpperCase()}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.signUpContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(ScreenNameEnum.SIGNUP_SCREEN);
+              }}
+            >
+              <Text style={styles.signUpText}>{localizationStrings.signup_msg}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <CountryPicker
+          show={show}
+          pickerButtonOnPress={item => {
+            setCountryCode(item.dial_code);
+            setCode(item.code);
+            setShow(false);
+          }}
+          popularCountries={['en', 'in', 'pl']}
+          style={styles.countryPicker}
         />
-      </View>
-      <View style={styles.formContainer}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>{localizationStrings.login}</Text>
-          <Text style={styles.subHeaderText}>{localizationStrings.login_Txt}</Text>
-        </View>
-        <View style={styles.inputWrapper}>
-          <View style={[styles.txtInput, { backgroundColor: '#FFFFFF' }]}>
-            <TextInputField
-              County={Number}
-              countryCode={countryCode}
-              PickCountry={setCountry}
-              onChangeText={handleIdentityText}
-              placeholder={localizationStrings.Placeholder_email}
-              firstLogo={true}
-              img={
-                Number
-                  ? require('../../assets/Cropping/Phone2x.png')
-                  : require('../../assets/Cropping/Email3x.png')
-              }
-            />
-          </View>
-          <View style={[styles.txtInput, styles.passwordInput]}>
-            <TextInputField
-              onChangeText={handlePassText}
-              placeholder={localizationStrings.Placeholder_password}
-              firstLogo={true}
-              showEye={true}
-              img={require('../../assets/Cropping/Lock3x.png')}
-            />
-          </View>
-        </View>
-        <View style={styles.forgotPasswordContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate(ScreenNameEnum.SENT_OTP);
-            }}
-            style={styles.forgotPasswordButton}
-          >
-            <Text style={styles.forgotPasswordText}>{localizationStrings.forgot}</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.loginButtonContainer}>
-          <TouchableOpacity
-            onPress={Login}
-            style={[styles.btn, { backgroundColor: '#352C48' }]}
-          >
-            <Text style={styles.loginButtonText}>{localizationStrings.login?.toUpperCase()}</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.signUpContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate(ScreenNameEnum.SIGNUP_SCREEN);
-            }}
-          >
-            <Text style={styles.signUpText}>{localizationStrings.signup_msg}</Text>
-          </TouchableOpacity>
-        </View>
-        {/* <View style={styles.orContainer}>
-          <Text style={styles.orText}>{localizationStrings.or}</Text>
-        </View> */}
-        {/* <TouchableOpacity style={styles.googleSignInButton}>
-          <Gicon />
-          <Text style={styles.googleSignInText}>{localizationStrings.signup_google}</Text>
-        </TouchableOpacity> */}
-      </View>
-      <CountryPicker
-        show={show}
-        pickerButtonOnPress={item => {
-          setCountryCode(item.dial_code);
-          setCode(item.code);
-          setShow(false);
-        }}
-        popularCountries={['en', 'in', 'pl']}
-        style={styles.countryPicker}
-      />
       </ScrollView>
     </View>
   );
@@ -300,28 +291,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     lineHeight: 18,
     fontFamily: 'Federo-Regular',
-  },
-  orContainer: {
-    justifyContent: 'center',
-    height: 60,
-    alignItems: 'center',
-  },
-  orText: {
-    fontSize: 16,
-    color: '#000',
-    fontWeight: '600',
-  },
-  googleSignInButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-  },
-  googleSignInText: {
-    fontFamily: 'Federo-Regular',
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#000',
-    marginLeft: 15,
   },
   countryPicker: {
     modal: {

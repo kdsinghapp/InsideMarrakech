@@ -259,6 +259,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     lineHeight: 18,
+    width:'90%',
   },
   noDataContainer: {
     flex: 1,

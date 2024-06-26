@@ -275,18 +275,18 @@ useEffect(()=>{
                     horizontal
                     renderItem={({ item, index }) => (
                       <View style={styles.bannerItem}>
-                        {loadingState[index] && (
+                       
+                        <ImageBackground
+                          source={{ uri: item.image }}
+                          style={styles.bannerImage}
+                          resizeMode="cover">
+ {loadingState[index] && (
                           <ActivityIndicator
                             style={styles.loadingIndicator}
                             size="small"
                             color="#000"
                           />
                         )}
-                        <ImageBackground
-                          source={{ uri: item.image }}
-                          style={styles.bannerImage}
-                          resizeMode="cover">
-
                           <TouchableOpacity
                             onPress={() => {
                               navigation.navigate(ScreenNameEnum.PLACE_DETAILS, { item: { id: item.property_id } });
@@ -316,7 +316,7 @@ useEffect(()=>{
               keyExtractor={(item) => item.id}
             />
 
-            <Modal visible={isVisible} animationType="slide" transparent={true}>
+            {/* <Modal visible={isVisible} animationType="slide" transparent={true}>
               <TouchableOpacity
                 onPress={() => {
                   setIsVisible(false);
@@ -390,7 +390,7 @@ useEffect(()=>{
                   </TouchableOpacity>
                 </View>
               </TouchableOpacity>
-            </Modal>
+            </Modal> */}
           </>
         )}
         {user?.type === 'Company' && (
@@ -440,6 +440,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 14,
     color: '#000',
+    width:'90%',
     lineHeight: 18,
   },
   title: {
@@ -503,7 +504,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
-    paddingHorizontal: 15,
+    paddingHorizontal:10,
   },
   shadow: {
     shadowColor: '#000',
@@ -591,7 +592,8 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     height: hp(12),
-    marginTop: 10,
+    marginTop: 20,
+    paddingHorizontal:10,
     justifyContent: 'center',
   },
   categoryHeader: {
@@ -608,7 +610,7 @@ const styles = StyleSheet.create({
   categoryList: {
     marginTop: 20,
     paddingVertical: 10,
-    paddingHorizontal: 10,
+ 
   },
   categoryItem: {
     padding: 5,

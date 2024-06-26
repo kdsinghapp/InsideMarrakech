@@ -772,7 +772,7 @@ export const get_all_property = createAsyncThunk(
   'get_all_property',
   async (params, thunkApi) => {
     try {
-      console.log('=============get_all_property=======================');
+    
 
       const response = await API.get('/get_all_property');
 
@@ -781,9 +781,10 @@ export const get_all_property = createAsyncThunk(
       } else {
         // Handle the error
       }
+      console.log('=============get_all_property=======================',);
       return response.data.data;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('get_all_property Error:', error);
       errorToast('Network Error');
       return thunkApi.rejectWithValue(error);
     }
