@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  KeyboardAvoidingView,
+  Keyboard,
 } from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Camera from '../../assets/svg/camera.svg';
@@ -21,6 +23,7 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Loading from '../../configs/Loader';
 import DatePicker from 'react-native-date-picker';
 import localizationStrings from '../../utils/Localization';
+import GooglePlacesInput from '../../configs/AutoAddress';
 
 export default function AddProperty() {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -29,7 +32,8 @@ export default function AddProperty() {
   const [name, setName] = useState('');
   const [Category, setCategory] = useState(null);
   const [Description, setDescription] = useState('');
-  const [Location, setLocation] = useState('');
+  const [Location, setLocation] = useState(null);
+  const [LocationName, setLocationName] = useState('');
   const [MobileNumber, setMobileNumber] = useState('');
   const [OpenTime, setOpenTime] = useState(new Date());
   const [CloseTime, setCloseTime] = useState(new Date());
@@ -48,11 +52,14 @@ export default function AddProperty() {
   const [currentPicker, setCurrentPicker] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({});
   const navigation = useNavigation()
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
   useEffect(() => {
     dispatch(get_category());
   }, [isFocused]);
 
 
+  console.log('Location=>>>>>',Location);
   
   const handleSave = () => {
     const errors = {};
@@ -80,17 +87,17 @@ export default function AddProperty() {
     data.append('company_id', user?.id);
     data.append('name', name);
     data.append('amount', Price);
-    data.append('address', Location);
-    data.append('lat', '');
-    data.append('lon', '');
+    data.append('address', LocationName);
+    data.append('lat', Location?.latitude);
+    data.append('lon', Location?.longitude);
     data.append('description', Description);
     data.append('book_online_mobile_number', MobileNumber);
     data.append('title', Title);
     data.append('opening_hours', `${OpenTime.toString()}/${CloseTime.toString()}`)
-    data.append('lunch_start',LunchStart.toString())
-    data.append('lunch_end', LunchEnd.toString())
-    data.append('dinner_start', DinnerStart.toString())
-    data.append('dinner_end',DinnerEnd.toString())
+    data.append('lunch_start','')
+    data.append('lunch_end', '')
+    data.append('dinner_start', '')
+    data.append('dinner_end','')
     ApiImages.forEach((image, index) => {
       data.append(`image[${index}]`,image);
     })
@@ -213,15 +220,60 @@ export default function AddProperty() {
   const formatTime = date => {
     return date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
   };
-
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardOpen(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardOpen(false);
+      }
+    );
+  
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+  
+  const handleSelectLocation = useCallback(
+    (details) => {
+        const { lat, lng } = details.geometry.location;
+        console.log('details',details.name );
+        
+        setLocationName(details.name);
+        setLocation({
+            latitude: lat,
+            longitude: lng,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+        });
+   
+    },
+    [navigation]
+);
   return (
     
     <View style={styles.container}>
       {isLoading && <Loading />}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.title}>
+      
+      <View style={{  width: '100%', bottom:0, 
+      alignSelf:'center',
+      backgroundColor: '#fff' }}>
+          <View style={styles.title}>
           <Text style={styles.titleText}>{localizationStrings.a_propert}</Text>
         </View>
+        <View style={styles.labelContainerWithMargin}>
+          <Text style={styles.labelText}>{localizationStrings.location}</Text>
+        </View>
+                <GooglePlacesInput placeholder={LocationName==''?'Search':LocationName} onPlaceSelected={handleSelectLocation} />
+            </View>
+            <ScrollView showsVerticalScrollIndicator={false}>
+      
         <View style={styles.subtitle}>
           <Text style={styles.subtitleText}>{localizationStrings.photo}</Text>
         </View>
@@ -315,17 +367,8 @@ export default function AddProperty() {
             onChangeText={setMobileNumber}
           />
         </View>
-        <View style={styles.labelContainerWithMargin}>
-          <Text style={styles.labelText}>{localizationStrings.location}</Text>
-        </View>
-        <View
-          style={[styles.txtInput, fieldErrors.Location && styles.errorInput]}>
-          <TextInputField
-            placeholder={localizationStrings.location}
-            value={Location}
-            onChangeText={setLocation}
-          />
-        </View>
+        
+       
         
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
@@ -359,15 +402,15 @@ export default function AddProperty() {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
             <Text style={styles.labelText}>{localizationStrings.lunch_s_time}</Text>
           </View>
           <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
             <Text style={styles.labelText}>{localizationStrings.lunch_e_time}</Text>
           </View>
-        </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        </View> */}
+        {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <TouchableOpacity
             style={[
               styles.txtInput,
@@ -390,8 +433,8 @@ export default function AddProperty() {
               {formatTime(LunchEnd)}
             </Text>
           </TouchableOpacity>
-        </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        </View> */}
+        {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
             <Text style={styles.labelText}>{localizationStrings.dinner_s_time}</Text>
           </View>
@@ -422,7 +465,7 @@ export default function AddProperty() {
               {formatTime(DinnerEnd)}
             </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <DatePicker
           modal
           open={isDatePickerVisible}
@@ -442,12 +485,16 @@ export default function AddProperty() {
             onChangeText={setPrice}
           />
         </View>
-        <View style={{height: hp(15)}} />
+
+       
+      
+    
+    
       </ScrollView>
-      <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
+      {!keyboardOpen && ( <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
         <Text style={styles.saveButtonText}>{localizationStrings.add_p}</Text>
-      </TouchableOpacity>
-      <View style={{height: hp(2)}} />
+      </TouchableOpacity>)}
+   
     </View>
   );
 }

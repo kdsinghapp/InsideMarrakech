@@ -26,6 +26,9 @@ import Gallery_Screen from "../screens/Features/Gallery_Screen";
 import PaymentDetails from "../screens/Features/PaymentDetails";
 import PaymentSuccess from "../screens/Features/PaymentSuccess";
 import PlaceDetails from "../screens/Features/PlaceDetails";
+import SeeallCategory from "../screens/Features/SeeallCategory";
+import seeSubcategory from "../screens/Features/seeSubcategory";
+import SubCategoryProperty from "../screens/Features/SubCategoryProperty";
 import MapScreen from "../screens/Map";
 import AboutUs from "../screens/ProfileSection/AboutUs";
 import BookingTab from "../screens/ProfileSection/BookingTab";
@@ -190,6 +193,18 @@ const _routes = {
     {
       name: ScreenNameEnum.SelectLocation,
       Component:SelectLocation,
+    },
+    {
+      name: ScreenNameEnum.SeeallCategory,
+      Component:SeeallCategory,
+    },
+    {
+      name: ScreenNameEnum.seeSubcategory,
+      Component:seeSubcategory,
+    },
+    {
+      name: ScreenNameEnum.SubCategoryProperty,
+      Component:SubCategoryProperty,
     },
     
   ],

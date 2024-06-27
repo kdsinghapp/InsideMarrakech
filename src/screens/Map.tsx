@@ -81,7 +81,7 @@ const MapScreen = () => {
                 }}
               scrollDuringRotateOrZoomEnabled={true}
               
-    
+
                 mapType='satellite'
             >
                 {currentLocation && (

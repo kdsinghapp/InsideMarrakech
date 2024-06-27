@@ -9,21 +9,22 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import GoldRight from '../../assets/svg/GoldRight.svg';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
+import HTML from 'react-native-render-html';
 
 import Pin from '../../assets/svg/BlackPin.svg';
 import Call from '../../assets/svg/call.svg';
 import Chat from '../../assets/svg/chat.svg';
 import Star from '../../assets/svg/Star.svg';
-import {styles} from '../../configs/Styles';
+import { styles } from '../../configs/Styles';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import DateModal from '../Modal/DateModal';
 import MenuModal from '../Modal/MenuModal';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   add_chat_user,
   delete_property,
@@ -35,10 +36,12 @@ import {
 import Loading from '../../configs/Loader';
 import Rating from '../../configs/Ratting';
 import localizationStrings from '../../utils/Localization';
+import DescriptionContainer from './DescriptionContainer';
+import WebView from 'react-native-webview';
 
 export default function PlaceDetails() {
   const route = useRoute();
-  const {item} = route.params;
+  const { item } = route.params;
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMenuVisible, setmodalMenuVisible] = useState(false);
@@ -48,7 +51,11 @@ export default function PlaceDetails() {
   const propertDetails = useSelector(state => state.feature.propertyDetail);
   const isFocuse = useIsFocused();
 
-
+  console.log('item.propertDetails,', propertDetails);
+  function isHTML(str) {
+    const htmlPattern = /<\/?[a-z][\s\S]*>/i;
+    return htmlPattern.test(str);
+  }
   useEffect(() => {
     get_property();
     dispatch(get_company_all_property());
@@ -61,7 +68,7 @@ export default function PlaceDetails() {
 
     dispatch(get_property_detail(params));
   };
-  
+
 
 
   const timeFormate = utcDateString => {
@@ -77,7 +84,7 @@ export default function PlaceDetails() {
       });
       return localTimeString;
     } else {
-     
+
     }
   };
 
@@ -85,7 +92,7 @@ export default function PlaceDetails() {
     const params = {
       property_id: item.id,
       company_id: user?.id,
-      navigation:navigation
+      navigation: navigation
     };
 
     dispatch(delete_property(params));
@@ -99,257 +106,273 @@ export default function PlaceDetails() {
       endTime: formattedEndTime
     };
   };
-const Add_chatUser =async()=>{
+  const Add_chatUser = async () => {
 
 
-  const params ={
-    data:{
-      user_id:user?.id,
-      company_id:propertDetails?.company_id
-    },
-    navigation:navigation
+    const params = {
+      data: {
+        user_id: user?.id,
+        company_id: propertDetails?.company_id
+      },
+      navigation: navigation
+    }
+
+    dispatch(add_chat_user(params))
   }
+  const make_call = (Number) => {
 
-  dispatch(add_chat_user(params))
-}
- const make_call =(Number)=>{
+    RNImmediatePhoneCall.immediatePhoneCall(Number);
+  }
+  const description = propertDetails?.description || '';
 
-  RNImmediatePhoneCall.immediatePhoneCall(Number);
- }
+  // Wrap the HTML content with meta viewport tag for proper scaling
 
   return (
     <View style={localStyles.container}>
       {isLoading ? <Loading /> : null}
       {propertDetails.document_gallery ?
-      <ScrollView>
-      {propertDetails && ( // Add a conditional check for propertDetails
-    <ImageBackground
-      source={{
-        uri:
-          propertDetails?.document_gallery[
-            propertDetails?.document_gallery?.length - 1
-          ].image,
-      }}
-      style={localStyles.imageBackground}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.goBack();
-        }}
-        style={localStyles.goBackButton}>
-        <GoldRight />
-      </TouchableOpacity>
-    </ImageBackground>
-  )}
-        
-
-        <View style={localStyles.contentContainer}>
-          <View style={localStyles.titleContainer}>
-            <Text style={localStyles.titleText}>{propertDetails?.name}</Text>
-          </View>
-          <View style={localStyles.addressContainer}>
-            <Pin />
-            <Text style={[localStyles.addressText, {marginLeft: 5}]}>
-              {propertDetails?.address}
-            </Text>
-          </View>
-
-          <View style={localStyles.star}>
-      
-            <View style={localStyles.starsContainer}>
-            <Rating rating={propertDetails?.rating} /> 
-      
-
-              <Text style={localStyles.ratingText}>{propertDetails?.rating}</Text>
-            </View>
-
-            <Text style={localStyles.priceText}>
-              Price {propertDetails?.amount}
-            </Text>
-          </View>
-
-          <View style={localStyles.buttonsContainer}>
-            {user?.type == 'User' ? (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {propertDetails && (
+            <ImageBackground
+              source={{
+                uri:
+                  propertDetails?.document_gallery[
+                    propertDetails?.document_gallery?.length - 1
+                  ].image,
+              }}
+              style={localStyles.imageBackground}>
               <TouchableOpacity
                 onPress={() => {
-                  setModalVisible(true);
+                  navigation.goBack();
                 }}
-                style={localStyles.btn}>
-                <Text style={localStyles.btnText}>{localizationStrings.book}</Text>
+                style={localStyles.goBackButton}>
+                <GoldRight />
               </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate(ScreenNameEnum.updateProperty, {
-                    item: propertDetails,
-                  });
-                }}
-                style={localStyles.btn}>
-                <Text style={localStyles.btnText}>{localizationStrings.edit}</Text>
-              </TouchableOpacity>
-            )}
-
-            <TouchableOpacity
-              onPress={() => {
-                setmodalMenuVisible(true);
-              }}
-              style={localStyles.btn}>
-              <Text style={localStyles.btnText}>{localizationStrings.menu}</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={localStyles.galleryHeaderContainer}>
-            <Text style={localStyles.galleryHeaderText}>{localizationStrings.G_photo}</Text>
-            {user?.type == 'User' && (
-              <TouchableOpacity
-              onPress={()=>{
-                navigation.navigate(ScreenNameEnum.Gallery_Screen,{
-                  item:propertDetails?.document_gallery
-                })
-              }}
-              >
-                <Text style={localStyles.seeAllText}>{localizationStrings.see_a}</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-
-          <View style={localStyles.galleryContainer}>
-            <FlatList
-              data={propertDetails?.document_gallery}
-              showsHorizontalScrollIndicator={false}
-              horizontal
-              renderItem={({item}) => (
-                <View>
-                  <Image
-                    source={{uri: item.image}}
-                    resizeMode="contain"
-                    style={localStyles.galleryImage}
-                  />
-                </View>
-              )}
-            />
-          </View>
-
-          {user?.type == 'User' && (
-            <View style={localStyles.contactContainer}>
-              <TouchableOpacity 
-              onPress={()=>{
-                make_call(propertDetails?.book_online_mobile_number)
-              }}
-              style={localStyles.contactButton}>
-                <Call />
-                <Text style={localStyles.contactButtonText}>
-                 {localizationStrings.B_O_call}:
-                  {propertDetails?.book_online_mobile_number}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  Add_chatUser()
-                }}
-                style={[localStyles.contactButton, localStyles.chatButton]}>
-                <Chat />
-                <Text style={localStyles.contactButtonText}>{localizationStrings.c_now}</Text>
-              </TouchableOpacity>
-            </View>
+            </ImageBackground>
           )}
-          <View style={localStyles.descriptionContainer}>
-            <Text style={localStyles.sectionTitle}>{localizationStrings.title}</Text>
-            <Text style={[localStyles.sectionTitle, {marginTop: 10}]}>
-              {propertDetails?.title}
-            </Text>
-            <Text style={[localStyles.sectionTitle, {marginTop: 20}]}>
-              {localizationStrings.Description}
-            </Text>
-            <Text style={[localStyles.descriptionText, {marginTop: 10}]}>
-              {propertDetails?.description}
+
+
+          <View style={localStyles.contentContainer}>
+            <View style={localStyles.titleContainer}>
+              <Text style={localStyles.titleText}>{propertDetails?.name}</Text>
+            </View>
+            <View style={localStyles.addressContainer}>
+              <Pin />
+              <Text style={[localStyles.addressText, { marginLeft: 5 }]}>
+                {propertDetails?.address}
+              </Text>
+            </View>
+
+            <View style={localStyles.star}>
+
+              <View style={localStyles.starsContainer}>
+                <Rating rating={propertDetails?.rating} />
+
+
+                <Text style={localStyles.ratingText}>{propertDetails?.rating}</Text>
+              </View>
+
+              <Text style={localStyles.priceText}>
+                {localizationStrings.price} {propertDetails?.amount}
+              </Text>
+            </View>
+
+            <View style={localStyles.buttonsContainer}>
+              {user?.type == 'User' ? (
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalVisible(true);
+                  }}
+                  style={localStyles.btn}>
+                  <Text style={localStyles.btnText}>{localizationStrings.book}</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(ScreenNameEnum.updateProperty, {
+                      item: propertDetails,
+                    });
+                  }}
+                  style={localStyles.btn}>
+                  <Text style={localStyles.btnText}>{localizationStrings.edit}</Text>
+                </TouchableOpacity>
+              )}
+
+              <TouchableOpacity
+                onPress={() => {
+                  setmodalMenuVisible(true);
+                }}
+                style={localStyles.btn}>
+                <Text style={localStyles.btnText}>{localizationStrings.menu}</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={localStyles.galleryHeaderContainer}>
+              <Text style={localStyles.galleryHeaderText}>{localizationStrings.G_photo}</Text>
+              {user?.type == 'User' && (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(ScreenNameEnum.Gallery_Screen, {
+                      item: propertDetails?.document_gallery
+                    })
+                  }}
+                >
+                  <Text style={localStyles.seeAllText}>{localizationStrings.see_a}</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <View style={localStyles.galleryContainer}>
+              <FlatList
+                data={propertDetails?.document_gallery}
+                showsHorizontalScrollIndicator={false}
+                horizontal
+                renderItem={({ item }) => (
+                  <View>
+                    <Image
+                      source={{ uri: item.image }}
+                      resizeMode="contain"
+                      style={localStyles.galleryImage}
+                    />
+                  </View>
+                )}
+              />
+            </View>
+
+            {user?.type == 'User' && (
+              <View style={localStyles.contactContainer}>
+                <TouchableOpacity
+                  onPress={() => {
+                    make_call(propertDetails?.book_online_mobile_number)
+                  }}
+                  style={localStyles.contactButton}>
+                  <Call />
+                  <Text style={localStyles.contactButtonText}>
+                    {localizationStrings.B_O_call}:
+                    {propertDetails?.book_online_mobile_number}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    Add_chatUser()
+                  }}
+                  style={[localStyles.contactButton, localStyles.chatButton]}>
+                  <Chat />
+                  <Text style={localStyles.contactButtonText}>{localizationStrings.c_now}</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            <View style={localStyles.descriptionContainer}>
+              <Text style={localStyles.sectionTitle}>{localizationStrings.title}</Text>
+              <Text style={[localStyles.sectionTitle, { marginTop: 10 }]}>
+                {propertDetails?.title}
+              </Text>
+              <Text style={[localStyles.sectionTitle, { marginTop: 20 }]}>
+                {localizationStrings.Description}
+              </Text>
+              <View style={{}}>
+
+                {isHTML(propertDetails?.description) &&
+                  <HTML source={{ html: propertDetails?.description }} />
+                }
+                {!isHTML(propertDetails?.description) &&
+                  <Text style={[localStyles.descriptionText, { marginTop: 10 }]}>
+                    {propertDetails?.description}
+                  </Text>
+                }
+              </View>
+            </View>
+          </View>
+
+          <View style={localStyles.openingHoursContainer}>
+            <Text style={localStyles.sectionTitle}>{localizationStrings.O_hours}</Text>
+
+            <Text style={localStyles.openingHoursText}>
+              {`${formatTimes().startTime} - ${formatTimes().endTime}`}
             </Text>
           </View>
-        </View>
+          {/* <View style={localStyles.scheduleContainer}>
+            <Text style={localStyles.sectionTitle}>{localizationStrings.L_time}</Text>
+            <Text style={localStyles.scheduleText}>
+              {timeFormate(propertDetails?.lunch_start)} -{' '}
+              {timeFormate(propertDetails?.lunch_end)}
+            </Text>
+          </View> */}
+          {/* <View style={localStyles.scheduleContainer}>
+            <Text style={localStyles.sectionTitle}>{localizationStrings.D_time}</Text>
+            <Text style={localStyles.scheduleText}>
+              {timeFormate(propertDetails?.dinner_start)} -{' '}
+              {timeFormate(propertDetails?.dinner_end)}
+            </Text>
+          </View> */}
 
-        <View style={localStyles.openingHoursContainer}>
-          <Text style={localStyles.sectionTitle}>{localizationStrings.O_hours}</Text>
+          <View style={[localStyles.sectionContainer, { marginTop: 20 }]}>
+            <Text style={localStyles.sectionTitle}>{localizationStrings.h_t_get}</Text>
+            <Text style={localStyles.sectionTitle}>{propertDetails?.title}</Text>
+          </View>
+          {propertDetails?.lat != '' && propertDetails?.lon != '' && <ImageBackground
+            style={localStyles.mapImageBackground}
+            source={require('../../assets/Cropping/map.png')}>
+            <TouchableOpacity
+             onPress={() => {
+              navigation.navigate(ScreenNameEnum.MAP_SCREEN, 
+              );
+            }}
+            
+              style={localStyles.mapButton}>
+              <Text style={localStyles.mapButtonText}>{localizationStrings.O_map}</Text>
+            </TouchableOpacity>
+          </ImageBackground>}
 
-          <Text style={localStyles.openingHoursText}>
-            {`${formatTimes().startTime} - ${formatTimes().endTime}`}
-          </Text>
-        </View>
-        <View style={localStyles.scheduleContainer}>
-        <Text style={localStyles.sectionTitle}>{localizationStrings.L_time}</Text>
-          <Text style={localStyles.scheduleText}>
-            {timeFormate(propertDetails?.lunch_start)} -{' '}
-            {timeFormate(propertDetails?.lunch_end)}
-          </Text>
-        </View>
-        <View style={localStyles.scheduleContainer}>
-        <Text style={localStyles.sectionTitle}>{localizationStrings.D_time}</Text>
-          <Text style={localStyles.scheduleText}>
-            {timeFormate(propertDetails?.dinner_start)} -{' '}
-            {timeFormate(propertDetails?.dinner_end)}
-          </Text>
-        </View>
-       
-        <View style={[localStyles.sectionContainer, {marginTop: 20}]}>
-          <Text style={localStyles.sectionTitle}>{localizationStrings.h_t_get}</Text>
-          <Text style={localStyles.sectionTitle}>{propertDetails?.title}</Text>
-        </View>
-        <ImageBackground
-          style={localStyles.mapImageBackground}
-          source={require('../../assets/Cropping/map.png')}>
-          <TouchableOpacity 
-          onPress={()=>{
-            navigation.navigate(ScreenNameEnum.MAP_SCREEN)
-          }}
-          style={localStyles.mapButton}>
-            <Text style={localStyles.mapButtonText}>{localizationStrings.O_map}</Text>
+          {user?.type == 'Company' && <TouchableOpacity
+            onPress={() => {
+              Alert.alert(
+                'Delete Property',
+                'Are you sure you want to delete this property?',
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Delete',
+                    onPress: () => DeleteProperty(),
+                    style: 'destructive',
+                  },
+                ],
+                { cancelable: false },
+              );
+            }}
+            style={{ alignSelf: 'center', marginTop: 20 }}>
+            <Text style={{ color: 'red' }}>Delete Property</Text>
           </TouchableOpacity>
-        </ImageBackground>
-
-     {user?.type == 'Company'  && <TouchableOpacity
-          onPress={() => {
-            Alert.alert(
-              'Delete Property',
-              'Are you sure you want to delete this property?',
-              [
-                {
-                  text: 'Cancel',
-                  onPress: () => console.log('Cancel Pressed'),
-                  style: 'cancel',
-                },
-                {
-                  text: 'Delete',
-                  onPress: () => DeleteProperty(),
-                  style: 'destructive',
-                },
-              ],
-              {cancelable: false},
-            );
-          }}
-          style={{alignSelf: 'center', marginTop: 20}}>
-          <Text style={{color: 'red'}}>Delete Property</Text>
-        </TouchableOpacity>
-}
-        <View style={localStyles.bottomSpace} />
-        <DateModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-          data={item}
-        />
-        <MenuModal
-          visible={modalMenuVisible}
-          onClose={() => setmodalMenuVisible(false)}
-          data={propertDetails}
-        />
-      </ScrollView>
-      :
-      <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-        <Text style={{color:'#000',fontSize:16}}>No Details</Text>
+          }
+          <View style={localStyles.bottomSpace} />
+          <DateModal
+            visible={modalVisible}
+            onClose={() => setModalVisible(false)}
+            data={item}
+          />
+          <MenuModal
+            visible={modalMenuVisible}
+            onClose={() => setmodalMenuVisible(false)}
+            data={propertDetails}
+          />
+        </ScrollView>
+        :
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ color: '#000', fontSize: 16 }}>No Details</Text>
         </View>
-}
+      }
     </View>
   );
 }
 
 const localStyles = StyleSheet.create({
+  webview: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFF',
@@ -406,7 +429,7 @@ const localStyles = StyleSheet.create({
     fontSize: 12,
     color: '#000',
     fontWeight: '800',
-    marginLeft:20
+    marginLeft: 20
   },
   priceText: {
     fontFamily: 'Federo-Regular',
@@ -523,7 +546,7 @@ const localStyles = StyleSheet.create({
   openingHoursText: {
     fontFamily: 'Federo-Regular',
     fontSize: 14,
-    marginTop:10,
+    marginTop: 10,
     color: '#777777',
     fontWeight: '400',
   },
@@ -535,7 +558,7 @@ const localStyles = StyleSheet.create({
     fontFamily: 'Federo-Regular',
     fontSize: 14,
     color: '#777777',
-    marginTop:10,
+    marginTop: 10,
     fontWeight: '400',
   },
   exploreContainer: {

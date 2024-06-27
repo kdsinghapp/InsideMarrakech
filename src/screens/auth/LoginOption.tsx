@@ -56,7 +56,13 @@ export default function LoginOption() {
     <ImageBackground
       source={require('../../assets/Cropping/role.png')}
       style={styles.imageBackground}>
+        <View style={{alignSelf:'center',
+  
+        position:'absolute',bottom:hp(31)}}>
+     <Text style={{fontSize:20,color:'#fff',fontWeight:'500', fontFamily: 'Federo-Regular',}}>Start the experience</Text>
+     </View>
       <View style={styles.rolesContainer}>
+   
         <TouchableOpacity
           onPress={() => Role('User')}
           style={[

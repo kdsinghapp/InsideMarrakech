@@ -35,6 +35,9 @@ enum ScreenNameEnum {
   Gallery_Screen='Gallery_Screen',
   FullscreenImageScreen='FullscreenImageScreen',
   SelectLocation='SelectLocation',
+  seeSubcategory='seeSubcategory',
+  SeeallCategory='SeeallCategory',
+  SubCategoryProperty='SubCategoryProperty',
 
  // Featurs
 

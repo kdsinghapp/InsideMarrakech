@@ -28,7 +28,9 @@ const initialState = {
   Notification: [],
   BookingDetails: [],
   BannerList: [],
-  FavList: []
+  FavList: [],
+  subcategory:[],
+  getsubcategoryProperty:[]
 };
 
 export const update_notification = createAsyncThunk(
@@ -887,6 +889,7 @@ export const get_category = createAsyncThunk(
   },
 );
 
+
 export const get_property_menu = createAsyncThunk(
   'get_property_menu',
   async (params, thunkApi) => {
@@ -909,6 +912,67 @@ export const get_property_menu = createAsyncThunk(
       } else {
         return thunkApi.rejectWithValue(response.data.data);
       }
+    } catch (error) {
+      return thunkApi.rejectWithValue(response.data.data);
+    }
+  },
+);
+export const get_sub_category = createAsyncThunk(
+  'get_sub_category',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+
+      console.log(
+        '==============get_sub_category call======================',
+        params,
+      );
+
+      const response = await API.post('/get_sub_category', params, config);
+      console.log(
+        '==============get_sub_category call======================',response.data
+        
+      );
+      if (response.data.status === '1') {
+    
+      } else {
+        return thunkApi.rejectWithValue(response.data.data);
+      }
+      return response.data.result;
+    } catch (error) {
+      return thunkApi.rejectWithValue(response.data.data);
+    }
+  },
+);
+export const get_all_property_sub_category = createAsyncThunk(
+  'get_all_property_sub_category',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+
+      console.log(
+        '==============get_all_property_sub_category call======================',
+        params,
+      );
+
+      const response = await API.post('/get_all_property_sub_category', params, config);
+    
+      if (response.data.status === '1') {
+    
+      } else {
+        return thunkApi.rejectWithValue(response.data.data);
+      }
+      return response.data.data;
     } catch (error) {
       return thunkApi.rejectWithValue(response.data.data);
     }
@@ -986,6 +1050,20 @@ const FeatureSlice = createSlice({
       state.isError = false;
     });
     builder.addCase(update_notification.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(get_all_property_sub_category.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_all_property_sub_category.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.getsubcategoryProperty =action.payload
+    });
+    builder.addCase(get_all_property_sub_category.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
@@ -1409,6 +1487,20 @@ const FeatureSlice = createSlice({
       state.CategoryList = action.payload;
     });
     builder.addCase(get_category.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(get_sub_category.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(get_sub_category.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+      state.subcategory = action.payload;
+    });
+    builder.addCase(get_sub_category.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;

@@ -1,5 +1,6 @@
 {
   "English": {
+    "SubCategory":"Sub Category",
     "login": "Login",
     "login_Txt": "Enter your email and password",
     "Placeholder_email": "Email Address / Mobile number",
@@ -140,6 +141,7 @@
     "Y_B_C": "Your booking is confirmed!"
   },
   "French": {
+    "SubCategory": "Sous-catégorie",
     "month": "mois",
     "Y_B_C": "Votre réservation est confirmée!",
     "b_home": "Retour à l'accueil",
@@ -280,6 +282,7 @@
     "Close_Time": "Heure de fermeture",
   },
   "Chinese": {
+    "SubCategory": "子类别",
     "month": "月",
     "Y_B_C": "您的预订已确认！",
     "b_home": "返回首页",
@@ -420,6 +423,7 @@
     "Close_Time": "关闭时间"
   },
   "Russian": {
+    "SubCategory": "Подкатегория",
     "month": "месяц",
     "Y_B_C": "Ваше бронирование подтверждено!",
     "b_home": "Вернуться на главную",
@@ -560,6 +564,7 @@
     "Close_Time": "Время закрытия"
   },
   "Italian": {
+    "SubCategory": "Sottocategoria",
     "month": "mese",
     "Y_B_C": "La tua prenotazione è confermata!",
     "b_home": "Torna alla homepage",
@@ -700,6 +705,7 @@
     "Close_Time": "Orario di chiusura"
   },
   "Spanish": {
+    "SubCategory": "Subcategoría",
     "month": "mes",
     "Y_B_C": "¡Su reserva está confirmada!",
     "b_home": "Volver a inicio",
@@ -840,6 +846,8 @@
     "Close_Time": "Hora de cierre"
   },
   "Japanese": {
+    "SubCategory": "サブカテゴリ",
+
     "month": "月",
     "Y_B_C": "予約が確定しました！",
     "b_home": "ホームに戻る",

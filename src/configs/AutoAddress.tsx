@@ -38,7 +38,14 @@ const GooglePlacesInput = ({ placeholder, onPlaceSelected }) => {
                 placeholder={placeholder}
                 onPress={(data, details = null) => {
                     if (details) {
+                        try{
+                        console.log('GooglePlacesAutocomplete=>>>>>',details);
+                        
                         onPlaceSelected(details);
+                        }
+                        catch(err){
+                            console.log('GooglePlacesAutocomplete=>>>>>',err);
+                        }
                     }
                 }}
                 styles={{

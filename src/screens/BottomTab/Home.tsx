@@ -99,11 +99,11 @@ export default function Home() {
     get_Companyproperty();
   }, [isFocused, user]);
 
-useEffect(()=>{
-  dispatch(get_all_property())
-},[])
+  useEffect(() => {
+    dispatch(get_all_property())
+  }, [])
 
-  const renderList = ({ item,index }) => {
+  const renderList = ({ item, index }) => {
     // Check if document_gallery array exists and is not empty
     const formatTimes = () => {
       const [startTimeStr, endTimeStr] = item?.opening_hours?.split('/');
@@ -124,19 +124,19 @@ useEffect(()=>{
               navigation.navigate(ScreenNameEnum.PLACE_DETAILS, { item: item });
             }}
             style={[styles.shadow, styles.itemContainer]}>
-                <Image
+            <Image
               source={{ uri: firstImage }}
               style={styles.itemImage}
               resizeMode="cover"
             />
-               {loadingState[index] && (
-                          <ActivityIndicator
-                            style={styles.loadingIndicator}
-                            size="small"
-                            color="#000"
-                          />
-                        )}
-          
+            {loadingState[index] && (
+              <ActivityIndicator
+                style={styles.loadingIndicator}
+                size="small"
+                color="#000"
+              />
+            )}
+
 
             <Text style={styles.itemTitle}>{item.name}</Text>
             <View style={styles.detailsContainer}>
@@ -202,6 +202,7 @@ useEffect(()=>{
     }));
   };
 
+
   return (
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
@@ -224,7 +225,12 @@ useEffect(()=>{
             {searchQuery === '' && (<View style={styles.categoryContainer}>
               <View style={styles.categoryHeader}>
                 <Text style={styles.categoryHeaderText}>{localizationStrings.category}</Text>
+                <TouchableOpacity onPress={()=>{
+                  navigation.navigate(ScreenNameEnum.SeeallCategory)
+                }}>
+
                 <BlackDown />
+                </TouchableOpacity>
               </View>
 
 
@@ -235,7 +241,9 @@ useEffect(()=>{
                   horizontal
                   renderItem={({ item, index }) => (
                     <TouchableOpacity
-                      onPress={() => handleCategorySelect(item.id)}
+                      onPress={() => {
+                        navigation.navigate(ScreenNameEnum.seeSubcategory,{id:item.id})
+                      }}
                       style={styles.categoryItem}
                     >
                       {loadingState[index] && (
@@ -271,18 +279,18 @@ useEffect(()=>{
                     horizontal
                     renderItem={({ item, index }) => (
                       <View style={styles.bannerItem}>
-                       
+
                         <ImageBackground
                           source={{ uri: item.image }}
                           style={styles.bannerImage}
                           resizeMode="cover">
- {loadingState[index] && (
-                          <ActivityIndicator
-                            style={styles.loadingIndicator}
-                            size="small"
-                            color="#000"
-                          />
-                        )}
+                          {loadingState[index] && (
+                            <ActivityIndicator
+                              style={styles.loadingIndicator}
+                              size="small"
+                              color="#000"
+                            />
+                          )}
                           <TouchableOpacity
                             onPress={() => {
                               navigation.navigate(ScreenNameEnum.PLACE_DETAILS, { item: { id: item.property_id } });
@@ -300,7 +308,7 @@ useEffect(()=>{
             <FlatList
               showsVerticalScrollIndicator={false}
               onLoadStart={() => handleImageLoadStart(index)}
-                    onLoadEnd={() => handleImageLoadEnd(index)}
+              onLoadEnd={() => handleImageLoadEnd(index)}
               data={
                 selectedCategory
                   ? filteredPropertiesByCategory
@@ -436,7 +444,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 14,
     color: '#000',
-    width:'90%',
+    width: '90%',
     lineHeight: 18,
   },
   title: {
@@ -500,7 +508,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
   },
   shadow: {
     shadowColor: '#000',
@@ -589,7 +597,7 @@ const styles = StyleSheet.create({
   categoryContainer: {
     height: hp(12),
     marginTop: 20,
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
     justifyContent: 'center',
   },
   categoryHeader: {
@@ -606,17 +614,17 @@ const styles = StyleSheet.create({
   categoryList: {
     marginTop: 20,
     paddingVertical: 10,
- 
+
   },
   categoryItem: {
     padding: 5,
-   paddingHorizontal:20,
-   alignItems:'center'
+    paddingHorizontal: 20,
+    alignItems: 'center'
   },
   categoryItemImage: {
     height: 30,
     width: 30,
-   
+
   },
   categoryItemText: {
     fontSize: 10,

@@ -1,32 +1,64 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import React from 'react';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import RightArrow from '../assets/svg/RightArrow.svg';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import localizationStrings from '../utils/Localization';
-export default function ProfileHeader({title = '',width=20}) {
+
+export default function ProfileHeader({ title = '' }) {
   const navigation = useNavigation();
   return (
-    <View style={{height: hp(8), alignItems: 'center', flexDirection: 'row'}}>
+    <View style={styles.headerContainer}>
       <TouchableOpacity
         onPress={() => {
           navigation.goBack();
         }}
-        style={{flexDirection: 'row', alignItems: 'center'}}>
-        <RightArrow height={15} Width={15} />
-        <Text style={{fontFamily: 'Federo-Regular',fontSize: 14, color: '#000', fontWeight: '500'}}>
-         {localizationStrings.Back}
+        style={styles.backButton}>
+        <RightArrow height={15} width={15} />
+        <Text style={styles.backText}>
+          {localizationStrings.Back}
         </Text>
       </TouchableOpacity>
-
-      <View style={{alignSelf: 'center', marginLeft: wp(width)}}>
-        <Text style={{fontFamily: 'Federo-Regular',fontSize: 20, color: '#000', fontWeight: '500'}}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>
           {title}
         </Text>
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    height: hp(8),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16, // Adjust as needed
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 14,
+    color: '#000',
+    fontWeight: '500',
+    marginLeft: 8,
+  },
+  titleContainer: {
+    flex: 1,
+    alignItems: 'center',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+  },
+  titleText: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 20,
+    color: '#000',
+    fontWeight: '500',
+  },
+});
