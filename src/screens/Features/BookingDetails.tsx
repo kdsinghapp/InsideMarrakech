@@ -55,9 +55,9 @@ export default function BookingDetails() {
         <View style={[styles.shadow, localStyles.bookingDetailsContainer]}>
           <View style={localStyles.imageContainer}>
             <Image
-              source={{uri:Property.document_gallery[0].image}}
+              source={{uri:Property.main_image}}
               style={localStyles.image}
-              resizeMode="contain"
+              resizeMode="cover"
             />
           </View>
           <View style={localStyles.detailsContainer}>

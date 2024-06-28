@@ -136,9 +136,7 @@ export default function PlaceDetails() {
             <ImageBackground
               source={{
                 uri:
-                  propertDetails?.document_gallery[
-                    propertDetails?.document_gallery?.length - 1
-                  ].image,
+                  propertDetails?.main_image
               }}
               style={localStyles.imageBackground}>
               <TouchableOpacity
@@ -288,23 +286,10 @@ export default function PlaceDetails() {
             <Text style={localStyles.sectionTitle}>{localizationStrings.O_hours}</Text>
 
             <Text style={localStyles.openingHoursText}>
-              {`${formatTimes().startTime} - ${formatTimes().endTime}`}
+              {propertDetails?.lunch_start } to {propertDetails?.lunch_end}
             </Text>
           </View>
-          {/* <View style={localStyles.scheduleContainer}>
-            <Text style={localStyles.sectionTitle}>{localizationStrings.L_time}</Text>
-            <Text style={localStyles.scheduleText}>
-              {timeFormate(propertDetails?.lunch_start)} -{' '}
-              {timeFormate(propertDetails?.lunch_end)}
-            </Text>
-          </View> */}
-          {/* <View style={localStyles.scheduleContainer}>
-            <Text style={localStyles.sectionTitle}>{localizationStrings.D_time}</Text>
-            <Text style={localStyles.scheduleText}>
-              {timeFormate(propertDetails?.dinner_start)} -{' '}
-              {timeFormate(propertDetails?.dinner_end)}
-            </Text>
-          </View> */}
+         
 
           <View style={[localStyles.sectionContainer, { marginTop: 20 }]}>
             <Text style={localStyles.sectionTitle}>{localizationStrings.h_t_get}</Text>
@@ -315,7 +300,7 @@ export default function PlaceDetails() {
             source={require('../../assets/Cropping/map.png')}>
             <TouchableOpacity
              onPress={() => {
-              navigation.navigate(ScreenNameEnum.MAP_SCREEN, 
+              navigation.navigate(ScreenNameEnum.MAP_SCREEN,{item:propertDetails}
               );
             }}
             

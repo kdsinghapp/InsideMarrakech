@@ -12,30 +12,28 @@ import localizationStrings from '../../utils/Localization';
 
 export default function ChatPage() {
   const navigation = useNavigation();
-const ChatUser = useSelector(state => state.feature.ChatUser)
-const isLoading = useSelector(state => state.feature.isLoading)
-const user = useSelector(state => state.auth.userData)
-const isFocuse = useIsFocused();
-const dispatch = useDispatch()
-useEffect(()=>{
+  const ChatUser = useSelector(state => state.feature.ChatUser)
+  const isLoading = useSelector(state => state.feature.isLoading)
+  const user = useSelector(state => state.auth.userData)
+  const isFocuse = useIsFocused();
+  const dispatch = useDispatch()
+  useEffect(() => {
 
-getChatuser()
+    getChatuser()
 
-},[isFocuse,user])
+  }, [isFocuse, user])
 
 
-const getChatuser =async()=>{
-  const params = {
-    user_id:user?.id
+  const getChatuser = async () => {
+    const params = {
+      user_id: user?.id
+    }
+    dispatch(get_chat_user(params))
+
   }
-  dispatch(get_chat_user(params))
-
-}
 
 
-console.log('================ChatUser====================');
-console.log(ChatUser);
-console.log('====================================');
+
   const RecentListItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
@@ -43,7 +41,7 @@ console.log('====================================');
       }}
       style={styles.itemContainer}>
       <View>
-        <Image source={{uri:item.image}} style={styles.avatar} />
+        <Image source={{ uri: item.image }} style={styles.avatar} />
       </View>
       <View style={styles.itemTextContainer}>
         <Text style={styles.itemName}>{item.company_name}</Text>
@@ -55,10 +53,10 @@ console.log('====================================');
   return (
     <View style={styles.container}>
 
-      {isLoading?<Loading />:null}
-      
-        <ProfileHeader title={localizationStrings.c_contact} width={26} />
-        <ScrollView showsVerticalScrollIndicator={false}>
+      {isLoading ? <Loading /> : null}
+
+      <ProfileHeader title={localizationStrings.c_contact} width={26} />
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.searchContainer}>
           <View style={[styles.searchBox, styles.shdow]}>
             <SearchIcon />
@@ -70,19 +68,23 @@ console.log('====================================');
           </View>
         </View>
         <View style={{}}>
-      {ChatUser && 
-    
-          <FlatList
-            data={ChatUser}
-            renderItem={RecentListItem}
-           
-            ListFooterComponent={() => <View style={styles.footer} />}
-          />
-       
-}
-</View>
-</ScrollView>
-   
+          {ChatUser.length > 0 ?
+
+            <FlatList
+              data={ChatUser}
+              renderItem={RecentListItem}
+
+              ListFooterComponent={() => <View style={styles.footer} />
+              }
+            /> : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+
+              <Text style={{ fontSize: 12, color: "#000", fontWeight: '500' }}>No Chat Contact Found</Text>
+            </View>
+
+          }
+        </View>
+      </ScrollView>
+
     </View>
   );
 }
@@ -219,7 +221,7 @@ const data = [
     name: 'Martin Botosh',
     time: '08.00pm',
     img: require('../../assets/Cropping/img5.png'),
-  
+
     status: 'Have you spoken to the delivery...',
     count: '150',
   },

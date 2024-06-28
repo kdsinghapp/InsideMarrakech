@@ -46,8 +46,8 @@ export default function Search() {
       };
     };
 
-    if (item.document_gallery && item.document_gallery.length > 0) {
-      const firstImage = item.document_gallery[0].image;
+    if (item.main_image != '') {
+      const firstImage = item.main_image;
       if (firstImage) {
         return (
           <TouchableOpacity
@@ -77,11 +77,11 @@ export default function Search() {
             </View>
             <View style={styles.userContainer}>
               <View style={styles.userTextContainer}>
-                <Text style={styles.itemUser}>{localizationStrings.Open_Time} : {formatTimes().startTime}</Text>
+                <Text style={styles.itemUser}>{localizationStrings.Open_Time} : {item.lunch_start}</Text>
               </View>
 
               <View style={styles.userTextContainer}>
-                <Text style={styles.itemUser}>{localizationStrings.Close_Time} : {formatTimes().endTime}</Text>
+                <Text style={styles.itemUser}>{localizationStrings.Close_Time} : {item.lunch_end}</Text>
               </View>
             </View>
           </TouchableOpacity>

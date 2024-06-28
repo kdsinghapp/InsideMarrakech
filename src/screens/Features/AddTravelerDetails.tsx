@@ -79,9 +79,9 @@ export default function AddTravelerDetails() {
         <View style={[styles.shadow, styles.bookingDetails]}>
           <View style={styles.imageContainer}>
             <Image
-               source={{uri:Property.document_gallery[0].image}}
+               source={{uri:Property.main_image}}
               style={styles.bookingImage}
-              resizeMode="contain"
+              resizeMode="cover"
             />
           </View>
           <View style={styles.bookingInfo}>

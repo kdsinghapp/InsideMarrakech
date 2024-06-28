@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,15 +11,15 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from 'react-native';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Camera from '../../assets/svg/camera.svg';
 import ImagePicker from 'react-native-image-crop-picker';
-import {errorToast} from '../../configs/customToast';
+import { errorToast } from '../../configs/customToast';
 import TextInputField from '../../configs/TextInput';
-import {Dropdown} from 'react-native-element-dropdown';
-import {useDispatch, useSelector} from 'react-redux';
-import {add_property, get_category} from '../../redux/feature/featuresSlice';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { Dropdown } from 'react-native-element-dropdown';
+import { useDispatch, useSelector } from 'react-redux';
+import { add_property, get_category, get_sub_category } from '../../redux/feature/featuresSlice';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Loading from '../../configs/Loader';
 import DatePicker from 'react-native-date-picker';
 import localizationStrings from '../../utils/Localization';
@@ -31,6 +31,8 @@ export default function AddProperty() {
   const [Title, setTitle] = useState('');
   const [name, setName] = useState('');
   const [Category, setCategory] = useState(null);
+  const [SubCategory, setSubCategory] = useState(null);
+  
   const [Description, setDescription] = useState('');
   const [Location, setLocation] = useState(null);
   const [LocationName, setLocationName] = useState('');
@@ -40,11 +42,15 @@ export default function AddProperty() {
   const [LunchStart, setLunchStart] = useState(new Date());
   const [LunchEnd, setLunchEnd] = useState(new Date());
   const [DinnerStart, setDinnerStart] = useState(new Date());
+  const [Photo, setPhoto] = useState(null)
   const [DinnerEnd, setDinnerEnd] = useState(new Date());
   const [Price, setPrice] = useState('');
   const [CategoryId, setCategoryId] = useState('');
+  const [SubCategoryId, setSubCategoryId] = useState('');
   const user = useSelector(state => state.auth.userData);
   const category = useSelector(state => state.feature.CategoryList);
+  const subcategory = useSelector(state => state.feature.subcategory);
+  
   const isLoading = useSelector(state => state.feature.isLoading);
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -59,8 +65,14 @@ export default function AddProperty() {
   }, [isFocused]);
 
 
-  console.log('Location=>>>>>',Location);
-  
+
+  useEffect(() => {
+    const params = {
+      category_id: CategoryId,
+    };
+    dispatch(get_sub_category(params));
+  }, [CategoryId]);
+
   const handleSave = () => {
     const errors = {};
     if (!Title) errors.Title = true;
@@ -82,6 +94,11 @@ export default function AddProperty() {
       errorToast('All fields are required.');
       return;
     }
+    if (subcategory?.length === 0) {
+      setFieldErrors(errors);
+      errorToast('You not add this Category activity Contact Admin');
+      return;
+    }
     let data = new FormData();
     data.append('cat_id', CategoryId);
     data.append('company_id', user?.id);
@@ -93,19 +110,25 @@ export default function AddProperty() {
     data.append('description', Description);
     data.append('book_online_mobile_number', MobileNumber);
     data.append('title', Title);
-    data.append('opening_hours', `${OpenTime.toString()}/${CloseTime.toString()}`)
-    data.append('lunch_start','')
-    data.append('lunch_end', '')
+    data.append('opening_hours', '')
+    data.append('lunch_start', formatTime(OpenTime))
+    data.append('lunch_end',formatTime(CloseTime))
     data.append('dinner_start', '')
-    data.append('dinner_end','')
-    ApiImages.forEach((image, index) => {
-      data.append(`image[${index}]`,image);
+    data.append('dinner_end', '')
+    data.append('sub_category_id', SubCategoryId)
+    data.append('main_image', {
+      uri: Photo?.path,
+      type: Photo?.mime,
+      name: Photo?.modificationDate,
     })
-    const params ={
-    data:data,
-    navigation:navigation
-  
-  }
+    ApiImages.forEach((image, index) => {
+      data.append(`image[${index}]`, image);
+    })
+    const params = {
+      data: data,
+      navigation: navigation
+
+    }
 
     dispatch(add_property(params));
   };
@@ -131,7 +154,7 @@ export default function AddProperty() {
 
         const newSelectedImages = images.map((image, index) => ({
           id: selectedImages.length + index + 1,
-          image: {uri: image.path},
+          image: { uri: image.path },
         }));
 
         const newApiImages = images.map((image, index) => ({
@@ -148,16 +171,46 @@ export default function AddProperty() {
         errorToast('Please reselect image');
       });
   };
+
+
+  const openPhotoLibrary = () => {
+
+
+    ImagePicker.openPicker({
+      width: 1200,
+      height: 800,
+      cropping: true,
+
+      maxFiles: 1
+    })
+      .then(images => {
+        setPhoto(images);
+
+
+
+      })
+      .catch(err => {
+        console.log(err);
+        errorToast('Please reselect image');
+      });
+  };
+
+  console.log({
+    uri: Photo?.path,
+    type: Photo?.mime,
+    name: `image${user?.id}${Photo?.modificationDate}.png`,
+  });
+  
   const removeImage = id => {
     const updatedSelectedImages = selectedImages.filter(
       image => image.id !== id,
     );
     setSelectedImages(updatedSelectedImages);
   };
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => openImageLibrary()}>
       {item.image != null ? (
-        <View style={{position: 'relative'}}>
+        <View style={{ position: 'relative' }}>
           <Image
             source={item.image}
             resizeMode="contain"
@@ -171,7 +224,7 @@ export default function AddProperty() {
             style={styles.removeButton}
             onPress={() => removeImage(item.id)}>
             <Image
-              style={{height: 5, width: 5}}
+              style={{ height: 5, width: 5 }}
               source={require('../../assets/Cropping/x-button.png')}
               resizeMode="contain"
             />
@@ -195,18 +248,7 @@ export default function AddProperty() {
       case 'OpeningHours':
         setOpeningHours(date);
         break;
-      case 'LunchStart':
-        setLunchStart(date);
-        break;
-      case 'LunchEnd':
-        setLunchEnd(date);
-        break;
-      case 'DinnerStart':
-        setDinnerStart(date);
-        break;
-      case 'DinnerEnd':
-        setDinnerEnd(date);
-        break;
+ 
       case 'OpenTime':
         setOpenTime(date);
         break;
@@ -218,7 +260,9 @@ export default function AddProperty() {
   };
 
   const formatTime = date => {
-    return date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    console.log('date',date);
+    
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -233,58 +277,83 @@ export default function AddProperty() {
         setKeyboardOpen(false);
       }
     );
-  
+
     return () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
   }, []);
-  
+
   const handleSelectLocation = useCallback(
     (details) => {
-        const { lat, lng } = details.geometry.location;
-        console.log('details',details.name );
-        
-        setLocationName(details.name);
-        setLocation({
-            latitude: lat,
-            longitude: lng,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-        });
-   
+      const { lat, lng } = details.geometry.location;
+      console.log('details', details.name);
+
+      setLocationName(details.name);
+      setLocation({
+        latitude: lat,
+        longitude: lng,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      });
+
     },
     [navigation]
-);
+  );
   return (
-    
+
     <View style={styles.container}>
       {isLoading && <Loading />}
-      
-      <View style={{  width: '100%', bottom:0, 
-      alignSelf:'center',
-      backgroundColor: '#fff' }}>
-          <View style={styles.title}>
+
+      <View style={{
+        width: '100%', bottom: 0,
+        alignSelf: 'center',
+        backgroundColor: '#fff'
+      }}>
+        <View style={styles.title}>
           <Text style={styles.titleText}>{localizationStrings.a_propert}</Text>
         </View>
         <View style={styles.labelContainerWithMargin}>
           <Text style={styles.labelText}>{localizationStrings.location}</Text>
         </View>
-                <GooglePlacesInput placeholder={LocationName==''?'Search':LocationName} onPlaceSelected={handleSelectLocation} />
-            </View>
-            <ScrollView showsVerticalScrollIndicator={false}>
-      
+        <GooglePlacesInput placeholder={LocationName == '' ? 'Search' : LocationName} onPlaceSelected={handleSelectLocation} />
+      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+
         <View style={styles.subtitle}>
           <Text style={styles.subtitleText}>{localizationStrings.photo}</Text>
+        </View>
+        <TouchableOpacity onPress={() => openPhotoLibrary()}>
+
+          {Photo?.path ? <View style={{ position: 'relative', borderRadius: 10 }}>
+            <Image
+              source={{ uri: Photo?.path }}
+              resizeMode="contain"
+              style={[
+                styles.image,
+
+                { width: '95%', height: hp(20), borderRadius: 10 },
+              ]}
+            />
+
+          </View> :
+
+            <View style={[styles.image, styles.cameraContainer]}>
+              <Camera />
+            </View>
+          }
+        </TouchableOpacity>
+        <View style={styles.subtitle}>
+          <Text style={styles.subtitleText}>{localizationStrings.G_photo}</Text>
         </View>
         <View>
           <FlatList
             data={
               selectedImages.length < 10
                 ? [
-                    ...selectedImages,
-                    {id: selectedImages.length + 1, image: null},
-                  ]
+                  ...selectedImages,
+                  { id: selectedImages.length + 1, image: null },
+                ]
                 : selectedImages
             }
             renderItem={renderItem}
@@ -323,11 +392,11 @@ export default function AddProperty() {
           <Dropdown
             data={category}
             placeholder={localizationStrings.S_category}
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             maxHeight={200}
             labelField="name"
-            itemContainerStyle={{marginTop: 10}}
-            containerStyle={{marginTop: 30, borderRadius: 10}}
+            itemContainerStyle={{ marginTop: 10 }}
+            containerStyle={{ marginTop: 30, borderRadius: 10 }}
             showsVerticalScrollIndicator={false}
             valueField="name"
             value={Category}
@@ -337,6 +406,31 @@ export default function AddProperty() {
             }}
           />
         </View>
+        <View style={styles.labelContainerWithMargin}>
+          <Text style={styles.labelText}>{localizationStrings.SubCategory}</Text>
+        </View>
+    {subcategory?.length >0 &&    <View
+          style={[
+            styles.txtInput,
+            fieldErrors.CategoryId && styles.errorInput,
+          ]}>
+          <Dropdown
+            data={subcategory}
+            placeholder={localizationStrings.SubCategory}
+            style={{ width: '100%' }}
+            maxHeight={200}
+            labelField="name"
+            itemContainerStyle={{ marginTop: 10 }}
+            containerStyle={{ marginTop: 30, borderRadius: 10 }}
+            showsVerticalScrollIndicator={false}
+            valueField="name"
+            value={SubCategory}
+            onChange={item => {
+              setSubCategoryId(item.id);
+              setSubCategory(item.name);
+            }}
+          />
+        </View>}
         <View style={styles.labelContainerWithMargin}>
           <Text style={styles.labelText}>{localizationStrings.Description}</Text>
         </View>
@@ -362,42 +456,42 @@ export default function AddProperty() {
           <TextInputField
             placeholder={localizationStrings.Mobile_number}
             keyboardType={'number-pad'}
-            
+
             value={MobileNumber}
             onChangeText={setMobileNumber}
           />
         </View>
-        
-       
-        
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
+
+
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={[styles.labelContainerWithMargin, { width: '45%' }]}>
             <Text style={styles.labelText}>{localizationStrings.Open_Time}</Text>
           </View>
-          <View style={[styles.labelContainerWithMargin, {width: '45%'}]}>
+          <View style={[styles.labelContainerWithMargin, { width: '45%' }]}>
             <Text style={styles.labelText}>{localizationStrings.Close_Time}</Text>
           </View>
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <TouchableOpacity
             style={[
               styles.txtInput,
-              {width: '45%'},
+              { width: '45%' },
               fieldErrors.OpenTime && styles.errorInput,
             ]}
             onPress={() => showDatePicker('OpenTime')}>
-            <Text style={{fontSize: 14, color: '#000', fontWeight: '600'}}>
+            <Text style={{ fontSize: 14, color: '#000', fontWeight: '600' }}>
               {formatTime(OpenTime)}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
               styles.txtInput,
-              {width: '45%'},
+              { width: '45%' },
               fieldErrors.CloseTime && styles.errorInput,
             ]}
             onPress={() => showDatePicker('CloseTime')}>
-            <Text style={{fontSize: 14, color: '#000', fontWeight: '600'}}>
+            <Text style={{ fontSize: 14, color: '#000', fontWeight: '600' }}>
               {formatTime(CloseTime)}
             </Text>
           </TouchableOpacity>
@@ -486,15 +580,15 @@ export default function AddProperty() {
           />
         </View>
 
-       
-      
-    
-    
+
+
+
+
       </ScrollView>
-      {!keyboardOpen && ( <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
+      {!keyboardOpen && (<TouchableOpacity onPress={handleSave} style={styles.saveButton}>
         <Text style={styles.saveButtonText}>{localizationStrings.add_p}</Text>
       </TouchableOpacity>)}
-   
+
     </View>
   );
 }

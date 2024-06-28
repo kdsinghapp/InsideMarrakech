@@ -24,6 +24,7 @@ import {add_booking} from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
 import Rating from '../../configs/Ratting';
 import localizationStrings from '../../utils/Localization';
+import { TextInputMask } from 'react-native-masked-text';
 
 export default function PaymentDetails() {
   const [isVisible, setIsVisible] = useState(false);
@@ -38,10 +39,14 @@ export default function PaymentDetails() {
   const navigation = useNavigation();
   const [cardHolderName, setCardHolderName] = useState('');
   const propertDetails = useSelector(state => state.feature.propertyDetail);
-
+  const [isAddCardVisible, setIsAddCardVisible] = useState(false);
   const user = useSelector(state => state.auth.userData);
   const isLoading = useSelector(state => state.feature.isLoading);
- 
+  const [newCard, setNewCard] = useState({
+    cardNo: '',
+    name: '',
+    logo: require('../../assets/Cropping/master.png'),
+  });
   const route = useRoute();
   const {
     firstName,
@@ -88,7 +93,15 @@ export default function PaymentDetails() {
  
     dispatch(add_booking(params));
   };
-
+  const saveCardDetails = () => {
+    const newCardDetails = {
+      cardNo: `**** **** **** ${cardNumber.slice(-4)}`,
+      name: cardHolderName,
+      logo: require('../../assets/Cropping/master.png'),
+    };
+    setNewCard(newCardDetails);
+    setIsAddCardVisible(false);
+  };
   return (
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
@@ -98,9 +111,9 @@ export default function PaymentDetails() {
         <View style={styles.bookingContainer}>
           <View style={styles.bookingImageContainer}>
             <Image
-              source={{uri: Property.document_gallery[0].image}}
+              source={{uri: Property.main_image}}
               style={styles.bookingImage}
-              resizeMode="contain"
+              resizeMode="cover"
             />
           </View>
           <View style={styles.bookingDetails}>
@@ -138,7 +151,7 @@ export default function PaymentDetails() {
         <View style={styles.cardListContainer}>
           <FlatList
             scrollEnabled={false}
-            data={card}
+            data={newCard}
             renderItem={({item, index}) => (
               <TouchableOpacity
                 onPress={() => handleItemSelect(index)}
@@ -170,7 +183,8 @@ export default function PaymentDetails() {
               </TouchableOpacity>
             )}
           />
-          <TouchableOpacity style={styles.addCardContainer}>
+          <TouchableOpacity style={styles.addCardContainer}
+              onPress={() => setIsAddCardVisible(true)}>
             <View style={styles.addCardIconContainer}>
               <AddPlus />
             </View>
@@ -180,7 +194,7 @@ export default function PaymentDetails() {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.inputContainer}>
+        {/* <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>{localizationStrings.Card_no}</Text>
           <View style={styles.inputFieldContainer}>
             <TextInput
@@ -242,7 +256,7 @@ export default function PaymentDetails() {
               onChangeText={setCardHolderName}
             />
           </View>
-        </View>
+        </View> */}
 
         <TouchableOpacity
           onPress={() => {
@@ -253,7 +267,7 @@ export default function PaymentDetails() {
           <Text style={styles.nextButtonText}>{localizationStrings.P_now}</Text>
         </TouchableOpacity>
 
-        <Modal visible={isVisible} animationType="slide" transparent={true}>
+        {/* <Modal visible={isVisible} animationType="slide" transparent={true}>
           <TouchableOpacity
             onPress={() => {
               setIsVisible(false);
@@ -290,15 +304,110 @@ export default function PaymentDetails() {
               />
             </View>
           </TouchableOpacity>
-        </Modal>
+        </Modal> */}
 
         <View style={{height: hp(5)}} />
       </ScrollView>
+      <Modal
+        transparent={true}
+        visible={isAddCardVisible}
+        animationType="slide"
+        onRequestClose={() => setIsAddCardVisible(false)}>
+        <TouchableOpacity 
+        onPress={()=>{setIsAddCardVisible(false)}}
+        style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>{localizationStrings.AddCardDetails}</Text>
+            <TextInputMask
+        type={'credit-card'}
+        options={{
+          obfuscated: false,
+        }}
+        placeholder="Card Number"
+        style={styles.modalInput}
+        value={cardNumber}
+        onChangeText={setCardNumber}
+      />
+      <View style={{flexDirection:'row',justifyContent:'space-between',}}>
+           <TextInput
+        placeholder="Expiry Month"
+        style={[styles.modalInput,{width:'45%'}]}
+        value={validMonth}
+        onChangeText={setValidMonth}
+        maxLength={2}
+      
+      />
+      <TextInput
+        placeholder="Expiry Year"
+        style={[styles.modalInput,{width:'45%'}]}
+        value={validYear}
+        onChangeText={setValidYear}
+        maxLength={4}
+      />
+      </View>
+            <TextInput
+              placeholder="CVV"
+              style={styles.modalInput}
+              value={cvv}
+              onChangeText={setCvv}
+              maxLength={3}
+              secureTextEntry={true}
+            />
+            <TextInput
+              placeholder="Cardholder Name"
+              style={styles.modalInput}
+              value={cardHolderName}
+              onChangeText={setCardHolderName}
+            />
+            <TouchableOpacity
+              onPress={saveCardDetails}
+              style={styles.saveButton}>
+              <Text style={styles.saveButtonText}>{localizationStrings.save}</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  saveButton: {
+    backgroundColor: '#6D6EEC',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  saveButtonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  },
+  modalInput: {
+    height: 40,
+    borderColor: '#E0E0E0',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    fontSize: 16,
+  },
   container: {
     flex: 1,
     paddingHorizontal: 15,
@@ -566,13 +675,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  modalContainer: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    width: '90%',
-    height: hp(60),
-    padding: 10,
-  },
+  // modalContainer: {
+  //   backgroundColor: 'white',
+  //   borderRadius: 20,
+  //   width: '90%',
+  //   height: hp(60),
+  //   padding: 10,
+  // },
   modalHeader: {
     alignItems: 'center',
     justifyContent: 'center',

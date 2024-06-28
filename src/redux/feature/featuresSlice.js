@@ -64,7 +64,10 @@ export const get_user_booking_list = createAsyncThunk(
       let data = new FormData();
       data.append('user_id', params.user_id);
       data.append('status', params.status);
-
+      console.log(
+        '==============get_user_booking_list======================',
+        params
+      );
       const response = await fetch(`https://server-php-8-2.technorizen.com/inside/api/get_user_booking_list`, {
         method: 'POST',
         headers: {
@@ -75,10 +78,7 @@ export const get_user_booking_list = createAsyncThunk(
 
       const responseData = await response.json();
 
-      console.log(
-        '==============get_user_booking_list======================',
-        responseData.data,
-      );
+     
 
       if (responseData.status === '1') {
         console.log('=>>>>>>>>>>>>.get_user_booking_list=>>>>>>>>>>>>', responseData);
@@ -267,7 +267,10 @@ export const update_profile = createAsyncThunk(
           Accept: 'application/json',
         },
       };
-
+      console.log(
+        '==============update_profile======================',
+        params
+      );
       let data = new FormData();
       data.append('user_id', params.data.user_id);
       data.append('mobile', params.data.mobile);
@@ -288,11 +291,7 @@ export const update_profile = createAsyncThunk(
       );
       if (response.data.status === '1') {
         successToast('Profile Update Successfuly');
-        if (params.type === 'User') {
-          params.navigation.navigate(ScreenNameEnum.PROFILE_SCREEN);
-        } else {
-          params.navigation.navigate(ScreenNameEnum.CProfile);
-        }
+        
       } else {
         errorToast(response.data.message);
       }
@@ -737,12 +736,12 @@ export const get_chat_user = createAsyncThunk(
       if (response.data.status === '1') {
 
       } else {
-        errorToast('No Chat Found')
+
       }
       return response.data.data;
     } catch (error) {
       console.log('Error:', error);
-      errorToast('Network Error');
+     // errorToast('Network Error');
       return thunkApi.rejectWithValue(error);
     }
   },
@@ -941,7 +940,7 @@ export const get_sub_category = createAsyncThunk(
       if (response.data.status === '1') {
     
       } else {
-        return thunkApi.rejectWithValue(response.data.data);
+        return thunkApi.rejectWithValue(response.data.result);
       }
       return response.data.result;
     } catch (error) {
@@ -1504,6 +1503,7 @@ const FeatureSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
+      state.subcategory = []
     });
   },
 });

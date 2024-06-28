@@ -19,6 +19,7 @@ import GooglePlacesInput from '../../configs/AutoAddress';
 import { useLocation } from '../../configs/LocationContext';
 import { useNavigation } from '@react-navigation/native';
 import { errorToast } from '../../configs/customToast';
+import ProfileHeader from '../../configs/ProfileHeader';
 
 const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY // Replace with your actual API key
 
@@ -142,7 +143,8 @@ const SelectLocation = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{ position: 'absolute', width: '100%', marginTop: 10, backgroundColor: '#fff' }}>
+             <ProfileHeader title={localizationStrings.location} />
+            <View style={{ width: '100%', marginTop: 10, backgroundColor: '#fff',}}>
                 <GooglePlacesInput placeholder={'Search'} onPlaceSelected={handleSelectLocation} />
             </View>
             <View style={styles.savedContainer}>
@@ -189,7 +191,7 @@ const SelectLocation = () => {
                     );
                 }}
             >
-                <Pin height={30} width={30} />
+             <Pin height={30} width={30} />
             </TouchableOpacity>
         </SafeAreaView>
     );
@@ -202,7 +204,7 @@ const styles = StyleSheet.create({
     },
     savedContainer: {
         marginVertical: 10,
-        marginTop: heightPercentageToDP(12),
+     
     },
     nearbyContainer: {
         marginVertical: 10,

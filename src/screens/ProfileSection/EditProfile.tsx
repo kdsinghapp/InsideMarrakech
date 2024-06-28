@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,19 +7,20 @@ import {
   TouchableOpacity,
   StyleSheet,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {useDispatch, useSelector} from 'react-redux';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useDispatch, useSelector } from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
 import TextInputField from '../../configs/TextInput';
 import Edit from '../../assets/svg/Edit.svg';
 import ProfileHeader from '../../configs/ProfileHeader';
-import {styles} from '../../configs/Styles';
+import { styles } from '../../configs/Styles';
 import Loading from '../../configs/Loader';
-import {update_profile} from '../../redux/feature/featuresSlice';
-import {get_profile} from '../../redux/feature/authSlice';
-import {useNavigation} from '@react-navigation/native';
+import { update_profile } from '../../redux/feature/featuresSlice';
+import { get_profile } from '../../redux/feature/authSlice';
+import { useNavigation } from '@react-navigation/native';
 import localizationStrings from '../../utils/Localization';
 import GooglePlacesInput from '../../configs/AutoAddress';
 
@@ -41,6 +42,7 @@ export default function EditProfile() {
   const [mobileNumber, setMobileNumber] = useState('');
   const [profile, setprofile] = useState('');
   const [imageUrl, setimageUrl] = useState('');
+  const [isLoadingImage, setisLoadingImage] = useState(true);
 
   const [open, setOpen] = useState(false);
 
@@ -78,14 +80,7 @@ export default function EditProfile() {
 
   const handleSave = () => {
     if (user?.type == 'User') {
-      console.log('=========user called===========================', {
-        uri:
-          Platform.OS === 'android'
-            ? profile.path
-            : profile?.path?.replace('file://', ''),
-        type: profile.mime,
-        name: `image${mobileNumber}${user?.id}.png`,
-      });
+
 
       const params = {
         data: {
@@ -95,20 +90,27 @@ export default function EditProfile() {
           last_name: lastName,
           dob: dob,
           home_town: homeTown,
-          image: {
+          image: profile.path ? {
             uri:
               Platform.OS === 'android'
                 ? profile.path
                 : profile?.path?.replace('file://', ''),
             type: profile.mime,
             name: `image${mobileNumber}${user?.id}.png`,
+          } : {
+            uri: imageUrl,
+
+            type: 'image/jpeg',
+            name: `image${mobileNumber}${user?.id}.png`,
           },
           email: email,
         },
         navigation: navigation,
-        type:user?.type
+
       };
-      dispatch(update_profile(params));
+      dispatch(update_profile(params)).then(res => {
+        get_userprofile
+      })
     } else {
       const params = {
         data: {
@@ -118,31 +120,48 @@ export default function EditProfile() {
           company_address: CompanyAddress,
           mobile: mobileNumber,
           email: email,
-          image: {
+          image: profile.path ? {
             uri:
               Platform.OS === 'android'
                 ? profile.path
                 : profile?.path?.replace('file://', ''),
             type: profile.mime,
             name: `image${mobileNumber}${user?.id}.png`,
+          } : {
+            uri: imageUrl,
+
+            type: 'image/jpeg',
+            name: `image${mobileNumber}${user?.id}.png`,
           },
         },
         navigation: navigation,
-        type:user?.type
+
       };
-      dispatch(update_profile(params));
+      dispatch(update_profile(params)).then(res => {
+        get_userprofile
+      })
     }
   };
   const pickupDOB = date => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1; // Months are zero indexed
     const day = date.getDate();
-    const formattedDate = `${day < 10 ? '0' + day : day}-${
-      month < 10 ? '0' + month : month
-    }-${year}`;
+    const formattedDate = `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month
+      }-${year}`;
 
     console.log('Formatted date:', formattedDate);
     setDob(formattedDate);
+  };
+
+  useEffect(() => {
+    get_userprofile();
+  }, [user]);
+
+  const get_userprofile = () => {
+    const params = {
+      user_id: user?.id,
+    };
+    dispatch(get_profile(params));
   };
   return (
     <View style={Styles.container}>
@@ -155,12 +174,26 @@ export default function EditProfile() {
           }}
           style={Styles.profileImageContainer}>
           {imageUrl == '' ? (
-            <Text style={{fontFamily: 'Federo-Regular',fontSize: 18, color: '#000', fontWeight: '600'}}>
+            <Text style={{ fontFamily: 'Federo-Regular', fontSize: 18, color: '#000', fontWeight: '600' }}>
               {firstName[0]?.toUpperCase()}
               {lastName[0]?.toUpperCase()}
             </Text>
           ) : (
-            <Image source={{uri: imageUrl}} style={Styles.profileImage} />
+            <>
+              {isLoadingImage && (
+                <ActivityIndicator
+                  style={Styles.loader}
+                  size="small"
+                  color="#0000ff"
+                />
+              )}
+              <Image
+                source={{ uri: imageUrl }}
+                style={Styles.profileImage}
+                onLoadStart={() => setisLoadingImage(true)}
+                onLoadEnd={() => setisLoadingImage(false)}
+              />
+            </>
           )}
 
           <View style={Styles.editIcon}>
@@ -229,7 +262,7 @@ export default function EditProfile() {
                 }}>
                 <Image
                   source={require('../../assets/Cropping/date.png')}
-                  style={{height: 30, width: 30}}
+                  style={{ height: 30, width: 30 }}
                 />
               </TouchableOpacity>
             </View>
@@ -237,14 +270,14 @@ export default function EditProfile() {
             <View style={Styles.labelContainerWithMargin}>
               <Text style={Styles.labelText}>{localizationStrings.home_town}</Text>
             </View>
-           
-              {/* <TextInputField
+            <View style={Styles.txtInput}>
+              <TextInputField
                 placeholder={localizationStrings.home_town}
                 value={homeTown}
                 onChangeText={setHomeTown}
-              /> */}
-              <GooglePlacesInput />
-          
+              />
+              {/* <GooglePlacesInput  placeholder={localizationStrings.home_town}  /> */}
+            </View>
           </>
         )}
         {user?.type == 'Company' && (
@@ -317,7 +350,7 @@ export default function EditProfile() {
         <TouchableOpacity onPress={handleSave} style={Styles.saveButton}>
           <Text style={Styles.saveButtonText}>{localizationStrings.save}</Text>
         </TouchableOpacity>
-        <View style={{height: 10}} />
+        <View style={{ height: 10 }} />
         <DatePicker
           mode="date"
           modal

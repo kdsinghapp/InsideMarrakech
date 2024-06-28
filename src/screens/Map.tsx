@@ -5,26 +5,28 @@ import MapViewDirections from 'react-native-maps-directions';
 import { useNavigation } from '@react-navigation/native';
 import Geolocation from 'react-native-geolocation-service';
 import { useSelector } from 'react-redux';
+import { Image } from 'react-native';
 
-const MapScreen = () => {
+const MapScreen = ({ route }) => {
+    const { item } = route.params;
+
     const [destination, setDestination] = useState({
-        latitude: 22.719568,
-        longitude: 75.857727,
+        latitude: parseFloat(item?.lat),
+        longitude: parseFloat(item?.lon)
     });
     const [currentLocation, setCurrentLocation] = useState(null);
     const [showDirections, setShowDirections] = useState(false);
     const navigation = useNavigation();
     const mapRef = useRef(null);
     const user = useSelector(state => state.auth.userData);
+
     useEffect(() => {
-        // Fetch current location initially
         const fetchCurrentLocation = () => {
             Geolocation.getCurrentPosition(
                 position => {
                     const { latitude, longitude } = position.coords;
-                  
-                    setCurrentLocation({ latitude, longitude });
-          
+                    setCurrentLocation({ latitude:22.71450117939088
+                        , longitude:75.86638847560282 });
                 },
                 error => {
                     console.log(error);
@@ -33,28 +35,34 @@ const MapScreen = () => {
             );
         };
 
-        // Set interval to update location every 10 seconds (adjust as needed)
-        const intervalId = setInterval(fetchCurrentLocation, 10000);
-
         // Fetch initial location
         fetchCurrentLocation();
-        handleGetDirections()
+
+        // Set interval to update location every 10 seconds (adjust as needed)
+        const intervalId = setInterval(fetchCurrentLocation, 10000);
 
         // Clear interval on component unmount
         return () => clearInterval(intervalId);
     }, []);
 
     const handleGetDirections = () => {
-        setShowDirections(true);
+        setShowDirections(!showDirections);
+
         if (mapRef.current && currentLocation) {
-            mapRef.current.animateCamera({
-                center: {
+            const coordinates = [
+                {
                     latitude: currentLocation.latitude,
                     longitude: currentLocation.longitude,
                 },
-                pitch:0,
-                heading: 0, // Set heading to 0 to north
-                zoom: 17, // Adjust zoom level as needed
+                {
+                    latitude: destination.latitude,
+                    longitude: destination.longitude,
+                },
+            ];
+
+            mapRef.current.fitToCoordinates(coordinates, {
+                edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+                animated: true,
             });
         }
     };
@@ -64,90 +72,91 @@ const MapScreen = () => {
     };
 
     return (
-  
         <View style={styles.container}>
-                {user?.type == 'User' ? <>
-            <MapView
+            {user?.type === 'User' ? (
+                <>
+                    <MapView
+                        ref={mapRef}
+                        provider={PROVIDER_GOOGLE}
+                        style={styles.map}
+                        initialRegion={{
+                            latitude: destination.latitude,
+                            longitude: destination.longitude,
+                            latitudeDelta: 0.1,
+                            longitudeDelta: 0.1,
+                        }}
+                        mapType="standard"
+                    >
+                        {currentLocation && (
+                            <Marker
+                                coordinate={{
+                                    latitude: currentLocation.latitude,
+                                    longitude: currentLocation.longitude,
+                                }}
+                                title="Your Location"
+                                description={`${user?.first_name} ${user?.last_name}`}
+                                pinColor="blue"
+                            >
+                                {showDirections && (
+                                    <Image
+                                   
+                                        source={require('../assets/Cropping/gps-navigation.png')}
+                                        style={{ width:30, height:30 }}
+                                    />
+                                )}
+                            </Marker>
+                        )}
+                        <Marker
+                            coordinate={destination}
+                            title={item.name}
+                            description={item.address}
+                        />
+                        {destination && currentLocation && showDirections && (
+                            <MapViewDirections
+                                origin={currentLocation}
+                                destination={destination}
+                                apikey={process.env.GOOGLE_PLACES_API_KEY}
+                                strokeWidth={5}
+                                strokeColor="#559cee"
+                                onError={errorMessage => {
+                                    console.error('GOT AN ERROR', errorMessage);
+                                }}
+                            />
+                        )}
+                    </MapView>
+                    <TouchableOpacity
+                        onPress={handleGetDirections}
+                        style={[styles.buttonContainer, { backgroundColor: showDirections ? '#ff8f70' : '#379e69' }]}
+                    >
+                        <Text style={{ fontSize: 16, color: '#000', fontWeight: '600' }}>
+                            {showDirections ? 'Exit' : 'Get Directions'}
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+                        <Text>Back</Text>
+                    </TouchableOpacity>
+                </>
+            ) : (
+                <MapView
                     ref={mapRef}
-                provider={PROVIDER_GOOGLE}
-                
-                style={styles.map}
-                initialRegion={{
-                    latitude: currentLocation ? currentLocation.latitude : 22.701384,
-                    longitude: currentLocation ? currentLocation.longitude : 75.867401,
-                    latitudeDelta: 0.1,
-                    longitudeDelta: 0.1,
-                  
-                }}
-              scrollDuringRotateOrZoomEnabled={true}
-              
-
-                mapType='satellite'
-            >
-                {currentLocation && (
+                    provider={PROVIDER_GOOGLE}
+                    style={styles.map}
+                    initialRegion={{
+                        latitude: destination.latitude,
+                        longitude: destination.longitude,
+                        latitudeDelta: 0.1,
+                        longitudeDelta: 0.1,
+                    }}
+                    mapType="standard"
+                >
                     <Marker
-                        coordinate={currentLocation}
-                        title="Current Location"
-                        description="You are here"
-                        pinColor="blue"
-                        
+                        coordinate={destination}
+                        title="Destination"
+                        description=""
                     />
-                )}
-                <Marker
-                    coordinate={destination}
-                    title="Destination"
-                    description="Sapna Sangeeta Rd, Snehnagar, Indore, Madhya Pradesh"
-                />
-                {showDirections && currentLocation && (
-                    <MapViewDirections
-                        origin={currentLocation}
-                        destination={destination}
-                        apikey={process.env.GOOGLE_PLACES_API_KEY}
-                        strokeWidth={5}
-                        strokeColor="#559cee"
-                        onError={errorMessage => {
-                            console.error('GOT AN ERROR', errorMessage);
-                          }}
-                    />
-                )}
-            </MapView>
-            <TouchableOpacity
-                onPress={handleGetDirections}
-                style={styles.buttonContainer}>
-                <Text style={{fontSize:14,color:'#000',fontWeight:'500'}}>Get Directions</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={handleGoBack}
-                style={styles.backButton}>
-                <Text>Back</Text>
-            </TouchableOpacity>
-            </>:  <MapView
-                    ref={mapRef}
-                provider={PROVIDER_GOOGLE}
-                
-                style={styles.map}
-                initialRegion={{
-                    latitude: destination ? destination.latitude : 22.701384,
-                    longitude: destination ? destination.longitude : 75.867401,
-                    latitudeDelta: 0.1,
-                    longitudeDelta: 0.1,
-                  
-                }}
-              scrollDuringRotateOrZoomEnabled={true}
-              
-    
-                mapType='satellite'
-            >
-              
-                <Marker
-                    coordinate={destination}
-                    title="Destination"
-                    description=""
-                />
-             
-            </MapView> }
+                </MapView>
+            )}
         </View>
-  
     );
 };
 
@@ -160,18 +169,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#2c3e50',
-       
     },
     buttonContainer: {
         position: 'absolute',
         bottom: 20,
-        backgroundColor: '#d4eeef',
         padding: 10,
         borderRadius: 5,
-        alignItems:'center',
-        justifyContent:'center',
-        width:'90%',
-        height:50
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '90%',
+        height: 50,
     },
     backButton: {
         position: 'absolute',

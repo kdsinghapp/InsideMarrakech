@@ -70,10 +70,10 @@ export default function CompanyBooking() {
       booking_id: id,
       status: status,
     };
-    await dispatch(booking_request_accept_reject(params));
-    setTimeout(() => {
+    await dispatch(booking_request_accept_reject(params)).then(res=>{
       fetchBookingList();
-    }, 2000);
+    })
+   
   };
 
   const handleTabChange = type => {
@@ -113,7 +113,7 @@ export default function CompanyBooking() {
           </View>
           <View style={{ marginTop: 10 }}>
             <Text style={[styles.itemTime, { fontSize: 14 }]}>
-              $ {item.amount}
+            {item.amount}
             </Text>
           </View>
         </View>
@@ -145,9 +145,7 @@ export default function CompanyBooking() {
 
   const renderItemCancleComplete = ({ item }) => (
     <TouchableOpacity 
-    onPress={()=>{
-
-    }}
+    onPress={() => navigation.navigate(ScreenNameEnum.CbookingDetails,{item:item})}
     style={[styles.shadow, styles.itemContainer]}>
       <View style={styles.itemRow}>
         <View style={styles.itemImageContainer}>

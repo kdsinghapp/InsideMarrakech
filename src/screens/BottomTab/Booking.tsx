@@ -33,7 +33,7 @@ export default function Booking() {
   const user = useSelector(state => state.auth.userData);
   const BookingList = useSelector(state => state.feature.BookingList);
   const isLoading = useSelector(state => state.feature.isLoading);
-  const [isModalVisible, setModalVisible] = useState(false);
+  
   const BList = [
     {
       name:localizationStrings.Pending,
@@ -45,9 +45,12 @@ export default function Booking() {
       name: localizationStrings.Cancel,
     },
   ];
+
+
+  
   useEffect(() => {
     getListData(selectedOption);
-  }, [selectedOption]);
+  }, [selectedOption,BookingDetailVisible]);
 
   const getListData = async type => {
 
@@ -56,6 +59,9 @@ export default function Booking() {
         user_id: user?.id,
         status: type,
       };
+
+     
+      
       await dispatch(get_user_booking_list(params));
     }
     catch (err) {
@@ -68,13 +74,13 @@ export default function Booking() {
     <TouchableOpacity
       onPress={() => {
         setBookingData(item);
-
-        if (selectedOption == 'Complete') {
-          handleOpenModal();
-        }
-        if (selectedOption == 'Pending') {
-          setBookingDetailVisible(true);
-        }
+        setBookingDetailVisible(true);
+        // if (selectedOption == 'Complete') {
+        //  // handleOpenModal();
+        // }
+        // if (selectedOption == 'Pending') {
+         
+        // }
       }}
       style={[styles.shadow, localStyles.itemContainer]}>
       <View style={localStyles.itemRow}>
@@ -127,17 +133,10 @@ export default function Booking() {
     </TouchableOpacity>
   );
 
-  const handleOpenModal = () => {
-    setModalVisible(true);
-  };
+ 
 
-  const handleCloseModal = () => {
-    setModalVisible(false);
-  };
 
-  const handleSubmitRating = ratingData => {
-    console.log('Rating submitted:', ratingData);
-  };
+
 
   return (
     <View style={localStyles.container}>
@@ -198,12 +197,7 @@ export default function Booking() {
           onClose={() => setBookingDetailVisible(false)}
           data={BookingData}
         />
-        <AddRatingModal
-          isVisible={isModalVisible}
-          onClose={handleCloseModal}
-          onSubmit={handleSubmitRating}
-          data={BookingData}
-        />
+       
       </ScrollView>
     </View>
   );

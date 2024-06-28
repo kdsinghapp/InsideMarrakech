@@ -9,17 +9,17 @@ const Rating = ({ rating, onRatingChange }) => {
   return (
     <View style={styles.ratingContainer}>
       {Array.from({ length: maxRating }, (_, index) => (
-        <TouchableOpacity
+        <View
         style={{height:30,width:30}}
           key={index}
-          onPress={() => onRatingChange(index + 1)}
+          // onPress={() => onRatingChange(index + 1)}
           activeOpacity={0.7}
         >
           <Image
             source={index < rating ? goldStar : greyStar}
             style={styles.star}
           />
-        </TouchableOpacity>
+        </View>
       ))}
     </View>
   );

@@ -104,19 +104,10 @@ export default function Home() {
   }, [])
 
   const renderList = ({ item, index }) => {
-    // Check if document_gallery array exists and is not empty
-    const formatTimes = () => {
-      const [startTimeStr, endTimeStr] = item?.opening_hours?.split('/');
-      const formattedStartTime = timeFormate(startTimeStr);
-      const formattedEndTime = timeFormate(endTimeStr);
-      return {
-        startTime: formattedStartTime,
-        endTime: formattedEndTime
-      };
-    };
-    if (item.document_gallery && item.document_gallery.length > 0) {
+
+    if (item.main_image != '') {
       // Check if the first object in document_gallery has the image property
-      const firstImage = item.document_gallery[0].image;
+      const firstImage = item.main_image;
       if (firstImage) {
         return (
           <TouchableOpacity
@@ -159,12 +150,12 @@ export default function Home() {
             </View>
             <View style={styles.userContainer}>
               <View style={styles.userTextContainer}>
-                <Text style={styles.itemUser}>{localizationStrings.Open_Time} : {formatTimes().startTime}</Text>
+                <Text style={styles.itemUser}>{localizationStrings.Open_Time} : {item.lunch_start}</Text>
 
               </View>
 
               <View style={styles.userTextContainer}>
-                <Text style={styles.itemUser}> {localizationStrings.Close_Time} : {formatTimes().endTime}</Text>
+                <Text style={styles.itemUser}> {localizationStrings.Close_Time} : {item.lunch_end}</Text>
 
               </View>
 
@@ -248,7 +239,7 @@ export default function Home() {
                     >
                       {loadingState[index] && (
                         <ActivityIndicator
-                          style={styles.loadingIndicator}
+                          style={{position:'absolute',top:20}}
                           size="small"
                           color="#000"
                         />

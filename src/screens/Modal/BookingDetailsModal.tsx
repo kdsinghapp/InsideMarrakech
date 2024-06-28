@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {
   Modal,
   View,
@@ -17,9 +17,11 @@ import {
 } from 'react-native-responsive-screen';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {get_company_booking_detail} from '../../redux/feature/featuresSlice';
+import {booking_request_accept_reject, get_company_booking_detail, get_property_detail} from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
 import {styles} from '../../configs/Styles';
+import ScreenNameEnum from '../../routes/screenName.enum';
+import AddRatingModal from './RattingModal';
 
 const BookingDetailsModal = ({visible, onClose, data}) => {
   const screenHeight = Dimensions.get('screen').height;
@@ -27,26 +29,43 @@ const BookingDetailsModal = ({visible, onClose, data}) => {
   const user = useSelector(state => state.auth.userData);
   const BookingDetails = useSelector(state => state.feature.BookingDetails);
   const isLoading = useSelector(state => state.feature.isLoading);
-
+  const propertDetails = useSelector(state => state.feature.propertyDetail);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-
+  const [isModalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
 
+const [BookingData, setBookingData] = useState(null);
   useEffect(() => {
     if (data && user && isFocused) {
-      get_property();
+      get_booking();
+
     }
   }, [data, user, isFocused]);
+  useEffect(() => {
+    if (data && user && isFocused) {
 
-  const get_property = () => {
+      get_property()
+    }
+  }, [BookingDetails]);
+
+  const get_booking= () => {
     const params = {
       booking_id: data?.id,
     };
 
     dispatch(get_company_booking_detail(params));
   };
+  const get_property = () => {
+    const params = {
+      id: BookingDetails?.property_id
+    };
 
+    dispatch(get_property_detail(params));
+  };
+  const handleOpenModal = () => {
+    setModalVisible(true);
+  };
   useEffect(() => {
     if (visible) {
       openModal();
@@ -70,11 +89,34 @@ const BookingDetailsModal = ({visible, onClose, data}) => {
       useNativeDriver: true,
     }).start();
   };
+  const handleSubmitRating = ratingData => {
+    console.log('Rating submitted:', ratingData);
+  };
 
+
+  const handleCloseModal =()=>{
+    setModalVisible(false)
+  }
+  const handleBookingStatusChange = async (status) => {
+    try{
+    const params = {
+      booking_id: data.id,
+      status: status,
+    };
+    await dispatch(booking_request_accept_reject(params)).then(res=>{
+
+      onClose()
+    })
+  }
+  catch(err){
+    console.log('err',err);
+    
+  }
+  };
   const renderBookingDetails = () => {
     if (!BookingDetails) return null;
 
-    const imageUri = BookingDetails?.user_data?.image;
+    const imageUri = propertDetails?.main_image
     return (
       <>
         <View style={Styles.profileImageContainer}>
@@ -84,14 +126,44 @@ const BookingDetailsModal = ({visible, onClose, data}) => {
             <Text>No Image Available</Text>
           )}
         </View>
+        <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:20}}>
+          <TouchableOpacity
+           onPress={() => {
+            onClose()
+            navigation.navigate(ScreenNameEnum.PLACE_DETAILS, { item:{id:BookingDetails?.property_id} });
+          }}
+          style={{
+            backgroundColor:'#90bafc',
+            borderRadius:10,width:'45%',height:45,alignItems:'center',justifyContent:'center'}}>
+            <Text style={{fontSize:14,fontWeight:'500',color:"#fff"}}> Activity details</Text>
+          </TouchableOpacity>
+         {BookingDetails?.status !== 'Pending' &&<TouchableOpacity 
+         
+         onPress={()=>{
+          handleOpenModal()
+         }}
+         style={{
+            backgroundColor:'#f5d1a2',
+            borderRadius:10,width:'45%',height:45,alignItems:'center',justifyContent:'center'}}>
+            <Text style={{fontSize:12,fontWeight:'500',color:"#fff"}}>Rate your experience</Text>
+          </TouchableOpacity>}
+         {BookingDetails?.status == 'Pending' &&<TouchableOpacity 
+            onPress={() => handleBookingStatusChange('Cancel')}
+         style={{
+            backgroundColor:'#fc847c',
+            borderRadius:10,width:'45%',height:45,alignItems:'center',justifyContent:'center'}}>
+            <Text style={{fontSize:14,fontWeight:'500',color:"#fff"}}>Cancel</Text>
+          </TouchableOpacity>}
+
+        </View>
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <View style={Styles.sectionHeader}>
-            <Text style={Styles.sectionHeaderText}>{data?.name}</Text>
+          <View style={[Styles.sectionHeader,{marginTop:10}]}>
+            <Text style={Styles.sectionHeaderText}>Contact</Text>
             <Text
               style={[
                 Styles.sectionHeaderText,
@@ -101,7 +173,7 @@ const BookingDetailsModal = ({visible, onClose, data}) => {
             </Text>
           </View>
           <Text style={Styles.sectionHeaderText}>
-            Total pay ${BookingDetails?.amount}
+            {propertDetails?.book_online_mobile_number}
           </Text>
         </View>
         <View
@@ -111,7 +183,27 @@ const BookingDetailsModal = ({visible, onClose, data}) => {
             justifyContent: 'space-between',
           }}>
           <View style={Styles.sectionHeader}>
-            <Text style={Styles.sectionHeaderText}>Booking Date</Text>
+            <Text style={Styles.sectionHeaderText}>name: {data?.name?.substring(0,30)}</Text>
+            <Text
+              style={[
+                Styles.sectionHeaderText,
+                {fontSize: 12, marginTop: 0, color: '#878787'},
+              ]}>
+              {data?.description}
+            </Text>
+          </View>
+          <Text style={Styles.sectionHeaderText}>
+            Total pay {BookingDetails?.amount}
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <View style={Styles.sectionHeader}>
+            <Text style={Styles.sectionHeaderText}>Booking Date </Text>
            
           </View>
           <Text style={Styles.sectionHeaderText}>
@@ -185,7 +277,7 @@ const BookingDetailsModal = ({visible, onClose, data}) => {
               alignItems: 'center',
             }}>
             <Text style={[Styles.title, {width: '15%'}]}></Text>
-            <Text style={Styles.title}>Your Booking</Text>
+            <Text style={Styles.title}>Your Booking({BookingDetails?.status})</Text>
             <TouchableOpacity
               onPress={onClose}
               style={{alignItems: 'flex-end', marginRight: 30}}>
@@ -200,6 +292,12 @@ const BookingDetailsModal = ({visible, onClose, data}) => {
             <View style={{height: hp(5)}} />
           </ScrollView>
         </Animated.View>
+        <AddRatingModal
+          isVisible={isModalVisible}
+          onClose={handleCloseModal}
+          onSubmit={handleSubmitRating}
+          data={BookingData}
+        />
       </View>
     </Modal>
   );
@@ -228,30 +326,29 @@ const Styles = StyleSheet.create({
     elevation: 5,
   },
   title: {
-    fontSize: 20,
+    fontSize:16,
     color: '#000',
     fontWeight: '700',
     fontFamily: 'Federo-Regular',
   },
   profileImageContainer: {
     marginTop: 40,
-    alignSelf: 'center',
-    alignItems: 'center',
+   
     paddingHorizontal: 5,
-    height: 110,
-    width: 110,
+    height: hp(20),
+   width:'100%',
     borderRadius: 10,
-    backgroundColor: '#FFF',
-    justifyContent: 'center',
-    ...styles.shadow,
+
+  
+  
   },
   profileImage: {
-    height: 90,
+    height: '100%',
     width:'100%',
-    borderRadius: 45,
+ borderRadius:10
   },
   sectionHeader: {
-    marginTop: hp(3),
+
   },
   sectionHeaderText: {
     fontFamily: 'Federo-Regular',
