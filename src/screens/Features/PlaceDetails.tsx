@@ -207,7 +207,7 @@ export default function PlaceDetails() {
 
             <View style={localStyles.galleryHeaderContainer}>
               <Text style={localStyles.galleryHeaderText}>{localizationStrings.G_photo}</Text>
-              {user?.type == 'User' && (
+      
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate(ScreenNameEnum.Gallery_Screen, {
@@ -217,7 +217,7 @@ export default function PlaceDetails() {
                 >
                   <Text style={localStyles.seeAllText}>{localizationStrings.see_a}</Text>
                 </TouchableOpacity>
-              )}
+       
             </View>
 
             <View style={localStyles.galleryContainer}>

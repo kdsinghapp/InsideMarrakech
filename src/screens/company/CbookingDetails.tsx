@@ -104,18 +104,18 @@ export default function CbookingDetails() {
         <View
 
           style={Styles.profileImageContainer}>
-          {BookingDetails?.user_data.image == '' ? (
+          {BookingDetails?.user_data?.image == '' ? (
             <Text style={{ fontFamily: 'Federo-Regular', fontSize: 18, color: '#000', fontWeight: '600' }}>
               {BookingDetails?.user_data.first_name[0]?.toUpperCase()}
               {BookingDetails?.user_data.last_name[0]?.toUpperCase()}
             </Text>
           ) : (
-            <Image source={{ uri: BookingDetails?.user_data.image }} style={Styles.profileImage} />
+            <Image source={{ uri: BookingDetails?.user_data?.image }} style={Styles.profileImage} />
           )}
           <View style={{ marginLeft: 20 }}>
-            <Text style={[Styles.sectionHeaderText, { marginTop: 5 }]}>{BookingDetails?.user_data.first_name} {BookingDetails?.user_data.last_name}</Text>
-            <Text style={[Styles.sectionHeaderText, { marginTop: 0 }]}>{BookingDetails?.user_data.email}</Text>
-            <Text style={[Styles.sectionHeaderText, { marginTop: 0 }]}>Contact: {BookingDetails?.user_data.mobile}</Text>
+            <Text style={[Styles.sectionHeaderText, { marginTop: 5 }]}>{BookingDetails?.user_data?.first_name} {BookingDetails?.user_data?.last_name}</Text>
+            <Text style={[Styles.sectionHeaderText, { marginTop: 0 }]}>{BookingDetails?.user_data?.email}</Text>
+            <Text style={[Styles.sectionHeaderText, { marginTop: 0 }]}>Contact: {BookingDetails?.user_data?.mobile}</Text>
           </View>
           <View style={{ position: 'absolute', right: 5, top: 6,
           borderRadius:5,paddingHorizontal:10,

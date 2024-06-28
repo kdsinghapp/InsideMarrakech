@@ -25,8 +25,7 @@ const MapScreen = ({ route }) => {
             Geolocation.getCurrentPosition(
                 position => {
                     const { latitude, longitude } = position.coords;
-                    setCurrentLocation({ latitude:22.71450117939088
-                        , longitude:75.86638847560282 });
+                    setCurrentLocation(null);
                 },
                 error => {
                     console.log(error);
@@ -124,6 +123,9 @@ const MapScreen = ({ route }) => {
                             />
                         )}
                     </MapView>
+                    <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+                        <Text>Back</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity
                         onPress={handleGetDirections}
                         style={[styles.buttonContainer, { backgroundColor: showDirections ? '#ff8f70' : '#379e69' }]}
@@ -132,11 +134,9 @@ const MapScreen = ({ route }) => {
                             {showDirections ? 'Exit' : 'Get Directions'}
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-                        <Text>Back</Text>
-                    </TouchableOpacity>
+                  
                 </>
-            ) : (
+            ) : (<>
                 <MapView
                     ref={mapRef}
                     provider={PROVIDER_GOOGLE}
@@ -155,6 +155,10 @@ const MapScreen = ({ route }) => {
                         description=""
                     />
                 </MapView>
+                <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+                        <Text>Back</Text>
+                    </TouchableOpacity>
+                    </>
             )}
         </View>
     );
