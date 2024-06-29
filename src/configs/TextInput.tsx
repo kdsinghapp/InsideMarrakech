@@ -31,7 +31,7 @@ export default function TextInputField({ ...props }) {
             </Text>
           </TouchableOpacity>
         )}
-        <View style={[styles.textInputWrapper, { width: props.showEye ? '70%' : props.County ? '75%' : '80%' }]}>
+        <View style={[styles.textInputWrapper, { width: props.showEye ? '70%' : props.County ? '75%' : '90%' }]}>
           <TextInput
             placeholderTextColor="#000"
             style={styles.textInput}

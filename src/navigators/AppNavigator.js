@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import localizationStrings from '../utils/Localization';
 import { LanguageProvider } from '../utils/LanguageContext';
 import { LocationProvider } from '../configs/LocationContext';
+import InternetConnectionCheck from '../configs/ConnectionCheck';
 
 export default function AppNavigator() {
 
@@ -29,6 +30,7 @@ export default function AppNavigator() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <GestureHandlerRootView style={{flex: 1}}>
+        <InternetConnectionCheck>
         <LocationProvider>
         <LanguageProvider>
           <NavigationContainer>
@@ -37,6 +39,7 @@ export default function AppNavigator() {
           </NavigationContainer>
             </LanguageProvider>
             </LocationProvider>
+            </InternetConnectionCheck>
         </GestureHandlerRootView>
       </PersistGate>
     </Provider>

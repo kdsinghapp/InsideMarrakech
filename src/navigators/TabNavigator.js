@@ -149,9 +149,10 @@ export default function TabNavigator() {
                 <View style={styles.iconContainer}>
                   <Image
                     source={focused ? screen.logo2 : screen.logo}
+                    
                     style={[
                       styles.icon,
-                      screen.lable === '' && styles.largeIcon,
+                      screen.lable == '' && styles.largeIcon,
                       { tintColor: focused ? '#000' : color },
                     ]}
                   />
