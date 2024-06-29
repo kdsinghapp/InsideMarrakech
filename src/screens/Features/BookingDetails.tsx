@@ -63,7 +63,7 @@ export default function BookingDetails() {
           <View style={localStyles.detailsContainer}>
             <View style={localStyles.detailsHeader}>
               <Text style={localStyles.bookingTitle}>{Property.name}</Text>
-              <Text style={localStyles.bookingPrice}>price: {Property.amount}</Text>
+              <Text style={localStyles.bookingPrice}>{localizationStrings.price}: {Property.amount}</Text>
             </View>
             <Text style={localStyles.bookingAddress}>{Property.address}</Text>
             <View style={localStyles.ratingContainer}>

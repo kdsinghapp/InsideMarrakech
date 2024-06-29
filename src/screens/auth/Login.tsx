@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Platform,
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { CountryPicker } from 'react-native-country-codes-picker';
@@ -114,7 +115,7 @@ export default function Login() {
   return (
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.logoContainer}>
           <Image
             source={require('../../assets/Cropping/Logo3x.png')}
@@ -201,51 +202,55 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
   logoContainer: {
     height: hp(20),
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10,
+    marginTop: Platform.OS === 'android' ? 20 : 10,
   },
   logo: {
-    height: 180,
-    width: 180,
+    height: wp(40),
+    width: wp(40),
   },
   formContainer: {
-    paddingHorizontal: 15,
+    paddingHorizontal: wp(5),
   },
   headerContainer: {
     justifyContent: 'center',
+    alignItems: 'center',
   },
   headerText: {
     fontFamily: 'Federo-Regular',
-    fontSize: 24,
+    fontSize: wp(6),
     fontWeight: '500',
     color: '#000',
-    lineHeight: 36,
+    lineHeight: wp(9),
   },
   subHeaderText: {
     fontFamily: 'Federo-Regular',
-    fontSize: 16,
+    fontSize: wp(4),
     fontWeight: '400',
     color: '#000',
-    lineHeight: 18,
+    lineHeight: wp(5),
     marginTop: 20,
   },
   inputWrapper: {
     marginTop: hp(5),
   },
   txtInput: {
-    height: 60,
-    marginHorizontal: 20,
-    borderRadius: 30,
+    height: hp(7),
+    marginHorizontal: wp(5),
+    borderRadius: hp(3.5),
     justifyContent: 'center',
-    paddingLeft: 10,
+    paddingLeft: wp(2),
     borderWidth: 1,
   },
   passwordInput: {
-    marginTop: 20,
-    paddingRight: 10,
+    marginTop: hp(2),
+    paddingRight: wp(2),
   },
   forgotPasswordContainer: {
     justifyContent: 'center',
@@ -257,28 +262,28 @@ const styles = StyleSheet.create({
     borderColor: '#FFF',
   },
   forgotPasswordText: {
-    fontSize: 14,
+    fontSize: wp(3.5),
     fontFamily: 'Federo-Regular',
     color: '#000',
     fontWeight: '600',
-    lineHeight: 18,
+    lineHeight: wp(4.5),
   },
   loginButtonContainer: {
     marginTop: hp(3),
   },
   btn: {
-    height: 55,
-    marginHorizontal: 20,
-    borderRadius: 30,
+    height: hp(7),
+    marginHorizontal: wp(5),
+    borderRadius: hp(3.5),
     justifyContent: 'center',
     alignItems: 'center',
   },
   loginButtonText: {
     fontFamily: 'Federo-Regular',
-    fontSize: 17,
+    fontSize: wp(4),
     color: '#FFFFFF',
     fontWeight: '600',
-    lineHeight: 25,
+    lineHeight: wp(6),
   },
   signUpContainer: {
     justifyContent: 'center',
@@ -286,10 +291,10 @@ const styles = StyleSheet.create({
     marginTop: hp(3),
   },
   signUpText: {
-    fontSize: 14,
+    fontSize: wp(3.5),
     color: '#000',
     fontWeight: '600',
-    lineHeight: 18,
+    lineHeight: wp(4.5),
     fontFamily: 'Federo-Regular',
   },
   countryPicker: {

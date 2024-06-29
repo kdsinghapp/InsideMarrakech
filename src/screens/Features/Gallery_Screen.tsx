@@ -3,6 +3,7 @@ import React from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import ScreenNameEnum from '../../routes/screenName.enum'
 import GoldRight from '../../assets/svg/GoldRight.svg';
+import localizationStrings from '../../utils/Localization';
 export default function Gallery_Screen() {
 
     const route = useRoute()
@@ -29,7 +30,7 @@ export default function Gallery_Screen() {
         style={styles.goBackButton}>
         <GoldRight />
       </TouchableOpacity>
-        <Text style={styles.header}>Gallery</Text>
+        <Text style={styles.header}>{localizationStrings.G_photo}</Text>
         </View>
         <FlatList
           data={item}

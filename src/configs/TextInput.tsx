@@ -1,8 +1,8 @@
-import {View, Text, TextInput, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-export default function TextInputField({...props}) {
+export default function TextInputField({ ...props }) {
   const [text, setText] = useState('');
   const [showPassword, setShowPassword] = useState(props.hide);
 
@@ -15,114 +15,113 @@ export default function TextInputField({...props}) {
       props.onChangeText(value);
     }
   };
-  return (
-    <View style={{height: hp(7),borderRadius:30,
-  
-    justifyContent: 'center', marginVertical: 5}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          // borderWidth: 2,
-          // borderColor: props.isFocus ? '#6D6EEC' : '#F7F8F8',
-          height: 60,
-          borderRadius: 40,
-          alignItems: 'center',
-          // backgroundColor: '#F7F8F8',
-          justifyContent: 'space-between',
-        }}>
-        {props.firstLogo && (
-          <View
-            style={{
-              marginLeft: props.County ? 0 : 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '10%',
 
-              marginLeft: props.County ? 2 : 0,
-            }}>
-            <Image
-              source={props.img}
-              style={{width: 25, height: 25, color: '6D6EEC'}}
-            />
+  return (
+    <View style={styles.inputContainer}>
+      <View style={styles.inputWrapper}>
+        {props.firstLogo && (
+          <View style={styles.logoContainer}>
+            <Image source={props.img} style={styles.logo} />
           </View>
         )}
         {props.County && (
-          <TouchableOpacity
-            onPress={props.PickCountry}
-            style={{
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: '700',
-                color: '#000',
-                lineHeight: 18,
-              }}>
-              {props.countryCode == '' ? 'Code' : props.countryCode + '-'}
+          <TouchableOpacity onPress={props.PickCountry} style={styles.countryCodeContainer}>
+            <Text style={styles.countryCodeText}>
+              {props.countryCode === '' ? 'Code' : props.countryCode + '-'}
             </Text>
           </TouchableOpacity>
         )}
-        <View
-          style={{
-            overflow: 'hidden',
-            width: props.showEye ? '72%' : props.County ? '85%' : '90%',
-            marginLeft: props.firstLogo ? 0 : 15,
-            height: 50,
-          }}>
-          <View style={{width: '85%', paddingTop: 1,}}>
-            <TextInput
-              placeholderTextColor="#000"
-              style={{
-                color: '#000000',
-                fontWeight: '500',
-                fontSize: 14,
-                lineHeight: 18,
-                fontFamily: 'Federo-Regular',
-              }}
-              keyboardType={props.keyboardType}
-              onChangeText={onChangeText}
-              value={props.value}
-              placeholder={props.placeholder}
-              secureTextEntry={showPassword}
-              maxLength={props.maxLength}
-            />
-          </View>
+        <View style={[styles.textInputWrapper, { width: props.showEye ? '70%' : props.County ? '75%' : '80%' }]}>
+          <TextInput
+            placeholderTextColor="#000"
+            style={styles.textInput}
+            keyboardType={props.keyboardType}
+            onChangeText={onChangeText}
+            value={props.value}
+            placeholder={props.placeholder}
+            secureTextEntry={showPassword}
+            maxLength={props.maxLength}
+          />
         </View>
         {props.showEye && (
-          <TouchableOpacity
-            onPress={PasswordVisibility}
-            style={{
-              height: 42,
-              width: 42,
-            
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Image
-                     source={require('../assets/Cropping/eyes4.png')}
-              style={{width: 24, height: 24, color: '#EBEBEB'}}
-            />
+          <TouchableOpacity onPress={PasswordVisibility} style={styles.eyeIconContainer}>
+            <Image source={require('../assets/Cropping/eyes4.png')} style={styles.eyeIcon} />
           </TouchableOpacity>
         )}
         {props.lastIcon && (
-          <TouchableOpacity
-            onPress={PasswordVisibility}
-            style={{
-              height: 42,
-              width: 42,
-              marginRight:10,
-             
-             overflow:'hidden',
-              justifyContent: 'center',
-            }}>
-            <Image
-                     source={props.lastIcon}
-              style={{width: 24, height: 24, }}
-            />
+          <TouchableOpacity style={styles.lastIconContainer}>
+            <Image source={props.lastIcon} style={styles.lastIcon} />
           </TouchableOpacity>
         )}
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  inputContainer: {
+    height: hp(7),
+    borderRadius: 30,
+    justifyContent: 'center',
+    marginVertical: 5,
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    height: 60,
+    borderRadius: 40,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+   // backgroundColor: '#F7F8F8',
+  },
+  logoContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logo: {
+    width: 25,
+    height: 25,
+  },
+  countryCodeContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  countryCodeText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#000',
+    lineHeight: 18,
+  },
+  textInputWrapper: {
+    justifyContent: 'center',
+    height: '100%',
+  },
+  textInput: {
+    color: '#000000',
+    fontWeight: '500',
+    fontSize: 14,
+    lineHeight: 18,
+    fontFamily: 'Federo-Regular',
+  },
+  eyeIconContainer: {
+    height: 42,
+    width: 42,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  eyeIcon: {
+    width: 24,
+    height: 24,
+  },
+  lastIconContainer: {
+    height: 42,
+    width: 42,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  lastIcon: {
+    width: 24,
+    height: 24,
+  },
+});

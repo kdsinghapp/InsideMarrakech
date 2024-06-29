@@ -29,7 +29,9 @@ export default function CompanyBooking() {
   const [selectedOption, setSelectedOption] = useState('Pending');
   const user = useSelector(state => state.auth.userData);
   const isLoading = useSelector(state => state.feature.isLoading);
-  const BList = [{ name: localizationStrings.Pending }, { name:localizationStrings.Complete}, { name: localizationStrings.Cancel }];
+  const BList = [{ name: localizationStrings.Pending,value:'Pending' }, 
+  { name:localizationStrings.Complete,value:'Complete'},
+   { name: localizationStrings.Cancel,value:'Cancel' }];
 
   const isFocused = useIsFocused();
   const BookingList = useSelector(state => state.feature.CBookingList);
@@ -127,7 +129,7 @@ export default function CompanyBooking() {
               { backgroundColor: '#34A853', borderRadius: 10 },
               styles.shadow,
             ]}>
-            <Text style={styles.statusButtonText}>Accept</Text>
+            <Text style={styles.statusButtonText}>{localizationStrings.accept}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => handleBookingStatusChange(item.id, 'Cancel')}
@@ -136,7 +138,7 @@ export default function CompanyBooking() {
               { backgroundColor: 'red', borderRadius: 10 },
               styles.shadow,
             ]}>
-            <Text style={styles.statusButtonText}>Reject</Text>
+            <Text style={styles.statusButtonText}>{localizationStrings.Cancel}</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -214,7 +216,7 @@ export default function CompanyBooking() {
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <TouchableOpacity
-                onPress={() => handleTabChange(item.name)}
+                onPress={() => handleTabChange(item.value)}
                 style={{
                   width: wp(29),
                   alignItems: 'center',

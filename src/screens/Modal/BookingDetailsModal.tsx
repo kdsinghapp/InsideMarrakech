@@ -22,6 +22,7 @@ import Loading from '../../configs/Loader';
 import {styles} from '../../configs/Styles';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import AddRatingModal from './RattingModal';
+import localizationStrings from '../../utils/Localization';
 
 const BookingDetailsModal = ({visible, onClose, data}) => {
   const screenHeight = Dimensions.get('screen').height;
@@ -135,7 +136,7 @@ const [BookingData, setBookingData] = useState(null);
           style={{
             backgroundColor:'#90bafc',
             borderRadius:10,width:'45%',height:45,alignItems:'center',justifyContent:'center'}}>
-            <Text style={{fontSize:14,fontWeight:'500',color:"#fff"}}> Activity details</Text>
+            <Text style={{fontSize:14,fontWeight:'500',color:"#fff"}}>{localizationStrings.Activity_details}</Text>
           </TouchableOpacity>
          {BookingDetails?.status !== 'Pending' &&<TouchableOpacity 
          
@@ -145,14 +146,14 @@ const [BookingData, setBookingData] = useState(null);
          style={{
             backgroundColor:'#f5d1a2',
             borderRadius:10,width:'45%',height:45,alignItems:'center',justifyContent:'center'}}>
-            <Text style={{fontSize:12,fontWeight:'500',color:"#fff"}}>Rate your experience</Text>
+            <Text style={{fontSize:12,fontWeight:'500',color:"#fff"}}>{localizationStrings.rate_ex}</Text>
           </TouchableOpacity>}
          {BookingDetails?.status == 'Pending' &&<TouchableOpacity 
             onPress={() => handleBookingStatusChange('Cancel')}
          style={{
             backgroundColor:'#fc847c',
             borderRadius:10,width:'45%',height:45,alignItems:'center',justifyContent:'center'}}>
-            <Text style={{fontSize:14,fontWeight:'500',color:"#fff"}}>Cancel</Text>
+            <Text style={{fontSize:14,fontWeight:'500',color:"#fff"}}>{localizationStrings.Cancel}</Text>
           </TouchableOpacity>}
 
         </View>
@@ -163,7 +164,7 @@ const [BookingData, setBookingData] = useState(null);
             justifyContent: 'space-between',
           }}>
           <View style={[Styles.sectionHeader,{marginTop:10}]}>
-            <Text style={Styles.sectionHeaderText}>Contact</Text>
+            <Text style={Styles.sectionHeaderText}>{localizationStrings.Contact_d}</Text>
             <Text
               style={[
                 Styles.sectionHeaderText,
@@ -183,7 +184,7 @@ const [BookingData, setBookingData] = useState(null);
             justifyContent: 'space-between',
           }}>
           <View style={Styles.sectionHeader}>
-            <Text style={Styles.sectionHeaderText}>name: {data?.name?.substring(0,30)}</Text>
+            <Text style={Styles.sectionHeaderText}>{localizationStrings.name}: {data?.name?.substring(0,30)}</Text>
             <Text
               style={[
                 Styles.sectionHeaderText,
@@ -193,7 +194,7 @@ const [BookingData, setBookingData] = useState(null);
             </Text>
           </View>
           <Text style={Styles.sectionHeaderText}>
-            Total pay {BookingDetails?.amount}
+          {localizationStrings.total}:  {BookingDetails?.amount}
           </Text>
         </View>
         <View
@@ -203,7 +204,7 @@ const [BookingData, setBookingData] = useState(null);
             justifyContent: 'space-between',
           }}>
           <View style={Styles.sectionHeader}>
-            <Text style={Styles.sectionHeaderText}>Booking Date </Text>
+            <Text style={Styles.sectionHeaderText}>{localizationStrings.B_date}</Text>
            
           </View>
           <Text style={Styles.sectionHeaderText}>
@@ -211,38 +212,38 @@ const [BookingData, setBookingData] = useState(null);
           </Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
-          <Text style={Styles.labelText}>No of Guest</Text>
+          <Text style={Styles.labelText}>{localizationStrings.No_of_Guest}</Text>
         </View>
         <View style={Styles.txtInput}>
           <Text style={{color: '#878787'}}>{BookingDetails?.guest}</Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
-          <Text style={Styles.labelText}>Name</Text>
+          <Text style={Styles.labelText}>{localizationStrings.name}</Text>
         </View>
         <View style={Styles.txtInput}>
           <Text style={{color: '#878787'}}>{BookingDetails?.first_name} {BookingDetails?.last_name}</Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
-          <Text style={Styles.labelText}>Phone No.</Text>
+          <Text style={Styles.labelText}>{localizationStrings.Mobile_number}</Text>
         </View>
         <View style={Styles.txtInput}>
           <Text style={{color: '#878787'}}>{BookingDetails?.mobile}</Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
-          <Text style={Styles.labelText}>Email</Text>
+          <Text style={Styles.labelText}>{localizationStrings.email}</Text>
         </View>
         <View style={Styles.txtInput}>
           <Text style={{color: '#878787'}}>{BookingDetails?.email}</Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
-          <Text style={Styles.labelText}>Address</Text>
+          <Text style={Styles.labelText}>{localizationStrings.address}</Text>
         </View>
         <View style={Styles.txtInput}>
           <Text style={{color: '#878787'}}>{BookingDetails?.address}</Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
           <Text style={[Styles.labelText, {fontSize: 16, fontWeight: '600'}]}>
-            Other Guests
+           {localizationStrings.Other_Guests}
           </Text>
         </View>
         <FlatList  data={BookingDetails?.guest_data}
@@ -250,7 +251,7 @@ const [BookingData, setBookingData] = useState(null);
 <>
       
         <View style={[Styles.labelContainerWithMargin, {marginTop: 20}]}>
-          <Text style={Styles.labelText}>Guest {index+1} name</Text>
+          <Text style={Styles.labelText}>{localizationStrings.guest} {index+1} {localizationStrings.name} </Text>
         </View>
         <View style={Styles.txtInput}>
           <Text style={{color: '#878787'}}>{item.first_name} {item.last_name}</Text>

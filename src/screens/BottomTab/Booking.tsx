@@ -37,12 +37,15 @@ export default function Booking() {
   const BList = [
     {
       name:localizationStrings.Pending,
+      value:'Pending'
     },
     {
       name: localizationStrings.Complete,
+      value:'Complete'
     },
     {
       name: localizationStrings.Cancel,
+      value:'Cancel'
     },
   ];
 
@@ -150,7 +153,7 @@ export default function Booking() {
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <TouchableOpacity
-                onPress={() => setSelectedOption(item.name)}
+                onPress={() => setSelectedOption(item.value)}
                 style={{
                   width: wp(29),
                   alignItems: 'center',

@@ -1,5 +1,11 @@
 {
   "English": {
+    "rate_ex": "Rate your experience",
+    "accept": "accept",
+    "Activity_details": "Activity details",
+    "Other_Guests": "Other Guests",
+    "No_of_Guest": "No of Guest",
+    "Status": "Status",
     "SubCategory":"Sub Category",
     "login": "Login",
     "login_Txt": "Enter your email and password",
@@ -141,6 +147,12 @@
     "Y_B_C": "Your booking is confirmed!"
   },
   "French": {
+    "rate_ex": "Évaluez votre expérience",
+    "accept": "accepter",
+    "Activity_details": "Détails de l'activité",
+    "Other_Guests": "Autres invités",
+    "No_of_Guest": "Nombre d'invités",
+    "Status": "Statut",
     "SubCategory": "Sous-catégorie",
     "month": "mois",
     "Y_B_C": "Votre réservation est confirmée!",
@@ -282,6 +294,12 @@
     "Close_Time": "Heure de fermeture",
   },
   "Chinese": {
+    "rate_ex": "评价您的体验",
+    "accept": "接受",
+    "Activity_details": "活动详情",
+    "Other_Guests": "其他客人",
+    "No_of_Guest": "客人数量",
+    "Status": "状态",
     "SubCategory": "子类别",
     "month": "月",
     "Y_B_C": "您的预订已确认！",
@@ -423,6 +441,12 @@
     "Close_Time": "关闭时间"
   },
   "Russian": {
+    "rate_ex": "Оцените ваш опыт",
+    "accept": "принять",
+    "Activity_details": "Детали активности",
+    "Other_Guests": "Другие гости",
+    "No_of_Guest": "Количество гостей",
+    "Status": "Статус",
     "SubCategory": "Подкатегория",
     "month": "месяц",
     "Y_B_C": "Ваше бронирование подтверждено!",
@@ -564,6 +588,12 @@
     "Close_Time": "Время закрытия"
   },
   "Italian": {
+    "rate_ex": "Valuta la tua esperienza",
+    "accept": "accetta",
+    "Activity_details": "Dettagli attività",
+    "Other_Guests": "Altri ospiti",
+    "No_of_Guest": "Numero di ospiti",
+    "Status": "Stato",
     "SubCategory": "Sottocategoria",
     "month": "mese",
     "Y_B_C": "La tua prenotazione è confermata!",
@@ -705,6 +735,12 @@
     "Close_Time": "Orario di chiusura"
   },
   "Spanish": {
+    "rate_ex": "Evalúa tu experiencia",
+    "accept": "aceptar",
+    "Activity_details": "Detalles de la actividad",
+    "Other_Guests": "Otros huéspedes",
+    "No_of_Guest": "Número de huéspedes",
+    "Status": "Estado",
     "SubCategory": "Subcategoría",
     "month": "mes",
     "Y_B_C": "¡Su reserva está confirmada!",
@@ -846,8 +882,13 @@
     "Close_Time": "Hora de cierre"
   },
   "Japanese": {
+    "rate_ex": "あなたの体験を評価してください",
     "SubCategory": "サブカテゴリ",
-
+    "accept": "承諾する",
+    "Activity_details": "活動詳細",
+    "Other_Guests": "その他のゲスト",
+    "No_of_Guest": "ゲスト数",
+    "Status": "ステータス",
     "month": "月",
     "Y_B_C": "予約が確定しました！",
     "b_home": "ホームに戻る",

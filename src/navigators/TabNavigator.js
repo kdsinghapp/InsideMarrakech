@@ -1,7 +1,5 @@
-
-import { View, Text, Image, Keyboard, Platform, KeyboardAvoidingView, } from 'react-native';
+import { View, Text, Image, Keyboard, Platform, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import React, { useState, useEffect, useContext } from 'react';
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import _routes from '../routes/routes';
 import { useSelector } from 'react-redux';
@@ -18,6 +16,7 @@ import CompanyBooking from '../screens/company/CompanyBooking';
 import AddProperty from '../screens/company/AddProperty';
 import ChatPage from '../screens/chat/ChatPage';
 import CProfile from '../screens/company/CProfile';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const Tab = createBottomTabNavigator();
 
@@ -38,7 +37,6 @@ export default function TabNavigator() {
       logo2: require('../assets/Cropping/Search2x.png'),
       lable: localizationStrings.search,
     },
-
     {
       name: ScreenNameEnum.BOOKING_SCREEN,
       Component: Booking,
@@ -46,7 +44,6 @@ export default function TabNavigator() {
       logo2: require('../assets/Cropping/BookingActive2.png'),
       lable: localizationStrings.Booking,
     },
-
     {
       name: ScreenNameEnum.PROFILE_SCREEN,
       Component: Profile,
@@ -54,9 +51,8 @@ export default function TabNavigator() {
       logo2: require('../assets/Cropping/ProfileActive2.png'),
       lable: localizationStrings.Profile,
     },
+  ];
 
-
-  ]
   const BOTTOMTAB_ROUTE_COMPANY = [
     {
       name: ScreenNameEnum.HOME_SCREEN,
@@ -65,8 +61,6 @@ export default function TabNavigator() {
       lable: localizationStrings.Home,
       logo2: require('../assets/Cropping/Home2x.png'),
     },
-
-
     {
       name: ScreenNameEnum.CompanyBooking,
       Component: CompanyBooking,
@@ -74,7 +68,6 @@ export default function TabNavigator() {
       logo2: require('../assets/Cropping/bag-2a.png'),
       lable: localizationStrings.Booking,
     },
-
     {
       name: ScreenNameEnum.ADD_PROPERTY,
       Component: AddProperty,
@@ -96,23 +89,22 @@ export default function TabNavigator() {
       logo2: require('../assets/Cropping/ProfileActive2.png'),
       lable: localizationStrings.Profile,
     },
+  ];
 
-
-  ]
   const user = useSelector(state => state.auth.userData);
   const BottomTabConfig = user?.type === 'Company' ? BOTTOMTAB_ROUTE_COMPANY : BOTTOMTAB_ROUTE_USER;
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const isFocuse = useIsFocused()
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const handleLanguage = async () => {
-      const language = await AsyncStorage.getItem("Lng")
+      const language = await AsyncStorage.getItem("Lng");
       console.log('language', language);
       localizationStrings.setLanguage(language);
-
-    }
+    };
     handleLanguage();
-  }, [])
+  }, []);
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       Platform.OS === 'android' ? 'keyboardDidShow' : 'keyboardWillShow',
@@ -134,7 +126,6 @@ export default function TabNavigator() {
     };
   }, []);
 
-
   return (
     <View style={{ flex: 1 }}>
       <Tab.Navigator
@@ -143,7 +134,7 @@ export default function TabNavigator() {
           headerShown: false,
           tabBarShowLabel: false,
           tabBarStyle: {
-            height: 65,
+            height: hp(8),
             display: isKeyboardVisible ? 'none' : 'flex', // Hide tab bar when keyboard is visible
           },
         }}
@@ -155,29 +146,19 @@ export default function TabNavigator() {
             component={screen.Component}
             options={{
               tabBarIcon: ({ focused, color, size }) => (
-                <>
-                  {focused ? (
-                    <Image
-                      source={screen.logo2}
-                      style={{
-                        width: screen.lable == '' ? 60 : 30,
-                        height: screen.lable == '' ? 60 : 30,
-                        marginTop: screen.lable == '' ? -15 : 0,
-                      }}
-                    />
-                  ) : (
-                    <Image
-                      source={screen.logo}
-                      style={{
-                        width: screen.lable == '' ? 60 : 30,
-                        height: screen.lable == '' ? 60 : 30,
-                        marginTop: screen.lable == '' ? -15 : 0,
-                        tintColor: focused && '#000',
-                      }}
-                    />
-                  )}
-                  <Text style={{ fontFamily: 'Federo-Regular', color: focused ? '#000' : color, fontSize:11, fontWeight: '600' }}>{screen.lable}</Text>
-                </>
+                <View style={styles.iconContainer}>
+                  <Image
+                    source={focused ? screen.logo2 : screen.logo}
+                    style={[
+                      styles.icon,
+                      screen.lable === '' && styles.largeIcon,
+                      { tintColor: focused ? '#000' : color },
+                    ]}
+                  />
+                  <Text style={[styles.label, { color: focused ? '#000' : color }]}>
+                    {screen.lable}
+                  </Text>
+                </View>
               ),
             }}
           />
@@ -186,3 +167,25 @@ export default function TabNavigator() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop:15
+  },
+  icon: {
+    width:25,
+    height:25,
+  },
+  largeIcon: {
+    width: 60,
+    height: 60,
+    marginTop: -15,
+  },
+  label: {
+    fontFamily: 'Federo-Regular',
+    fontSize: 11,
+    fontWeight: '600',
+  },
+});

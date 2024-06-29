@@ -24,6 +24,7 @@ import { booking_request_accept_reject, get_company_booking_detail, get_property
 import { get_profile } from '../../redux/feature/authSlice';
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import ScreenNameEnum from '../../routes/screenName.enum';
+import localizationStrings from '../../utils/Localization';
 
 export default function CbookingDetails() {
   const route = useRoute()
@@ -100,7 +101,7 @@ export default function CbookingDetails() {
     <View style={Styles.container}>
       {isLoading ? <Loading /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader title="Booking Details" width={21} />
+        <ProfileHeader title={localizationStrings.Booking_details} width={21} />
         <View
 
           style={Styles.profileImageContainer}>
@@ -115,12 +116,12 @@ export default function CbookingDetails() {
           <View style={{ marginLeft: 20 }}>
             <Text style={[Styles.sectionHeaderText, { marginTop: 5 }]}>{BookingDetails?.user_data?.first_name} {BookingDetails?.user_data?.last_name}</Text>
             <Text style={[Styles.sectionHeaderText, { marginTop: 0 }]}>{BookingDetails?.user_data?.email}</Text>
-            <Text style={[Styles.sectionHeaderText, { marginTop: 0 }]}>Contact: {BookingDetails?.user_data?.mobile}</Text>
+            <Text style={[Styles.sectionHeaderText, { marginTop: 0 }]}>{localizationStrings.Contact_d}: {BookingDetails?.user_data?.mobile}</Text>
           </View>
           <View style={{ position: 'absolute', right: 5, top: 6,
           borderRadius:5,paddingHorizontal:10,
           backgroundColor:BookingDetails?.status == 'Cancel' ? 'red' :BookingDetails?.status == 'Complete'? '#34A853':'#f0f0f0' }}>
-            <Text style={[Styles.sectionHeaderText, { fontSize: 12,color:BookingDetails?.status == 'Pending'?'#000':'#fff' }]}>Status: {BookingDetails?.status}</Text>
+            <Text style={[Styles.sectionHeaderText, { fontSize: 12,color:BookingDetails?.status == 'Pending'?'#000':'#fff' }]}>{localizationStrings.Status}: {BookingDetails?.status}</Text>
           </View>
 
         </View>
@@ -135,7 +136,7 @@ export default function CbookingDetails() {
               backgroundColor: '#90bafc',
               borderRadius: 10, width:BookingDetails?.status !== 'Pending'?'100%': '45%', height: 45, alignItems: 'center', justifyContent: 'center'
             }}>
-            <Text style={{ fontSize: 14, fontWeight: '500', color: "#fff" }}> Activity details</Text>
+            <Text style={{ fontSize: 14, fontWeight: '500', color: "#fff" }}>{localizationStrings.Activity_details}</Text>
           </TouchableOpacity>
             :
 
@@ -147,7 +148,7 @@ export default function CbookingDetails() {
                 backgroundColor: '#74c272',
                 borderRadius: 10, width: '45%', height: 45, alignItems: 'center', justifyContent: 'center'
               }}>
-              <Text style={{ fontSize: 14, fontWeight: '500', color: "#fff" }}>Accept</Text>
+              <Text style={{ fontSize: 14, fontWeight: '500', color: "#fff" }}>{localizationStrings.accept}</Text>
             </TouchableOpacity>}
        
           
@@ -157,7 +158,7 @@ export default function CbookingDetails() {
               backgroundColor: '#fc847c',
               borderRadius: 10, width: '45%', height: 45, alignItems: 'center', justifyContent: 'center'
             }}>
-            <Text style={{ fontSize: 14, fontWeight: '500', color: "#fff" }}>Cancel</Text>
+            <Text style={{ fontSize: 14, fontWeight: '500', color: "#fff" }}>{localizationStrings.Cancel}</Text>
           </TouchableOpacity>}
 
         </View>
@@ -176,7 +177,7 @@ export default function CbookingDetails() {
             paddingHorizontal:15
           }}>
           <View style={Styles.sectionHeader}>
-            <Text style={Styles.sectionHeaderText}>Booking Date </Text>
+            <Text style={Styles.sectionHeaderText}>{localizationStrings.B_date}</Text>
            
           </View>
           <Text style={Styles.sectionHeaderText}>
@@ -185,38 +186,38 @@ export default function CbookingDetails() {
         </View>
      
         <View style={Styles.labelContainerWithMargin}>
-          <Text style={Styles.labelText}>No of Guest</Text>
+          <Text style={Styles.labelText}>{localizationStrings.No_of_Guest}</Text>
         </View>
         <View style={Styles.txtInput}>
           <Text style={{color: '#878787'}}>{BookingDetails?.guest}</Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
-          <Text style={Styles.labelText}>Name</Text>
+          <Text style={Styles.labelText}>{localizationStrings.name}</Text>
         </View>
         <View style={Styles.txtInput}>
           <Text style={{color: '#878787'}}>{BookingDetails?.first_name} {BookingDetails?.last_name}</Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
-          <Text style={Styles.labelText}>Phone No.</Text>
+          <Text style={Styles.labelText}>{localizationStrings.Mobile_number}</Text>
         </View>
         <View style={Styles.txtInput}>
           <Text style={{color: '#878787'}}>{BookingDetails?.mobile}</Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
-          <Text style={Styles.labelText}>Email</Text>
+          <Text style={Styles.labelText}>{localizationStrings.email}</Text>
         </View>
         <View style={Styles.txtInput}>
           <Text style={{color: '#878787'}}>{BookingDetails?.email}</Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
-          <Text style={Styles.labelText}>Address</Text>
+          <Text style={Styles.labelText}>{localizationStrings.address}</Text>
         </View>
         <View style={Styles.txtInput}>
           <Text style={{color: '#878787'}}>{BookingDetails?.address}</Text>
         </View>
         <View style={Styles.labelContainerWithMargin}>
           <Text style={[Styles.labelText, {fontSize: 16, fontWeight: '600'}]}>
-            Other Guests
+{localizationStrings.Other_Guests}
           </Text>
         </View>
         <FlatList  data={BookingDetails?.guest_data}
@@ -224,7 +225,7 @@ export default function CbookingDetails() {
 <>
       
         <View style={[Styles.labelContainerWithMargin, {marginTop: 20}]}>
-          <Text style={Styles.labelText}>Guest {index+1} name</Text>
+          <Text style={Styles.labelText}>{localizationStrings.guest} {index+1} {localizationStrings.name}</Text>
         </View>
         <View style={Styles.txtInput}>
           <Text style={{color: '#878787'}}>{item.first_name} {item.last_name}</Text>
