@@ -8,6 +8,7 @@ import {
     SafeAreaView,
     Alert,
     ActivityIndicator,
+    Platform,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -143,7 +144,9 @@ const SelectLocation = () => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <View style={{marginTop:Platform.OS='ios'?-20:0}}>
              <ProfileHeader title={localizationStrings.location} />
+             </View>
             <View style={{ width: '100%', marginTop: 10, backgroundColor: '#fff',}}>
                 <GooglePlacesInput placeholder={'Search'} onPlaceSelected={handleSelectLocation} />
             </View>

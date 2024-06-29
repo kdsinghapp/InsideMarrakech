@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform, Pressable } from 'react-native';
 import React from 'react';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import RightArrow from '../assets/svg/RightArrow.svg';
@@ -9,16 +9,16 @@ export default function ProfileHeader({ title = '' }) {
   const navigation = useNavigation();
   return (
     <View style={styles.headerContainer}>
-      <TouchableOpacity
+      <Pressable
         onPress={() => {
-          // navigation.goBack();
+        navigation.goBack();
         }}
         style={styles.backButton}>
         <RightArrow height={15} width={15} />
         <Text style={styles.backText}>
           {localizationStrings.Back}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>
           {title}
@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
-  
-    
+
+    height:45
   },
   backText: {
     fontFamily: 'Federo-Regular',

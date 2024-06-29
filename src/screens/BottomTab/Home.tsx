@@ -437,6 +437,7 @@ const styles = StyleSheet.create({
     color: '#000',
     width: '90%',
     lineHeight: 18,
+
   },
   title: {
     marginVertical: 20,
