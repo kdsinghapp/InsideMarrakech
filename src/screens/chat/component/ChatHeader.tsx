@@ -22,8 +22,8 @@ console.log(item);
       />
     </TouchableOpacity>
     <View style={styles.headerContent}>
-      <Image source={{uri:item.image}} style={styles.headerAvatar}  resizeMode='cover'/>
-      <Text style={styles.headerText}>{item.company_name}</Text>
+      <Image source={{uri:item?.image}} style={styles.headerAvatar}  resizeMode='cover'/>
+      <Text style={styles.headerText}>{item?.company_name}</Text>
     </View>
   </View>
   )

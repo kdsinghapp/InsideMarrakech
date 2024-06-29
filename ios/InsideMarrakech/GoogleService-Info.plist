@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBMJ1hcLwZs2HXZNUeL-97d2GHHvuC7hQY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>756648517</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.insidemarrakech.identifier</string>
+	<key>PROJECT_ID</key>
+	<string>insidemarrkesh</string>
+	<key>STORAGE_BUCKET</key>
+	<string>insidemarrkesh.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:756648517:ios:5f54edf9bc4ce29a53f12c</string>
+</dict>
+</plist>

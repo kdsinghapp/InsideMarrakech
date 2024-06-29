@@ -29,7 +29,7 @@ export default function Chat({route}) {
   const dispatch = useDispatch();
   const isFacuse = useIsFocused();
 
-console.log('item?.id=>>>chat screen>>>>>>',item?.id);
+console.log('item?.id=>>>chat screen>>>>>>',item?.image);
 
   useEffect(() => {
     get_userprofile();
