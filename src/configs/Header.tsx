@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Pin from '../assets/svg/Pin.svg';
 import Down from '../assets/svg/Down.svg';
@@ -52,6 +52,8 @@ const Header = () => {
 
     return (
         <View style={styles.container}>
+
+
             <TouchableOpacity
                 onPress={() => {
                     navigation.navigate(ScreenNameEnum.SelectLocation);
@@ -87,6 +89,7 @@ const Header = () => {
 
 const styles = StyleSheet.create({
     container: {
+        marginTop:Platform.OS == 'ios'?20:0,
         height: hp(10),
         flexDirection: 'row',
         justifyContent: 'space-between',
