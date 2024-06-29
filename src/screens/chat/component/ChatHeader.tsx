@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, Image, StyleSheet, Platform } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import {
@@ -54,7 +54,7 @@ const styles =StyleSheet.create({
     colorDiv: {
         backgroundColor: '#edf2f2',
         height: hp(8),
-       
+       marginTop:Platform.OS == 'ios'?25:0,
         flexDirection: 'row',
         alignItems: 'center',
       
