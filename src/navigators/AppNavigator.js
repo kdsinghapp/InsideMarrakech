@@ -13,11 +13,13 @@ import localizationStrings from '../utils/Localization';
 import { LanguageProvider } from '../utils/LanguageContext';
 import { LocationProvider } from '../configs/LocationContext';
 import InternetConnectionCheck from '../configs/ConnectionCheck';
-
+import { firebase } from '@react-native-firebase/analytics';
 export default function AppNavigator() {
 
   useEffect(()=>{
+    
     const handleLanguage =async () => {
+      await firebase.analytics().setAnalyticsCollectionEnabled(true);
    const language = await AsyncStorage.getItem("Lng")
   console.log('language',language);
     localizationStrings.setLanguage(language);

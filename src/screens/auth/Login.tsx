@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
     height: hp(20),
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: Platform.OS === 'android' ? 20 : 10,
+    marginTop: Platform.OS === 'ios' ?60 : 10,
   },
   logo: {
     height: wp(40),
