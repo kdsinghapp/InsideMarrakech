@@ -147,7 +147,9 @@ const SelectLocation = () => {
             <View style={{marginTop:Platform.OS='ios'?-20:0}}>
              <ProfileHeader title={localizationStrings.location} />
              </View>
-            <View style={{ width: '100%', marginTop: 10, backgroundColor: '#fff',}}>
+            <View style={{ width: '100%', marginTop: 10,
+            paddingVertical:15
+             ,backgroundColor: '#f0f0f0',}}>
                 <GooglePlacesInput placeholder={'Search'} onPlaceSelected={handleSelectLocation} />
             </View>
             <View style={styles.savedContainer}>

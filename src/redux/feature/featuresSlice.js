@@ -337,42 +337,40 @@ export const add_property = createAsyncThunk(
     }
   },
 );
+
 export const update_property = createAsyncThunk(
   'update_property',
   async (params, thunkApi) => {
     try {
-      const config = {
+     
+
+      const response = await fetch(`https://server-php-8-2.technorizen.com/inside/api/update_property`, {
+        method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data',
           Accept: 'application/json',
+           'Content-Type': 'multipart/form-data', // Not needed for fetch with FormData
         },
-      };
+        body: params.data,
+      });
 
-      console.log('=============update_property=======================');
-      console.log(params.data);
+      const responseData = await response.json();
 
-      const response = await API.post('/update_property', params.data, config);
-
-      console.log(
-        '==============update_property======================',
-        response.data,
-      );
-      if (response.data.status === '1') {
-        successToast(response.data.message)
-        params.navigation.goBack();
-
-        successToast(response.data.message);
+      if (responseData.status === '1') {
+        successToast(responseData.message);
+        params.navigation.goBack(); // Assuming navigation is passed in params
       } else {
-        errorToast(response.data.message);
+        errorToast(responseData.message);
       }
-      return response.data;
+
+      return responseData;
     } catch (error) {
       errorToast('Network error');
-      console.log(error);
+      console.error('API Error:', error);
       return thunkApi.rejectWithValue(error);
     }
   },
 );
+
 export const add_property_menu = createAsyncThunk(
   'add_property_menu',
   async (params, thunkApi) => {
@@ -384,7 +382,7 @@ export const add_property_menu = createAsyncThunk(
       };
 
       console.log('=============add_property_menu=======================');
-      console.log(params.data);
+      console.log();
       console.log('====================================');
       const response = await API.post(
         '/add_property_menu',
@@ -928,8 +926,8 @@ export const get_sub_category = createAsyncThunk(
       };
 
       console.log(
-        '==============get_sub_category call======================',
-        params,
+        '==============get_sub_category call=======params===============',
+        params
       );
 
       const response = await API.post('/get_sub_category', params, config);

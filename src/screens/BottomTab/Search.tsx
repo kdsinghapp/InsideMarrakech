@@ -121,7 +121,7 @@ export default function Search() {
             <SearchIcon />
             <TextInput
               placeholder={localizationStrings.search}
-              placeholderTextColor={'#000'}
+              placeholderTextColor={'#000000'}
               style={styles.searchInput}
               value={searchQuery}
               onChangeText={setSearchQuery}
@@ -239,6 +239,7 @@ const styles = StyleSheet.create({
   },
   search: {
     backgroundColor: '#FFF',
+
     height: 50,
     flexDirection: 'row',
     alignItems: 'center',
@@ -260,6 +261,8 @@ const styles = StyleSheet.create({
     color: '#000',
     lineHeight: 18,
     width:'90%',
+    
+
   },
   noDataContainer: {
     flex: 1,

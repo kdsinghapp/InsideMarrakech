@@ -27,16 +27,15 @@ const DateModal = ({ visible, onClose, data }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedGuestCount, setSelectedGuestCount] = useState(null);
   const navigation = useNavigation();
+  const generateGuests = (min, max) => {
+    const guests = [];
+    for (let i = min; i <= max; i++) {
+      guests.push({ count: i.toString() });
+    }
+    return guests;
+  };
 
-  const Guests = [
-    { count: '1' },
-    { count: '2' },
-    { count: '3' },
-    { count: '4' },
-    { count: '5' },
-    { count: '6' },
-    { count: '7' },
-  ];
+  const Guests = generateGuests(data?.no_of_guest_min || 1, data?.no_of_guest_max || 7);
 
   const handleNext = () => {
     if (!selectedDate || selectedGuestCount === null) {

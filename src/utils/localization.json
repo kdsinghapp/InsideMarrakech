@@ -1,5 +1,7 @@
 {
   "English": {
+    "minimum_no_of_guest": "Minimum no of guest",
+    "maximum_no_of_guest": "Maximum no of guest",
     "rate_ex": "Rate your experience",
     "accept": "accept",
     "Activity_details": "Activity details",
@@ -147,6 +149,8 @@
     "Y_B_C": "Your booking is confirmed!"
   },
   "French": {
+    "minimum_no_of_guest": "Nombre minimum de clients",
+    "maximum_no_of_guest": "Nombre maximum de clients",
     "rate_ex": "Évaluez votre expérience",
     "accept": "accepter",
     "Activity_details": "Détails de l'activité",
@@ -294,6 +298,8 @@
     "Close_Time": "Heure de fermeture",
   },
   "Chinese": {
+    "minimum_no_of_guest": "最少客人数量",
+    "maximum_no_of_guest": "最多客人数量",
     "rate_ex": "评价您的体验",
     "accept": "接受",
     "Activity_details": "活动详情",
@@ -441,6 +447,8 @@
     "Close_Time": "关闭时间"
   },
   "Russian": {
+    "minimum_no_of_guest": "Минимальное количество гостей",
+    "maximum_no_of_guest": "Максимальное количество гостей",
     "rate_ex": "Оцените ваш опыт",
     "accept": "принять",
     "Activity_details": "Детали активности",
@@ -588,6 +596,8 @@
     "Close_Time": "Время закрытия"
   },
   "Italian": {
+    "minimum_no_of_guest": "Numero minimo di ospiti",
+    "maximum_no_of_guest": "Numero massimo di ospiti",
     "rate_ex": "Valuta la tua esperienza",
     "accept": "accetta",
     "Activity_details": "Dettagli attività",
@@ -735,6 +745,8 @@
     "Close_Time": "Orario di chiusura"
   },
   "Spanish": {
+    "minimum_no_of_guest": "Número mínimo de invitados",
+    "maximum_no_of_guest": "Número máximo de invitados",
     "rate_ex": "Evalúa tu experiencia",
     "accept": "aceptar",
     "Activity_details": "Detalles de la actividad",
@@ -882,6 +894,8 @@
     "Close_Time": "Hora de cierre"
   },
   "Japanese": {
+    "minimum_no_of_guest": "最小ゲスト数",
+    "maximum_no_of_guest": "最大ゲスト数",
     "rate_ex": "あなたの体験を評価してください",
     "SubCategory": "サブカテゴリ",
     "accept": "承諾する",

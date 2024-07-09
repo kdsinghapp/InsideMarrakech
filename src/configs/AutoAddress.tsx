@@ -32,10 +32,13 @@ const GooglePlacesInput = ({ placeholder, onPlaceSelected }) => {
     }, []);
 
     return (
-        <View style={{ borderRadius: 30, flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ borderRadius: 30, flexDirection: 'row', 
+
+        alignItems: 'center' }}>
             <GooglePlacesAutocomplete
                 fetchDetails={true}
                 placeholder={placeholder}
+        
                 onPress={(data, details = null) => {
                     if (details) {
                         try{
@@ -49,6 +52,7 @@ const GooglePlacesInput = ({ placeholder, onPlaceSelected }) => {
                     }
                 }}
                 styles={{
+                
                     description: {
                         fontWeight: 'bold',
                         color: 'black',

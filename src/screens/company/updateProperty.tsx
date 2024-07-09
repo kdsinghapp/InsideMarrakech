@@ -50,27 +50,16 @@ export default function updateProperty() {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [currentPicker, setCurrentPicker] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({});
+  const [minGuest, setminGuest] = useState(0);
+  const [maxGuest, setmacGuest] = useState(0);
   const navigation = useNavigation();
   const subcategory = useSelector(state => state.feature.subcategory);
   const [Photo, setPhoto] = useState(null)
   const [SubCategory, setSubCategory] = useState(null);
   const [SubCategoryId, setSubCategoryId] = useState('');
-  const separateOpenAndCloseTime = (str) => {
-    const [opentime, closetime] = str.split('/');
-    return { opentime, closetime };
-  };
 
-  console.log('new Date(separateOpenAndCloseTime(item?.opening_hours)?.opentime)', new Date(separateOpenAndCloseTime(item?.opening_hours)?.opentime));
-  const parseDateString = (dateString) => {
-    // Create a new Date object
-    const date = new Date(dateString);
-    // Check if the date is valid
-    if (isNaN(date)) {
-      console.error(`Invalid date string: ${dateString}`);
-      return null;
-    }
-    return date;
-  };
+
+
   useEffect(() => {
     dispatch(get_category());
   }, [isFocused]);
@@ -79,7 +68,8 @@ export default function updateProperty() {
     setPrice(item.amount);
     setMobileNumber(item.book_online_mobile_number);
     setDescription(item.description);
-
+    setminGuest(item?.no_of_guest_min)
+    setmacGuest(item?.no_of_guest_max)
     setCategoryId(item.cat_id);
     setSubCategoryId(item?.sub_category_id)
 
@@ -90,7 +80,7 @@ export default function updateProperty() {
     })
     setLocation({
       latitude: item?.lat,
-      longitude: item?.lng,
+      longitude: item?.lon,
       latitudeDelta: 0.01,
       longitudeDelta: 0.01,
     })
@@ -146,39 +136,50 @@ export default function updateProperty() {
       });
   };
   const handleSave = () => {
-
-    let data = new FormData();
-    data.append('sub_category_id', SubCategoryId)
-    data.append('main_image', {
+    const main = {
       uri: Photo?.path,
       type: Photo?.mime,
       name: Photo?.modificationDate,
-    })
-    data.append('property_id', item.id);
-    data.append('cat_id', CategoryId);
-    data.append('company_id', user?.id);
-    data.append('name', name);
-    data.append('amount', Price);
-    data.append('address', LocationName);
-    data.append('lat', Location?.latitude);
-    data.append('lon', Location?.longitude);
-    data.append('description', Description);
-    data.append('book_online_mobile_number', MobileNumber);
-    data.append('title', Title);
-    data.append('opening_hours', '')
-    data.append('lunch_start', '')
-    data.append('lunch_end', '')
-    data.append('dinner_start', '')
-    data.append('dinner_end', '')
-    ApiImages.forEach((image, index) => {
-      data.append(`image[${index}]`, image);
-    });
-    const params = {
-      data: data,
-      navigation: navigation,
-    };
+    }
 
-    dispatch(update_property(params));
+
+
+    const mainImageString = JSON.stringify(main);
+    try {
+      let data = new FormData();
+      data.append('sub_category_id', SubCategoryId)
+
+      data.append('main_image', main);
+      data.append('property_id', item.id);
+      data.append('cat_id', CategoryId);
+      data.append('company_id', user?.id);
+      data.append('name', name);
+      data.append('amount', Price);
+      data.append('address', LocationName);
+      data.append('lat', Location?.latitude);
+      data.append('lon', Location?.longitude);
+      data.append('description', Description);
+      data.append('book_online_mobile_number', MobileNumber);
+      data.append('title', Title);
+      data.append('lunch_start', OpenTime)
+      data.append('lunch_end', CloseTime)
+      data.append('no_of_guest_min', minGuest)
+      data.append('no_of_guest_max', maxGuest)
+
+      ApiImages.forEach((image, index) => {
+        data.append(`image[${index}]`, image);
+      });
+
+      const params = {
+        data: data,
+        navigation: navigation,
+      };
+
+      dispatch(update_property(params));
+    } catch (err) {
+      console.log(err);
+
+    }
   };
 
 
@@ -236,7 +237,7 @@ export default function updateProperty() {
 
   const handleConfirm = date => {
 
-    const newdate = new Date(dateTimeString);
+    const newdate = new Date(date);
 
     const formattedTime = newdate.toLocaleTimeString('en-US', {
       hour: 'numeric',
@@ -477,6 +478,38 @@ export default function updateProperty() {
           </View>
         </>
         }
+        <View style={styles.labelContainerWithMargin}>
+          <Text style={styles.labelText}>{localizationStrings.minimum_no_of_guest}</Text>
+        </View>
+        <View
+          style={[
+            styles.txtInput,
+            fieldErrors.minGuest && styles.errorInput,
+          ]}>
+          <TextInputField
+            placeholder={localizationStrings.minimum_no_of_guest}
+            keyboardType={'number-pad'}
+
+            value={minGuest}
+            onChangeText={setminGuest}
+          />
+        </View>
+        <View style={styles.labelContainerWithMargin}>
+          <Text style={styles.labelText}>{localizationStrings.maximum_no_of_guest}</Text>
+        </View>
+        <View
+          style={[
+            styles.txtInput,
+            fieldErrors.maxGuest && styles.errorInput,
+          ]}>
+          <TextInputField
+            placeholder={localizationStrings.maximum_no_of_guest}
+            keyboardType={'number-pad'}
+
+            value={maxGuest}
+            onChangeText={setmacGuest}
+          />
+        </View>
         <View style={styles.labelContainerWithMargin}>
           <Text style={styles.labelText}>{localizationStrings.Mobile_number}</Text>
         </View>

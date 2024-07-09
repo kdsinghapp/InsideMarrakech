@@ -24,6 +24,7 @@ import Loading from '../../configs/Loader';
 import DatePicker from 'react-native-date-picker';
 import localizationStrings from '../../utils/Localization';
 import GooglePlacesInput from '../../configs/AutoAddress';
+import { max } from 'moment';
 
 export default function AddProperty() {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -47,6 +48,8 @@ export default function AddProperty() {
   const [Price, setPrice] = useState('');
   const [CategoryId, setCategoryId] = useState('');
   const [SubCategoryId, setSubCategoryId] = useState('');
+  const [minGuest, setminGuest] = useState(0);
+  const [maxGuest, setmacGuest] = useState(0);
   const user = useSelector(state => state.auth.userData);
   const category = useSelector(state => state.feature.CategoryList);
   const subcategory = useSelector(state => state.feature.subcategory);
@@ -79,6 +82,8 @@ export default function AddProperty() {
     if (!CategoryId) errors.CategoryId = true;
     if (!Description) errors.Description = true;
     if (!Location) errors.Location = true;
+    if (!minGuest) errors.minGuest = true;
+    if (!maxGuest) errors.maxGuest = true;
     if (!MobileNumber) errors.MobileNumber = true;
     if (!OpenTime) errors.OpenTime = true;
     if (!CloseTime) errors.CloseTime = true;
@@ -116,6 +121,8 @@ export default function AddProperty() {
     data.append('dinner_start', '')
     data.append('dinner_end', '')
     data.append('sub_category_id', SubCategoryId)
+    data.append('no_of_guest_min', minGuest)
+    data.append('no_of_guest_max', maxGuest)
     data.append('main_image', {
       uri: Photo?.path,
       type: Photo?.mime,
@@ -398,7 +405,7 @@ export default function AddProperty() {
             itemContainerStyle={{ marginTop: 10 }}
             containerStyle={{ marginTop: 30, borderRadius: 10 }}
             showsVerticalScrollIndicator={false}
-            valueField="name"
+
             value={Category}
             onChange={item => {
               setCategoryId(item.id);
@@ -423,7 +430,7 @@ export default function AddProperty() {
             itemContainerStyle={{ marginTop: 10 }}
             containerStyle={{ marginTop: 30, borderRadius: 10 }}
             showsVerticalScrollIndicator={false}
-            valueField="name"
+          
             value={SubCategory}
             onChange={item => {
               setSubCategoryId(item.id);
@@ -443,6 +450,38 @@ export default function AddProperty() {
             placeholder={localizationStrings.Description}
             value={Description}
             onChangeText={setDescription}
+          />
+        </View>
+        <View style={styles.labelContainerWithMargin}>
+          <Text style={styles.labelText}>{localizationStrings.minimum_no_of_guest}</Text>
+        </View>
+        <View
+          style={[
+            styles.txtInput,
+            fieldErrors.minGuest &&styles.errorInput,
+          ]}>
+          <TextInputField
+            placeholder={localizationStrings.minimum_no_of_guest}
+            keyboardType={'number-pad'}
+
+            value={minGuest}
+            onChangeText={setminGuest}
+          />
+        </View>
+        <View style={styles.labelContainerWithMargin}>
+          <Text style={styles.labelText}>{localizationStrings.maximum_no_of_guest}</Text>
+        </View>
+        <View
+          style={[
+            styles.txtInput,
+            fieldErrors.maxGuest && styles.errorInput,
+          ]}>
+          <TextInputField
+            placeholder={localizationStrings.maximum_no_of_guest}
+            keyboardType={'number-pad'}
+
+            value={maxGuest}
+            onChangeText={setmacGuest}
           />
         </View>
         <View style={styles.labelContainerWithMargin}>

@@ -36,8 +36,6 @@ import {
 import Loading from '../../configs/Loader';
 import Rating from '../../configs/Ratting';
 import localizationStrings from '../../utils/Localization';
-import DescriptionContainer from './DescriptionContainer';
-import WebView from 'react-native-webview';
 
 export default function PlaceDetails() {
   const route = useRoute();
@@ -51,7 +49,7 @@ export default function PlaceDetails() {
   const propertDetails = useSelector(state => state.feature.propertyDetail);
   const isFocuse = useIsFocused();
 
-  console.log('item.propertDetails,', propertDetails);
+
   function isHTML(str) {
     const htmlPattern = /<\/?[a-z][\s\S]*>/i;
     return htmlPattern.test(str);
@@ -69,7 +67,17 @@ export default function PlaceDetails() {
     dispatch(get_property_detail(params));
   };
 
-
+  const tagsStyles = {
+    p: {
+      fontFamily: 'Federo-Regular',
+    },
+    em: {
+      fontFamily: 'Federo-Regular',
+    },
+    strong: {
+       fontFamily: 'Federo-Regular',
+    },
+  };
 
   const timeFormate = utcDateString => {
     const date = new Date(utcDateString);
@@ -271,7 +279,7 @@ export default function PlaceDetails() {
               <View style={{}}>
 
                 {isHTML(propertDetails?.description) &&
-                  <HTML source={{ html: propertDetails?.description }} />
+                  <HTML source={{ html: propertDetails?.description }}  tagsStyles={tagsStyles}/>
                 }
                 {!isHTML(propertDetails?.description) &&
                   <Text style={[localStyles.descriptionText, { marginTop: 10 }]}>

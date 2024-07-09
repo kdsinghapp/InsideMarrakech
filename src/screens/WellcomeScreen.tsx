@@ -23,7 +23,7 @@ export default function WellcomeScreen() {
 
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate(ScreenNameEnum.LOGIN_SCREEN);
+          navigation.navigate(ScreenNameEnum.OTP_SCREEN);
         }}
         style={styles.button}
       >

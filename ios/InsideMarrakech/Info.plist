@@ -23,7 +23,28 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
+	  <!-- Location Permissions -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>We need access to your location to provide better services.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>We need access to your location to provide better services.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>We need access to your location to provide better services even in the background.</string>
+
+    <!-- Phone Call Permission -->
+    <key>NSAppleMusicUsageDescription</key>
+    <string>We need access to your camera to take photos.</string>
+    <key>NSStringUsageDescription</key>
+    <string>We need access to your location to provide better services even in the background.</string>
+    
 	<true/>
+	<key>NSCameraUsageDescription</key>
+<string>We need access to your camera to take photos.</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>We need access to your photo library to select photos.</string>
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>We need access to save photos to your library.</string>
+
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
