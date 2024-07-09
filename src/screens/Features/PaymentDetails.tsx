@@ -56,7 +56,8 @@ export default function PaymentDetails() {
     travelers,
     language,
     address,
-    selectedDate,
+    selectedStartDate,
+    selectedEndDate, totalDays,
     selectedGuestCount,
     Property,
   } = route.params;
@@ -83,7 +84,7 @@ export default function PaymentDetails() {
         lon: '',
         amount:price,
         GuestList: travelers,
-        created_date: selectedDate,
+        created_date: selectedStartDate,
         email: email,
       },
       
@@ -119,7 +120,7 @@ export default function PaymentDetails() {
           <View style={styles.bookingDetails}>
             <View style={styles.bookingHeader}>
               <Text style={styles.bookingTitle}>{Property.name}</Text>
-              <Text style={styles.bookingPrice}>$ {Property.amount}</Text>
+              <Text style={styles.bookingPrice}>{Property.amount}</Text>
             </View>
             <Text style={styles.bookingAddress}>{Property.address}</Text>
             <View style={styles.ratingContainer}>
@@ -134,9 +135,13 @@ export default function PaymentDetails() {
           
         </View>
         <View style={styles.totalContainer}>
+          <Text style={styles.totalText}>{localizationStrings.B_date}</Text>
+          <Text style={styles.totalText}>{selectedStartDate} {selectedEndDate?' To '+selectedEndDate:''}</Text>
+        </View>
+        <View style={styles.totalContainer}>
           <Text style={styles.totalText}>{localizationStrings.total}</Text>
           <Text style={styles.totalAmount}>
-            $ {Property.amount * selectedGuestCount}
+            {Property.amount * selectedGuestCount*totalDays}
           </Text>
         </View>
 
@@ -571,7 +576,7 @@ const styles = StyleSheet.create({
   },
   addCardContainer: {
     flexDirection: 'row',
-    marginTop: 20,
+
     alignItems: 'center',
   },
   addCardIconContainer: {

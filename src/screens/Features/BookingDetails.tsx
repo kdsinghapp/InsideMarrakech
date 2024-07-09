@@ -16,8 +16,13 @@ import localizationStrings from '../../utils/Localization';
 export default function BookingDetails() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { selectedDate,Property,
+  const { Property, selectedStartDate,
+    selectedEndDate, totalDays,
     selectedGuestCount } = route.params;
+
+
+
+
 
   // State variables for text input fields
   const [firstName, setFirstName] = useState('');
@@ -26,25 +31,26 @@ export default function BookingDetails() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const propertDetails = useSelector(state => state.feature.propertyDetail);
 
-  const CheckInputData =()=>{
+  const CheckInputData = () => {
 
     if (
       firstName === '' &&
       lastName === '' &&
       phoneNumber === '' &&
-      email === '' 
+      email === ''
     ) return errorToast('Please enter all fields error');
     navigation.navigate(ScreenNameEnum.TRAVELER_DETAILS, {
       firstName,
       lastName,
       email,
       phoneNumber,
-      selectedDate,
+      selectedStartDate,
+      selectedEndDate, totalDays,
       selectedGuestCount,
       Property
     });
   }
-  
+
 
 
   return (
@@ -55,7 +61,7 @@ export default function BookingDetails() {
         <View style={[styles.shadow, localStyles.bookingDetailsContainer]}>
           <View style={localStyles.imageContainer}>
             <Image
-              source={{uri:Property.main_image}}
+              source={{ uri: Property.main_image }}
               style={localStyles.image}
               resizeMode="cover"
             />
@@ -67,7 +73,7 @@ export default function BookingDetails() {
             </View>
             <Text style={localStyles.bookingAddress}>{Property.address}</Text>
             <View style={localStyles.ratingContainer}>
-            <Rating rating={propertDetails?.rating} /> 
+              <Rating rating={propertDetails?.rating} />
               <Text style={localStyles.ratingText}>{propertDetails?.rating}</Text>
             </View>
           </View>
@@ -79,13 +85,14 @@ export default function BookingDetails() {
         </View>
         <View style={localStyles.totalContainer}>
           <Text style={localStyles.totalText}>{localizationStrings.total}</Text>
-          <Text style={localStyles.totalAmount}>{Property.amount*selectedGuestCount}</Text>
+          {totalDays != 0 && <Text style={localStyles.totalAmount}>{Property.amount * selectedGuestCount * totalDays}</Text>}
+          {totalDays === 0 && <Text style={localStyles.totalAmount}>{Property.amount * selectedGuestCount}</Text>}
         </View>
 
         <View style={localStyles.contactHeader}>
           <Text style={localStyles.contactTitle}>{localizationStrings.Contact_d}</Text>
           <Text style={localStyles.contactSubtitle}>
-          {localizationStrings.C_txt}
+            {localizationStrings.C_txt}
           </Text>
         </View>
 
@@ -122,23 +129,24 @@ export default function BookingDetails() {
         <View style={localStyles.textInputContainer}>
           <TextInputField
             placeholder={localizationStrings.Mobile_number}
+            keyboardType={'number-pad'}
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
             value={phoneNumber}
             onChangeText={setPhoneNumber}
-            
+
           />
         </View>
         <TouchableOpacity
-        onPress={() => {
-         CheckInputData()
-        }}
-        style={[styles.tabBtn, localStyles.nextButton]}>
-        <Text style={localStyles.nextButtonText}>{localizationStrings.next}</Text>
-      </TouchableOpacity>
+          onPress={() => {
+            CheckInputData()
+          }}
+          style={[styles.tabBtn, localStyles.nextButton]}>
+          <Text style={localStyles.nextButtonText}>{localizationStrings.next}</Text>
+        </TouchableOpacity>
       </ScrollView>
-      
+
     </View>
   );
 }
@@ -163,7 +171,7 @@ const localStyles = StyleSheet.create({
   image: {
     height: 80,
     width: 80,
-    borderRadius:10
+    borderRadius: 10
   },
   detailsContainer: {
     marginLeft: 10,
@@ -247,7 +255,7 @@ const localStyles = StyleSheet.create({
   },
   nextButton: {
     backgroundColor: '#000',
-   
+
   },
   nextButtonText: {
     fontSize: 17,

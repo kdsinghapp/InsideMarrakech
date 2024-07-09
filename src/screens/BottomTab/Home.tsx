@@ -35,12 +35,14 @@ import {
 import Loading from '../../configs/Loader';
 import axios, { all } from 'axios';
 import localizationStrings from '../../utils/Localization';
+import ModalForm from '../Modal/ModalForm';
 
 export default function Home() {
 
   const user = useSelector(state => state.auth.userData);
   const isFocused = useIsFocused();
   const [loadingState, setLoadingState] = useState({});
+  const [modalVisible, setModalVisible] = useState(false);
 
   const category = useSelector(state => state.feature.CategoryList);
   const all_property = useSelector(state => state.feature.allProperty);
@@ -51,6 +53,18 @@ export default function Home() {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const handleOpenModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
+  const handleSubmit = (formData) => {
+    console.log('Form Data:', formData);
+    // Handle form submission
+  };
 
 
 
@@ -233,7 +247,12 @@ export default function Home() {
                   renderItem={({ item, index }) => (
                     <TouchableOpacity
                       onPress={() => {
+                        if(item.name === 'Prestation sur mesure'){
+setModalVisible(true)
+                        }
+                        else{
                         navigation.navigate(ScreenNameEnum.seeSubcategory,{id:item.id})
+                        }
                       }}
                       style={styles.categoryItem}
                     >
@@ -404,6 +423,12 @@ export default function Home() {
           </View>
         )}
       </ScrollView>
+
+      <ModalForm
+        visible={modalVisible}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmit}
+      />
     </View>
   );
 }

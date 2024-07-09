@@ -24,9 +24,11 @@ import localizationStrings from '../../utils/Localization';
 const DateModal = ({ visible, onClose, data }) => {
   const screenHeight = Dimensions.get('screen').height;
   const translateY = useRef(new Animated.Value(screenHeight)).current;
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [selectedGuestCount, setSelectedGuestCount] = useState(null);
   const navigation = useNavigation();
+
   const generateGuests = (min, max) => {
     const guests = [];
     for (let i = min; i <= max; i++) {
@@ -37,18 +39,30 @@ const DateModal = ({ visible, onClose, data }) => {
 
   const Guests = generateGuests(data?.no_of_guest_min || 1, data?.no_of_guest_max || 7);
 
+  const calculateTotalDays = (startDate, endDate) => {
+    if (!startDate || !endDate) return 0;
+    const start = moment(startDate);
+    const end = moment(endDate);
+    return end.diff(start, 'days') + 1;
+  };
+  
   const handleNext = () => {
-    if (!selectedDate || selectedGuestCount === null) {
+    if (!selectedStartDate || (data.cat_id === '23' && !selectedEndDate) || selectedGuestCount === null) {
       errorToast('All fields are required.');
       return;
     }
 
-    const selectedDateString = moment(selectedDate).format('YYYY-MM-DD');
+    const totalDays = calculateTotalDays(selectedStartDate, selectedEndDate);
+
+    const selectedStartDateString = moment(selectedStartDate).format('YYYY-MM-DD');
+    const selectedEndDateString = selectedEndDate ? moment(selectedEndDate).format('YYYY-MM-DD') : null;
     const selectedGuestCountString = Guests[selectedGuestCount].count;
 
     navigation.navigate(ScreenNameEnum.BOOKING_DETAILS, {
-      selectedDate: selectedDateString,
+      selectedStartDate: selectedStartDateString,
+      selectedEndDate: selectedEndDateString,
       selectedGuestCount: selectedGuestCountString,
+      totalDays: totalDays,
       Property: data,
     });
     onClose(); // Close the modal after navigating
@@ -78,6 +92,15 @@ const DateModal = ({ visible, onClose, data }) => {
     }).start();
   };
 
+  const handleDateChange = (date, type) => {
+    if (type === 'END_DATE') {
+      setSelectedEndDate(date);
+    } else {
+      setSelectedStartDate(date);
+      setSelectedEndDate(null);
+    }
+  };
+
   return (
     <Modal visible={visible} transparent>
       <View style={styles.container}>
@@ -99,11 +122,13 @@ const DateModal = ({ visible, onClose, data }) => {
           <View style={{ marginTop: 20, marginHorizontal: 15 }}>
             <Text style={styles.title}>{localizationStrings.s_date}</Text>
             <CalendarPicker
-              onDateChange={setSelectedDate}
+              startFromMonday={true}
+              allowRangeSelection={data.cat_id === '23' || data.cat_id === '24'}
+              minDate={new Date()}
+              todayBackgroundColor="#f2e6ff"
               selectedDayColor="#7300e6"
               selectedDayTextColor="#FFFFFF"
-              todayBackgroundColor="#f2e6ff"
-              minDate={new Date()}
+              onDateChange={handleDateChange}
             />
             <Text style={styles.title}>{localizationStrings.guest}</Text>
             <View style={styles.optionContainer}>

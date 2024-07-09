@@ -1,5 +1,6 @@
 {
   "English": {
+    "Customized_service": "Customized service",
     "minimum_no_of_guest": "Minimum no of guest",
     "maximum_no_of_guest": "Maximum no of guest",
     "rate_ex": "Rate your experience",
@@ -149,6 +150,7 @@
     "Y_B_C": "Your booking is confirmed!"
   },
   "French": {
+    "Customized_service": "Service personnalisé",
     "minimum_no_of_guest": "Nombre minimum de clients",
     "maximum_no_of_guest": "Nombre maximum de clients",
     "rate_ex": "Évaluez votre expérience",
@@ -298,6 +300,7 @@
     "Close_Time": "Heure de fermeture",
   },
   "Chinese": {
+    "Customized_service": "定制服务",
     "minimum_no_of_guest": "最少客人数量",
     "maximum_no_of_guest": "最多客人数量",
     "rate_ex": "评价您的体验",
@@ -447,6 +450,7 @@
     "Close_Time": "关闭时间"
   },
   "Russian": {
+    "Customized_service": "Индивидуальное обслуживание",
     "minimum_no_of_guest": "Минимальное количество гостей",
     "maximum_no_of_guest": "Максимальное количество гостей",
     "rate_ex": "Оцените ваш опыт",
@@ -596,6 +600,7 @@
     "Close_Time": "Время закрытия"
   },
   "Italian": {
+    "Customized_service": "Servizio personalizzato",
     "minimum_no_of_guest": "Numero minimo di ospiti",
     "maximum_no_of_guest": "Numero massimo di ospiti",
     "rate_ex": "Valuta la tua esperienza",
@@ -745,6 +750,7 @@
     "Close_Time": "Orario di chiusura"
   },
   "Spanish": {
+    "Customized_service": "Servicio personalizado",
     "minimum_no_of_guest": "Número mínimo de invitados",
     "maximum_no_of_guest": "Número máximo de invitados",
     "rate_ex": "Evalúa tu experiencia",
@@ -894,6 +900,7 @@
     "Close_Time": "Hora de cierre"
   },
   "Japanese": {
+    "Customized_service": "カスタマイズサービス",
     "minimum_no_of_guest": "最小ゲスト数",
     "maximum_no_of_guest": "最大ゲスト数",
     "rate_ex": "あなたの体験を評価してください",

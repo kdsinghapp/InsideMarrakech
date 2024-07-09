@@ -28,7 +28,8 @@ export default function AddTravelerDetails() {
     lastName,
     email,
     phoneNumber,
-    selectedDate,
+    selectedStartDate,
+      selectedEndDate, totalDays,
     selectedGuestCount,
     Property
   } = route.params;
@@ -64,7 +65,8 @@ export default function AddTravelerDetails() {
       travelers,
       language,
       address,
-      selectedDate,
+      selectedStartDate,
+      selectedEndDate, totalDays,
       selectedGuestCount,
       Property
     };
@@ -101,11 +103,12 @@ export default function AddTravelerDetails() {
 
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>{localizationStrings.total}</Text>
-          <Text style={styles.totalText}>$ {Property.amount*selectedGuestCount}</Text>
+          <Text style={styles.totalText}>{Property.amount*selectedGuestCount*totalDays}</Text>
+       
         </View>
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>{localizationStrings.B_date}</Text>
-          <Text style={styles.totalText}>{selectedDate}</Text>
+          <Text style={styles.totalText}>{selectedStartDate} {selectedEndDate?' To '+selectedEndDate:''}</Text>
         </View>
         {/* <TouchableOpacity
           onPress={() => {
@@ -340,7 +343,7 @@ const styles = StyleSheet.create({
   },
   totalText: {
     fontFamily: 'Federo-Regular',
-    fontSize: 16,
+    fontSize: 14,
     color: '#000',
     fontWeight: '500',
   },

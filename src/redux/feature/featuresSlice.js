@@ -1064,6 +1064,7 @@ const FeatureSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
+      state.getsubcategoryProperty =[]
     });
     builder.addCase(add_chat_user.pending, state => {
       state.isLoading = true;
