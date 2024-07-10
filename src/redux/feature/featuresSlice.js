@@ -537,6 +537,46 @@ export const add_rates = createAsyncThunk(
     }
   },
 );
+export const add_customise_service = createAsyncThunk(
+  'add_customise_service',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+      console.log(
+        '==============add_customise_service==response====================',
+        params
+      );
+      let data = new FormData();
+      data.append('user_id',params.user_id);
+      data.append('first_name', params.first_name);
+      data.append('last_name', params.last_name);
+      data.append('company_name', params.company_name);
+      data.append('phone_number', params.phone_number);
+      data.append('kind_of_service',params.kind_of_service);
+      data.append('message', params.message);
+      const response = await API.post('/add_customise_service', data, config);
+      console.log(
+        '==============add_customise_service==response====================',
+        response.data,
+      );
+      if (response.data.status === '1') {
+
+        successToast(response.data.message)
+      } else {
+        errorToast(response.data.message);
+      }
+      return response.data;
+    } catch (error) {
+      errorToast('Network error');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
 
 
 export const get_user_wishlist = createAsyncThunk(
@@ -1047,6 +1087,19 @@ const FeatureSlice = createSlice({
       state.isError = false;
     });
     builder.addCase(update_notification.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(add_customise_service.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(add_customise_service.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+    });
+    builder.addCase(add_customise_service.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;

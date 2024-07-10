@@ -26,6 +26,7 @@ import DateModal from '../Modal/DateModal';
 import SearchIcon from '../../assets/svg/search.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  add_customise_service,
   get_all_property,
   get_banner,
   get_category,
@@ -92,6 +93,9 @@ export default function Home() {
     setSelectedCategory(categoryId);
     setSearchQuery('');
   };
+  console.log(user?.id);
+  
+
 
   const filteredPropertiesByCategory = selectedCategory
     ? all_property?.filter(item => item.cat_id === selectedCategory)

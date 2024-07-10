@@ -47,10 +47,10 @@ const DateModal = ({ visible, onClose, data }) => {
   };
   
   const handleNext = () => {
-    if (!selectedStartDate || (data.cat_id === '23' && !selectedEndDate) || selectedGuestCount === null) {
-      errorToast('All fields are required.');
-      return;
-    }
+    // if (!selectedStartDate || (data.cat_id === '23' && !selectedEndDate) || selectedGuestCount === null) {
+    //   errorToast('All fields are required.');
+    //   return;
+    // }
 
     const totalDays = calculateTotalDays(selectedStartDate, selectedEndDate);
 

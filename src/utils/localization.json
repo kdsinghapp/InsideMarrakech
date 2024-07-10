@@ -1,5 +1,8 @@
 {
   "English": {
+    "Kind_of_Service": "Kind of Service",
+    "book_nany": "Book Nany",
+    "book_driver": "Book Driver",
     "Customized_service": "Customized service",
     "minimum_no_of_guest": "Minimum no of guest",
     "maximum_no_of_guest": "Maximum no of guest",
@@ -150,6 +153,9 @@
     "Y_B_C": "Your booking is confirmed!"
   },
   "French": {
+    "Kind_of_Service": "Type de service",
+    "book_nany": "Réserver une nounou",
+    "book_driver": "Réserver un chauffeur",
     "Customized_service": "Service personnalisé",
     "minimum_no_of_guest": "Nombre minimum de clients",
     "maximum_no_of_guest": "Nombre maximum de clients",
@@ -300,6 +306,9 @@
     "Close_Time": "Heure de fermeture",
   },
   "Chinese": {
+    "Kind_of_Service": "服务种类",
+    "book_nany": "预订保姆",
+    "book_driver": "预订司机",
     "Customized_service": "定制服务",
     "minimum_no_of_guest": "最少客人数量",
     "maximum_no_of_guest": "最多客人数量",
@@ -450,6 +459,9 @@
     "Close_Time": "关闭时间"
   },
   "Russian": {
+    "Kind_of_Service": "Вид услуги",
+    "book_nany": "Забронировать няню",
+    "book_driver": "Забронировать водителя",
     "Customized_service": "Индивидуальное обслуживание",
     "minimum_no_of_guest": "Минимальное количество гостей",
     "maximum_no_of_guest": "Максимальное количество гостей",
@@ -600,6 +612,9 @@
     "Close_Time": "Время закрытия"
   },
   "Italian": {
+    "Kind_of_Service": "Tipo di servizio",
+    "book_nany": "Prenota Tata",
+    "book_driver": "Prenota Autista",
     "Customized_service": "Servizio personalizzato",
     "minimum_no_of_guest": "Numero minimo di ospiti",
     "maximum_no_of_guest": "Numero massimo di ospiti",
@@ -750,6 +765,9 @@
     "Close_Time": "Orario di chiusura"
   },
   "Spanish": {
+    "Kind_of_Service": "Tipo de servicio",
+    "book_nany": "Reservar Niñera",
+    "book_driver": "Reservar Conductor",
     "Customized_service": "Servicio personalizado",
     "minimum_no_of_guest": "Número mínimo de invitados",
     "maximum_no_of_guest": "Número máximo de invitados",
@@ -900,6 +918,9 @@
     "Close_Time": "Hora de cierre"
   },
   "Japanese": {
+    "Kind_of_Service": "サービスの種類",
+    "book_nany": "ベビーシッター予約",
+    "book_driver": "ドライバー予約",
     "Customized_service": "カスタマイズサービス",
     "minimum_no_of_guest": "最小ゲスト数",
     "maximum_no_of_guest": "最大ゲスト数",

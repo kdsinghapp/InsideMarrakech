@@ -84,7 +84,7 @@ export default function PaymentDetails() {
         lon: '',
         amount:price,
         GuestList: travelers,
-        created_date: selectedStartDate,
+        created_date:selectedEndDate?selectedStartDate+' To '+selectedEndDate:selectedStartDate,
         email: email,
       },
       
@@ -140,9 +140,12 @@ export default function PaymentDetails() {
         </View>
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>{localizationStrings.total}</Text>
-          <Text style={styles.totalAmount}>
+          {totalDays != 0 &&  <Text style={styles.totalAmount}>
             {Property.amount * selectedGuestCount*totalDays}
-          </Text>
+          </Text> }
+          {totalDays == 0 &&  <Text style={styles.totalAmount}>
+            {Property.amount * selectedGuestCount}
+          </Text> }
         </View>
 
         <View style={styles.paymentTitleContainer}>

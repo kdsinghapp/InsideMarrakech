@@ -12,7 +12,7 @@ import { errorToast } from '../../configs/customToast';
 import { useSelector } from 'react-redux';
 import Rating from '../../configs/Ratting';
 import localizationStrings from '../../utils/Localization';
-
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 export default function BookingDetails() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -23,7 +23,10 @@ export default function BookingDetails() {
 
 
 
+    const make_call = (Number) => {
 
+      RNImmediatePhoneCall.immediatePhoneCall(Number);
+    }
   // State variables for text input fields
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -138,8 +141,25 @@ export default function BookingDetails() {
 
           />
         </View>
+        <View style={{flexDirection:'row',justifyContent:'space-between'}}>
         <TouchableOpacity
           onPress={() => {
+            make_call('+33628831991')
+          }}
+          style={[styles.tabBtn, localStyles.nextButton,{width:'45%'}]}>
+          <Text style={localStyles.nextButtonText}>{localizationStrings.book_nany}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            make_call('+33628831991')
+          }}
+          style={[styles.tabBtn, localStyles.nextButton,{width:'45%'}]}>
+          <Text style={localStyles.nextButtonText}>{localizationStrings.book_driver}</Text>
+        </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+         
             CheckInputData()
           }}
           style={[styles.tabBtn, localStyles.nextButton]}>

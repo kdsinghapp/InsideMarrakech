@@ -1,23 +1,33 @@
-// ModalForm.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import localizationStrings from '../../utils/Localization';
-import { errorToast } from '../../configs/customToast';
+import { useDispatch, useSelector } from 'react-redux';
+import { add_customise_service } from '../../redux/feature/featuresSlice';
 
 const ModalForm = ({ visible, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    service: '',
+    first_name: '',
+    last_name: '',
+    company_name: '',
+    phone_number: '',
+    kind_of_service: '',
+    message: '',
   });
+  const user = useSelector(state => state.auth.userData);
+  const dispatch = useDispatch();
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = () => {
-    errorToast('This feature coming soon')
+    const params = {
+      user_id: user?.id,
+      ...formData
+    };
+
+    dispatch(add_customise_service(params));
     onSubmit(formData);
     onClose();
   };
@@ -27,57 +37,57 @@ const ModalForm = ({ visible, onClose, onSubmit }) => {
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.title}>{localizationStrings.Customized_service}</Text>
-          
+
           <TextInput
             style={styles.input}
-            placeholder="First Name"
-            value={formData.name}
+            placeholder={localizationStrings.First_name}
+            value={formData.first_name}
             placeholderTextColor={'#777777'}
-            onChangeText={(text) => handleChange('name', text)}
+            onChangeText={(text) => handleChange('first_name', text)}
           />
           <TextInput
             style={styles.input}
-            placeholder="Last Name"
-            value={formData.name}
+            placeholder={localizationStrings.Last_Name}
+            value={formData.last_name}
             placeholderTextColor={'#777777'}
-            onChangeText={(text) => handleChange('name', text)}
+            onChangeText={(text) => handleChange('last_name', text)}
           />
           <TextInput
             style={styles.input}
-            placeholder="Company Name"
-            value={formData.email}
+            placeholder={localizationStrings.c_name}
+            value={formData.company_name}
             placeholderTextColor={'#777777'}
-            onChangeText={(text) => handleChange('email', text)}
+            onChangeText={(text) => handleChange('company_name', text)}
           />
           <TextInput
             style={styles.input}
-            placeholder="Phone Number"
-            value={formData.service}
+            placeholder={localizationStrings.Mobile_number}
+            value={formData.phone_number}
+            keyboardType='number-pad'
             placeholderTextColor={'#777777'}
-            onChangeText={(text) => handleChange('service', text)}
+            onChangeText={(text) => handleChange('phone_number', text)}
           />
           <TextInput
             style={styles.input}
+            placeholder={localizationStrings.Kind_of_Service}
+            value={formData.kind_of_service}
             placeholderTextColor={'#777777'}
-            placeholder="Kind of Service"
-            value={formData.service}
-            onChangeText={(text) => handleChange('service', text)}
+            onChangeText={(text) => handleChange('kind_of_service', text)}
           />
           <TextInput
             style={styles.input}
+            placeholder={localizationStrings.messages}
+            value={formData.message}
             placeholderTextColor={'#777777'}
-            
-            placeholder="Message"
-            value={formData.service}
-            onChangeText={(text) => handleChange('service', text)}
+            onChangeText={(text) => handleChange('message', text)}
           />
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={onClose} style={[styles.button, styles.cancelButton]}>
-              <Text style={styles.buttonText}>Cancel</Text>
+              <Text style={styles.buttonText}>{localizationStrings.Cancel}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleSubmit} style={[styles.button, styles.submitButton]}>
-              <Text style={styles.buttonText}>Submit</Text>
+              <Text style={styles.buttonText}>{localizationStrings.Submit}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -103,7 +113,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     marginBottom: hp(2),
-    color:'#000',
+    color: '#000',
     fontFamily: 'Federo-Regular',
   },
   input: {

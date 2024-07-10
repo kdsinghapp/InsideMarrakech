@@ -89,7 +89,7 @@ export default function AddTravelerDetails() {
           <View style={styles.bookingInfo}>
             <View style={styles.bookingTitleContainer}>
               <Text style={styles.bookingTitle}>{Property.name}</Text>
-              <Text style={styles.bookingTitle}>$ {Property.amount}</Text>
+              <Text style={styles.bookingTitle}>{Property.amount}</Text>
             </View>
             <Text style={styles.bookingAddress}>
             {Property.address}
@@ -103,7 +103,8 @@ export default function AddTravelerDetails() {
 
         <View style={styles.totalContainer}>
           <Text style={styles.totalText}>{localizationStrings.total}</Text>
-          <Text style={styles.totalText}>{Property.amount*selectedGuestCount*totalDays}</Text>
+         {totalDays != 0 && <Text style={styles.totalText}>{Property.amount*selectedGuestCount*totalDays}</Text>}
+         {totalDays == 0 && <Text style={styles.totalText}>{Property.amount*selectedGuestCount}</Text>}
        
         </View>
         <View style={styles.totalContainer}>
