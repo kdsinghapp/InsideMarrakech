@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet, Platform, Pressable } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import React from 'react';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import RightArrow from '../assets/svg/RightArrow.svg';
@@ -7,18 +7,23 @@ import localizationStrings from '../utils/Localization';
 
 export default function ProfileHeader({ title = '' }) {
   const navigation = useNavigation();
+
   return (
     <View style={styles.headerContainer}>
-      <Pressable
-        onPress={() => {
-        navigation.goBack();
-        }}
-        style={styles.backButton}>
-        <RightArrow height={15} width={15} />
-        <Text style={styles.backText}>
-          {localizationStrings.Back}
-        </Text>
-      </Pressable>
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+          style={styles.backButton}
+        >
+          <RightArrow height={15} width={15} />
+          <Text style={styles.backText}>
+            {localizationStrings.Back}
+          </Text>
+        </TouchableOpacity>
+
+      </View>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>
           {title}
@@ -30,18 +35,19 @@ export default function ProfileHeader({ title = '' }) {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    marginTop:Platform.OS == 'ios'?20:0,
-    height: hp(8),
-    flexDirection: 'row',
     alignItems: 'center',
+    height: hp(5),
+marginTop:Platform.OS === 'android'?5:35,
+    flexDirection: 'row',
+
     justifyContent: 'space-between',
-    paddingHorizontal: 16, // Adjust as needed
+    paddingHorizontal:5, // Adjust as needed
   },
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
 
-    height:45
+
   },
   backText: {
     fontFamily: 'Federo-Regular',
@@ -51,11 +57,10 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   titleContainer: {
-    flex: 1,
-    alignItems: 'center',
-    position: 'absolute',
-    left: 0,
-    right: 0,
+
+
+    width: '60%',
+
     justifyContent: 'center',
   },
   titleText: {

@@ -216,16 +216,17 @@ const styles = StyleSheet.create({
     width: 20,
   },
   searchButton: {
+  
     backgroundColor: '#FFF',
     borderWidth: 1,
     height: 55,
-    width: '100%',
+    width: '90%',
     marginTop: 20,
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 10,
+    bottom:20,
     alignSelf: 'center',
   },
   searchButtonText: {

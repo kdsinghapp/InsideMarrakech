@@ -1,5 +1,6 @@
 {
   "English": {
+    "SuccessFully": "Successfully",
     "Kind_of_Service": "Kind of Service",
     "book_nany": "Book Nany",
     "book_driver": "Book Driver",
@@ -153,6 +154,7 @@
     "Y_B_C": "Your booking is confirmed!"
   },
   "French": {
+    "SuccessFully": "Avec succès",
     "Kind_of_Service": "Type de service",
     "book_nany": "Réserver une nounou",
     "book_driver": "Réserver un chauffeur",
@@ -306,6 +308,7 @@
     "Close_Time": "Heure de fermeture",
   },
   "Chinese": {
+    "SuccessFully":"成功地",
     "Kind_of_Service": "服务种类",
     "book_nany": "预订保姆",
     "book_driver": "预订司机",
@@ -459,6 +462,7 @@
     "Close_Time": "关闭时间"
   },
   "Russian": {
+    "SuccessFully": "Успешно",
     "Kind_of_Service": "Вид услуги",
     "book_nany": "Забронировать няню",
     "book_driver": "Забронировать водителя",
@@ -612,6 +616,7 @@
     "Close_Time": "Время закрытия"
   },
   "Italian": {
+    "SuccessFully": "Con successo",
     "Kind_of_Service": "Tipo di servizio",
     "book_nany": "Prenota Tata",
     "book_driver": "Prenota Autista",
@@ -765,6 +770,7 @@
     "Close_Time": "Orario di chiusura"
   },
   "Spanish": {
+    "SuccessFully": "Exitosamente",
     "Kind_of_Service": "Tipo de servicio",
     "book_nany": "Reservar Niñera",
     "book_driver": "Reservar Conductor",
@@ -918,6 +924,7 @@
     "Close_Time": "Hora de cierre"
   },
   "Japanese": {
+    "SuccessFully": "成功に",
     "Kind_of_Service": "サービスの種類",
     "book_nany": "ベビーシッター予約",
     "book_driver": "ドライバー予約",

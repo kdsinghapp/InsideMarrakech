@@ -49,6 +49,7 @@ export default function PlaceDetails() {
   const propertDetails = useSelector(state => state.feature.propertyDetail);
   const isFocuse = useIsFocused();
 
+console.log('item.id,',item.id);
 
   function isHTML(str) {
     const htmlPattern = /<\/?[a-z][\s\S]*>/i;
@@ -140,6 +141,7 @@ export default function PlaceDetails() {
       {isLoading ? <Loading /> : null}
       {propertDetails.document_gallery ?
         <ScrollView showsVerticalScrollIndicator={false}>
+          
           {propertDetails && (
             <ImageBackground
               source={{
@@ -147,17 +149,18 @@ export default function PlaceDetails() {
                   propertDetails?.main_image
               }}
               style={localStyles.imageBackground}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.goBack();
-                }}
-                style={localStyles.goBackButton}>
-                <GoldRight />
-              </TouchableOpacity>
+             
             </ImageBackground>
           )}
 
-
+<TouchableOpacity
+        onPress={() => {
+          navigation.goBack();
+        }}
+        style={{position:'absolute',top:30,left:15}}
+      >
+        <GoldRight width={30} height={30} />
+      </TouchableOpacity>
           <View style={localStyles.contentContainer}>
             <View style={localStyles.titleContainer}>
               <Text style={localStyles.titleText}>{propertDetails?.name}</Text>
@@ -374,8 +377,10 @@ const localStyles = StyleSheet.create({
     height: hp(25),
   },
   goBackButton: {
-    marginTop: 20,
-    marginLeft: 15,
+ 
+  position:'absolute',
+  top:15,
+  left:15
   },
   contentContainer: {
     flex: 1,

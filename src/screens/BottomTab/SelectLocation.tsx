@@ -144,12 +144,12 @@ const SelectLocation = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{marginTop:Platform.OS='ios'?-20:0}}>
+           
              <ProfileHeader title={localizationStrings.location} />
-             </View>
+       
             <View style={{ width: '100%', marginTop: 10,
-            paddingVertical:15
-             ,backgroundColor: '#f0f0f0',}}>
+       
+           }}>
                 <GooglePlacesInput placeholder={'Search'} onPlaceSelected={handleSelectLocation} />
             </View>
             <View style={styles.savedContainer}>
@@ -205,6 +205,7 @@ const SelectLocation = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+     
         backgroundColor: '#fff',
     },
     savedContainer: {

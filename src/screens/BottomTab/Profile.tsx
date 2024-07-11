@@ -173,11 +173,7 @@ const About = [
     <View style={{flex: 1, backgroundColor: '#fff', paddingHorizontal: 20}}>
       {isLoading ? <Loading /> : null}
 
-      {Platform.OS === 'ios' ? (
-        <View style={{height: 68}} />
-      ) : (
-        <View style={{height: 5}} />
-      )}
+      <View style={{height:Platform.OS !== 'android'?30:5,}} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{height: hp(5), marginTop: 10}}>
           <Text

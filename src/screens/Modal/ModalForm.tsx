@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
     padding: wp(5),
     backgroundColor: 'white',
     borderRadius: 10,
+    height:hp(56)
   },
   title: {
     fontSize: 20,

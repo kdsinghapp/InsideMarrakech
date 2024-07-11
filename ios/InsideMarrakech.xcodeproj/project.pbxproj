@@ -587,7 +587,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = DJT73DQ2AT;
+				DEVELOPMENT_TEAM = Z3DT3CMZCM;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = InsideMarrakech/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -600,7 +600,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.insidemarrakech.identifier;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marrakech.identifier;
 				PRODUCT_NAME = InsideMarrakech;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -618,7 +618,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = DJT73DQ2AT;
+				DEVELOPMENT_TEAM = Z3DT3CMZCM;
 				INFOPLIST_FILE = InsideMarrakech/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -630,7 +630,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.insidemarrakech.identifier;
+				PRODUCT_BUNDLE_IDENTIFIER = com.marrakech.identifier;
 				PRODUCT_NAME = InsideMarrakech;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

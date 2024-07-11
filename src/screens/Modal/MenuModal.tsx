@@ -116,7 +116,7 @@ const MenuModal = ({visible, onClose, data}) => {
         <ActivityIndicator size="large" color="#0000ff" />
       ) : menu?.length === 0 ? ( <>
         <Text style={styles.emptyText}>{localizationStrings.no_menu}</Text>
-        <TouchableOpacity
+       {user?.type == 'Company' && <TouchableOpacity
             onPress={() => {
               onClose()
               navigation.navigate(ScreenNameEnum.AddMenu, {item:data.id});
@@ -135,7 +135,7 @@ const MenuModal = ({visible, onClose, data}) => {
             <Text style={[styles.updateButtonText, {color: '#fff'}]}>
               Add Menu
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity>}
         </>
       ) : (
         <FlatList

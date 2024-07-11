@@ -56,6 +56,7 @@ export default function BookingDetails() {
 
 
 
+
   return (
     <View style={localStyles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -112,6 +113,7 @@ export default function BookingDetails() {
         <View style={localStyles.textInputContainer}>
           <TextInputField
             placeholder={localizationStrings.Last_Name}
+            
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
@@ -174,7 +176,7 @@ export default function BookingDetails() {
 const localStyles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 15,
+    paddingHorizontal:10,
     backgroundColor: '#FFF',
   },
   bookingDetailsContainer: {

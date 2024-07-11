@@ -931,6 +931,8 @@ export const get_property_menu = createAsyncThunk(
   'get_property_menu',
   async (params, thunkApi) => {
     try {
+      let data = new FormData();
+data.append('id', params.property_id);
       const config = {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -943,14 +945,22 @@ export const get_property_menu = createAsyncThunk(
         params,
       );
 
-      const response = await API.post('/get_property_menu', params, config);
+      const response = await API.post('/get_property_menu', data, config);
+      console.log(
+        '==============get_property_menu call======================',response.data
+    
+      );
       if (response.data.status === '1') {
         return response.data.data;
       } else {
         return thunkApi.rejectWithValue(response.data.data);
       }
     } catch (error) {
-      return thunkApi.rejectWithValue(response.data.data);
+      if (error.response) {
+        return thunkApi.rejectWithValue(error.response.data.data);
+      } else {
+        return thunkApi.rejectWithValue(error.message);
+      }
     }
   },
 );

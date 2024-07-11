@@ -33,7 +33,7 @@ export default function TextInputField({ ...props }) {
         )}
         <View style={[styles.textInputWrapper, { width: props.showEye ? '70%' : props.County ? '75%' : '90%' }]}>
           <TextInput
-            placeholderTextColor="#000"
+            placeholderTextColor="#000000"
             style={styles.textInput}
             keyboardType={props.keyboardType}
             onChangeText={onChangeText}

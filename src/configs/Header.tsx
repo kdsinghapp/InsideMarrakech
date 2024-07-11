@@ -89,15 +89,17 @@ const Header = () => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop:Platform.OS == 'ios'?20:0,
-        height: hp(10),
+       
+
+paddingVertical:10,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+    alignItems:'center',
         paddingHorizontal: 15,
+    
     },
     locationButton: {
- 
+
         alignItems: 'center',
     },
     locationText: {

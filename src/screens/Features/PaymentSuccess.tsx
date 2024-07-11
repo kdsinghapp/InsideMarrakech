@@ -13,12 +13,12 @@ export default function PaymentSuccess() {
   return (
     <View style={localStyles.container}>
       <View style={localStyles.header}>
-        <Text style={localStyles.headerText}>SuccessFully</Text>
+        <Text style={localStyles.headerText}>{localizationStrings.SuccessFully}</Text>
       </View>
       
       <View style={localStyles.imageContainer}>
         <Image
-          source={require('../../assets/Cropping/I_1a3x.png')}
+          source={require('../../assets/Cropping/Logos3x.png')}
           style={localStyles.image}
           resizeMode="contain"
         />
@@ -26,8 +26,7 @@ export default function PaymentSuccess() {
       
       <View style={localStyles.confirmationContainer}>
         <Text style={localStyles.confirmationText}>{localizationStrings.Y_B_C} 🎉</Text>
-        <Text style={localStyles.descriptionText}>Lorem ipsum dolor sit amet consectetur. Semper odio nullam neque</Text>
-        <Text style={localStyles.descriptionText}>lacus sit egestas.</Text>
+       
       </View>
       
       <TouchableOpacity
@@ -63,8 +62,8 @@ const localStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    height: '90%',
-    width: '90%'
+    height: '50%',
+    width: '50%'
   },
   confirmationContainer: {
     alignItems: 'center',

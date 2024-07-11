@@ -212,10 +212,12 @@ export default function Home() {
   };
 
 
+
   return (
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{height:Platform.OS !== 'android'?30:5,}} />
         <Header />
         {user?.type === 'User' && (
           <>
@@ -532,6 +534,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF',
     paddingHorizontal: 10,
+   
   },
   shadow: {
     shadowColor: '#000',
