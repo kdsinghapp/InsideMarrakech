@@ -43,13 +43,17 @@ export default function SignUp() {
     return re.test(email);
   };
   const handleSignUp = () => {
+    console.log(validatePassword(password));
+    
     if (validateEmail(email)) {
       errorToast('Please enter a valid email address.');
       return;
     }
 
     // Password validation
-    if (validatePassword(password)) {
+    console.log(password);
+    
+    if (!validatePassword(password)) {
       errorToast(
         'Password must contain at least 8 characters including at least one uppercase letter, one lowercase letter, one number, and one special character.',
       );
@@ -198,7 +202,7 @@ export default function SignUp() {
                     placeholder="Company Name"
                     firstLogo={false}
                     img={require('../../assets/Cropping/User2x.png')}
-                    value={firstName}
+                    value={CompanyName}
                     onChangeText={setCompanyName}
                   />
                 </View>
@@ -209,7 +213,7 @@ export default function SignUp() {
                     placeholder="VAT Number"
                     firstLogo={false}
                     img={require('../../assets/Cropping/User2x.png')}
-                    value={lastName}
+                    value={VATnumber}
                     onChangeText={setVATnumber}
                   />
                 </View>
@@ -220,7 +224,7 @@ export default function SignUp() {
                     placeholder="Company Address"
                     firstLogo={false}
                     img={require('../../assets/Cropping/Email2x.png')}
-                    value={email}
+                    value={CompanyAddress}
                     onChangeText={setCompanyAddress}
                   />
                 </View>
@@ -242,7 +246,7 @@ export default function SignUp() {
                     placeholder="Company email"
                     firstLogo={false}
                     img={require('../../assets/Cropping/Phone2x.png')}
-                    value={mobile}
+                    value={CompanyEmail}
                     onChangeText={setCompanyEmail}
                   />
                 </View>
@@ -268,6 +272,7 @@ export default function SignUp() {
                     showEye={true}
                     value={confirmPassword}
                     onChangeText={setconfirmPassword}
+                    
                   />
                 </View>
               </View>

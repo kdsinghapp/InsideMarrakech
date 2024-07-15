@@ -15,6 +15,7 @@ import { get_terms_conditions } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
 import localizationStrings from '../../utils/Localization';
 
+import { WebView } from 'react-native-webview';
 
 export default function TermCondition() {
 
@@ -29,12 +30,30 @@ export default function TermCondition() {
     dispatch(get_terms_conditions());
   }, [isFocuse]);
 
+  const generateHtmlContent = content => `
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <link href="https://fonts.googleapis.com/css2?family=Federo&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Federo', sans-serif;
+        font-size:36px;
+        color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    ${content}
+  </body>
+  </html>
+`;
 
   return (
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
   <ProfileHeader title={localizationStrings.tern_con} width={13} />
-  <ScrollView showsVerticalScrollIndicator={false}>
+  
     <View style={styles.imageContainer}>
       <Image
         source={require('../../assets/Cropping/TermsConditions.png')}
@@ -42,14 +61,14 @@ export default function TermCondition() {
         resizeMode="contain"
       />
     </View>
-    {Term && (
-      <View style={styles.descriptionContainer}>
-        <Text style={styles.description}>
-          {Term[0]?.description.replace(/<\/?p>/g, '')}
-        </Text>
-      </View>
-    )}
-  </ScrollView>
+ 
+
+{Term && Term[0]?.description && (
+            <WebView
+              source={{ html: generateHtmlContent(Term[0]?.description) }}
+            />
+          )}
+
 </View>
 
   );

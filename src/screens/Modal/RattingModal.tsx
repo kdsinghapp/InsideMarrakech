@@ -22,9 +22,12 @@ const AddRatingModal = ({isVisible, onClose, onSubmit, data}) => {
   const handleRatingCompleted = newRating => {
     setRating(newRating);
   };
+console.log(data);
 
 
   const handleSubmit = async () => {
+    console.log('call',data.id);
+    try{
     const ratingData = {rating,};
 if(rating == '' && comment == '') return errorToast('Please add rating or review')
     const params = {
@@ -37,7 +40,12 @@ if(rating == '' && comment == '') return errorToast('Please add rating or review
 
     await dispatch(add_rates(params))
     onClose()
+    onSubmit()
+  }
+  catch(err){
+    console.log(err);
     
+  }
   };
 
   return (

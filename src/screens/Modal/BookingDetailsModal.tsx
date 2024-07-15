@@ -50,6 +50,7 @@ const [BookingData, setBookingData] = useState(null);
     }
   }, [BookingDetails]);
 
+
   const get_booking= () => {
     const params = {
       booking_id: data?.id,
@@ -91,7 +92,7 @@ const [BookingData, setBookingData] = useState(null);
     }).start();
   };
   const handleSubmitRating = ratingData => {
-    console.log('Rating submitted:', ratingData);
+  onClose()
   };
 
 
@@ -297,7 +298,7 @@ const [BookingData, setBookingData] = useState(null);
           isVisible={isModalVisible}
           onClose={handleCloseModal}
           onSubmit={handleSubmitRating}
-          data={BookingData}
+          data={{id:BookingDetails?.property_id}}
         />
       </View>
     </Modal>

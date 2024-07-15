@@ -13,11 +13,13 @@ import ProfileHeader from '../../configs/ProfileHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_privacy_policy } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
-import WebView from 'react-native-webview';
+import HTML from 'react-native-render-html';
+
 import localizationStrings from '../../utils/Localization';
+import { WebView } from 'react-native-webview';
 
 export default function PrivacyPolicy() {
-  const isFocuse = useIsFocused();
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
 
   const Policy = useSelector(state => state.feature.PrivacyPolicy);
@@ -25,14 +27,36 @@ export default function PrivacyPolicy() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(get_privacy_policy());
-  }, [isFocuse]);
+    if (isFocused) {
+      dispatch(get_privacy_policy());
+    }
+  }, [isFocused]);
+
+  // Generate the HTML content with the font included
+  const generateHtmlContent = content => `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <link href="https://fonts.googleapis.com/css2?family=Federo&display=swap" rel="stylesheet">
+      <style>
+        body {
+          font-family: 'Federo', sans-serif;
+          font-size:36px;
+          color: #000;
+        }
+      </style>
+    </head>
+    <body>
+      ${content}
+    </body>
+    </html>
+  `;
 
   return (
     <View style={styles.container}>
-      {isLoading ? <Loading /> : null}
+      {isLoading && <Loading />}
       <ProfileHeader title={localizationStrings.Privacy_policy} />
-      <ScrollView showsVerticalScrollIndicator={false}>
+     
         <View style={styles.imageContainer}>
           <Image
             source={require('../../assets/Cropping/PrivacyPolicy.png')}
@@ -40,13 +64,14 @@ export default function PrivacyPolicy() {
             resizeMode="contain"
           />
         </View>
+       
+          {Policy && Policy[0]?.description && (
+            <WebView
+              source={{ html: generateHtmlContent(Policy[0]?.description) }}
+            />
+          )}
+   
 
-        {Policy && (
-          <View style={styles.policyContainer}>
-            <Text style={styles.policyText}>{Policy[0]?.description.replace(/<\/?p>/g, '')}</Text>
-          </View>
-        )}
-      </ScrollView>
     </View>
   );
 }
@@ -79,7 +104,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#000',
   },
-
   btn: {
     borderWidth: 1,
     height: 60,

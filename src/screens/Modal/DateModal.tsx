@@ -51,7 +51,11 @@ const DateModal = ({ visible, onClose, data }) => {
     //   errorToast('All fields are required.');
     //   return;
     // }
-
+    if (!selectedStartDate || (data.cat_id === '23' && !selectedEndDate) || selectedGuestCount === null) {
+      errorToast('all_fields_required'); // Assuming 'all_fields_required' is defined in localizationStrings
+      return;
+    }
+  
     const totalDays = calculateTotalDays(selectedStartDate, selectedEndDate);
 
     const selectedStartDateString = moment(selectedStartDate).format('YYYY-MM-DD');

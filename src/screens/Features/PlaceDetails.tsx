@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   Alert,
+  Dimensions,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import GoldRight from '../../assets/svg/GoldRight.svg';
@@ -36,6 +37,7 @@ import {
 import Loading from '../../configs/Loader';
 import Rating from '../../configs/Ratting';
 import localizationStrings from '../../utils/Localization';
+import { WebView } from 'react-native-webview';
 
 export default function PlaceDetails() {
   const route = useRoute();
@@ -48,8 +50,9 @@ export default function PlaceDetails() {
   const isLoading = useSelector(state => state.feature.isLoading);
   const propertDetails = useSelector(state => state.feature.propertyDetail);
   const isFocuse = useIsFocused();
+  const [webViewHeight, setWebViewHeight] = useState(0);
 
-console.log('item.id,',item.id);
+
 
   function isHTML(str) {
     const htmlPattern = /<\/?[a-z][\s\S]*>/i;
@@ -76,7 +79,7 @@ console.log('item.id,',item.id);
       fontFamily: 'Federo-Regular',
     },
     strong: {
-       fontFamily: 'Federo-Regular',
+      fontFamily: 'Federo-Regular',
     },
   };
 
@@ -132,16 +135,44 @@ console.log('item.id,',item.id);
 
     RNImmediatePhoneCall.immediatePhoneCall(Number);
   }
-  const description = propertDetails?.description || '';
+  const onWebViewMessage = event => {
+    console.log('event.nativeEvent.data', event.nativeEvent.data);
 
+    setWebViewHeight(Number(event.nativeEvent.data));
+  };
   // Wrap the HTML content with meta viewport tag for proper scaling
+  const generateHtmlContent = content => `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <link href="https://fonts.googleapis.com/css2?family=Federo&display=swap" rel="stylesheet">
+      <style>
+        body {
+          font-family: 'Federo', sans-serif;
+          font-size:30px;
+          color: #000;
+          margin:10;
+          padding: 0;
+        }
+      </style>
+    </head>
+    <body>
+      ${content}
+  
+    </body>
+    </html>
+  `;
+
+
+  console.log(webViewHeight);
+
 
   return (
     <View style={localStyles.container}>
       {isLoading ? <Loading /> : null}
       {propertDetails.document_gallery ?
         <ScrollView showsVerticalScrollIndicator={false}>
-          
+
           {propertDetails && (
             <ImageBackground
               source={{
@@ -149,18 +180,18 @@ console.log('item.id,',item.id);
                   propertDetails?.main_image
               }}
               style={localStyles.imageBackground}>
-             
+
             </ImageBackground>
           )}
 
-<TouchableOpacity
-        onPress={() => {
-          navigation.goBack();
-        }}
-        style={{position:'absolute',top:30,left:15}}
-      >
-        <GoldRight width={30} height={30} />
-      </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={{ position: 'absolute', top: 30, left: 15 }}
+          >
+            <GoldRight width={30} height={30} />
+          </TouchableOpacity>
           <View style={localStyles.contentContainer}>
             <View style={localStyles.titleContainer}>
               <Text style={localStyles.titleText}>{propertDetails?.name}</Text>
@@ -218,17 +249,17 @@ console.log('item.id,',item.id);
 
             <View style={localStyles.galleryHeaderContainer}>
               <Text style={localStyles.galleryHeaderText}>{localizationStrings.G_photo}</Text>
-      
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate(ScreenNameEnum.Gallery_Screen, {
-                      item: propertDetails?.document_gallery
-                    })
-                  }}
-                >
-                  <Text style={localStyles.seeAllText}>{localizationStrings.see_a}</Text>
-                </TouchableOpacity>
-       
+
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate(ScreenNameEnum.Gallery_Screen, {
+                    item: propertDetails?.document_gallery
+                  })
+                }}
+              >
+                <Text style={localStyles.seeAllText}>{localizationStrings.see_a}</Text>
+              </TouchableOpacity>
+
             </View>
 
             <View style={localStyles.galleryContainer}>
@@ -282,7 +313,16 @@ console.log('item.id,',item.id);
               <View style={{}}>
 
                 {isHTML(propertDetails?.description) &&
-                  <HTML source={{ html: propertDetails?.description }}  tagsStyles={tagsStyles}/>
+
+                  <WebView
+                    source={{ html: generateHtmlContent(propertDetails?.description) }}
+                    style={{ height: webViewHeight > 900 ? webViewHeight / 2 : webViewHeight < 500 ? webViewHeight : webViewHeight - 200, width: Dimensions.get('window').width - 10 }}
+                    onMessage={onWebViewMessage}
+                    javaScriptEnabled
+                    injectedJavaScript="window.ReactNativeWebView.postMessage(document.body.scrollHeight)"
+
+                  />
+                  // <HTML source={{ html: generateHtmlContent(propertDetails?.description) }}/>
                 }
                 {!isHTML(propertDetails?.description) &&
                   <Text style={[localStyles.descriptionText, { marginTop: 10 }]}>
@@ -297,10 +337,10 @@ console.log('item.id,',item.id);
             <Text style={localStyles.sectionTitle}>{localizationStrings.O_hours}</Text>
 
             <Text style={localStyles.openingHoursText}>
-              {propertDetails?.lunch_start } to {propertDetails?.lunch_end}
+              {propertDetails?.lunch_start} to {propertDetails?.lunch_end}
             </Text>
           </View>
-         
+
 
           <View style={[localStyles.sectionContainer, { marginTop: 20 }]}>
             <Text style={localStyles.sectionTitle}>{localizationStrings.h_t_get}</Text>
@@ -310,11 +350,11 @@ console.log('item.id,',item.id);
             style={localStyles.mapImageBackground}
             source={require('../../assets/Cropping/map.png')}>
             <TouchableOpacity
-             onPress={() => {
-              navigation.navigate(ScreenNameEnum.MAP_SCREEN,{item:propertDetails}
-              );
-            }}
-            
+              onPress={() => {
+                navigation.navigate(ScreenNameEnum.MAP_SCREEN, { item: propertDetails }
+                );
+              }}
+
               style={localStyles.mapButton}>
               <Text style={localStyles.mapButtonText}>{localizationStrings.O_map}</Text>
             </TouchableOpacity>
@@ -377,10 +417,10 @@ const localStyles = StyleSheet.create({
     height: hp(25),
   },
   goBackButton: {
- 
-  position:'absolute',
-  top:15,
-  left:15
+
+    position: 'absolute',
+    top: 15,
+    left: 15
   },
   contentContainer: {
     flex: 1,
