@@ -1083,6 +1083,8 @@ export const get_company_booking_detail = createAsyncThunk(
     }
   },
 );
+
+
 const FeatureSlice = createSlice({
   name: 'featureSlice',
   initialState,
@@ -1101,6 +1103,7 @@ const FeatureSlice = createSlice({
       state.isError = true;
       state.isSuccess = false;
     });
+   
     builder.addCase(add_customise_service.pending, state => {
       state.isLoading = true;
     });

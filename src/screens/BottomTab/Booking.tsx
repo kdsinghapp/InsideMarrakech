@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import BlackPin from '../../assets/svg/BlackPin.svg';
 import {
@@ -33,6 +34,9 @@ export default function Booking() {
   const user = useSelector(state => state.auth.userData);
   const BookingList = useSelector(state => state.feature.BookingList);
   const isLoading = useSelector(state => state.feature.isLoading);
+  
+
+  console.log(user.id);
   
   const BList = [
     {
@@ -143,6 +147,7 @@ export default function Booking() {
 
   return (
     <View style={localStyles.container}>
+      <View  style={{marginTop:Platform.OS == 'ios'?15:0}}/>
       {isLoading && <Loading />}
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader title={localizationStrings.Booking} width={25} />

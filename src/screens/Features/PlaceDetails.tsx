@@ -188,7 +188,7 @@ export default function PlaceDetails() {
             onPress={() => {
               navigation.goBack();
             }}
-            style={{ position: 'absolute', top: 30, left: 15 }}
+            style={{ position: 'absolute', top:45, left: 15 }}
           >
             <GoldRight width={30} height={30} />
           </TouchableOpacity>

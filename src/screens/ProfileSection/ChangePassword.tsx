@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ImageSourcePropType,
+  Platform,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -65,7 +66,7 @@ const ChangePassword: React.FC = () => {
 
     {isLoding ?<Loading />:null}
       <ProfileHeader title={localizationStrings.Change_pass} width={13} />
-
+      <View style={{height:Platform.OS !== 'android'?20:5,}} />
       <View style={[styles.txtInput, { marginTop: 40 }]}>
         <TextInputField
           placeholder={localizationStrings.current_pass}

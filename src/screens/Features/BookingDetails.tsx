@@ -20,7 +20,7 @@ export default function BookingDetails() {
     selectedEndDate, totalDays,
     selectedGuestCount } = route.params;
 
-
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
     const make_call = (Number) => {
@@ -42,6 +42,8 @@ export default function BookingDetails() {
       phoneNumber === '' &&
       email === ''
     ) return errorToast('Please enter all fields error');
+    if (emailRegex.test(email)) return errorToast('Please enter valid email ');
+
     navigation.navigate(ScreenNameEnum.TRAVELER_DETAILS, {
       firstName,
       lastName,

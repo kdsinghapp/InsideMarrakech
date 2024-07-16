@@ -8,6 +8,7 @@ import {
   TextInput,
   FlatList,
   ScrollView,
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -114,6 +115,7 @@ export default function Search() {
 
   return (
     <View style={styles.container}>
+            <View  style={{marginTop:Platform.OS == 'ios'?15:0}}/>
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader title={localizationStrings.search} width={30} />
         <View style={styles.searchContainer}>
@@ -261,6 +263,7 @@ const styles = StyleSheet.create({
     color: '#000',
     lineHeight: 18,
     width:'90%',
+    fontFamily: 'Federo-Regular',
     
 
   },

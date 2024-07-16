@@ -102,11 +102,11 @@ const Account = [
 
     screen: ScreenNameEnum.BOOKING_SCREEN,
   },
-  // {
-  //   name: localizationStrings.subscription,
+  {
+    name: localizationStrings.subscription,
 
-  //   screen: ScreenNameEnum.SUBSCRIPTION_SCREEN,
-  // },
+    screen: ScreenNameEnum.SUBSCRIPTION_SCREEN,
+  },
   {
     name: localizationStrings.notification,
 
@@ -171,7 +171,7 @@ const About = [
   };
   return (
     <View style={{flex: 1, backgroundColor: '#fff', paddingHorizontal: 20}}>
-      {isLoading ? <Loading /> : null}
+    
 
       <View style={{height:Platform.OS !== 'android'?30:5,}} />
       <ScrollView showsVerticalScrollIndicator={false}>

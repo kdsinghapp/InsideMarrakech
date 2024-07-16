@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import React, { useEffect } from 'react';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -55,6 +56,7 @@ export default function PrivacyPolicy() {
   return (
     <View style={styles.container}>
       {isLoading && <Loading />}
+      <View style={{height:Platform.OS !== 'android'?20:5,}} />
       <ProfileHeader title={localizationStrings.Privacy_policy} />
      
         <View style={styles.imageContainer}>

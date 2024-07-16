@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -52,6 +53,7 @@ export default function TermCondition() {
   return (
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
+      <View style={{height:Platform.OS !== 'android'?20:5,}} />
   <ProfileHeader title={localizationStrings.tern_con} width={13} />
   
     <View style={styles.imageContainer}>

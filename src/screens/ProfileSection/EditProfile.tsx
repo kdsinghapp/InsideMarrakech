@@ -166,6 +166,7 @@ export default function EditProfile() {
   return (
     <View style={Styles.container}>
       {isLoading ? <Loading /> : null}
+      <View style={{height:Platform.OS !== 'android'?20:5,}} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader title={localizationStrings.Edit_profile} width={21} />
         <TouchableOpacity

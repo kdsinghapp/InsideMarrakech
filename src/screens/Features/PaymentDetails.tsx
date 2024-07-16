@@ -8,45 +8,42 @@ import {
   ScrollView,
   FlatList,
   TextInput,
+  Alert
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ProfileHeader from '../../configs/ProfileHeader';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DarkStar from '../../assets/svg/DarkStar.svg';
 import TextInputField from '../../configs/TextInput';
 import ScreenNameEnum from '../../routes/screenName.enum';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import AddPlus from '../../assets/svg/Add.svg';
 import Box from '../../assets/svg/checkBox.svg';
-import {RadioButton} from 'react-native-radio-buttons-group';
-import {useDispatch, useSelector} from 'react-redux';
-import {add_booking} from '../../redux/feature/featuresSlice';
+import uuid from 'react-native-uuid';
+import { useDispatch, useSelector } from 'react-redux';
+import { add_booking } from '../../redux/feature/featuresSlice';
 import Loading from '../../configs/Loader';
 import Rating from '../../configs/Ratting';
 import localizationStrings from '../../utils/Localization';
 import { TextInputMask } from 'react-native-masked-text';
-
+import { RadioButton } from 'react-native-paper';
+import WebView from 'react-native-webview';
+import { errorToast } from '../../configs/customToast';
 export default function PaymentDetails() {
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [isSelected, setSelection] = useState(false);
-  const [DriverDetails, setDriverDetails] = useState(null);
+  const [selectedPayment, setselectedPayment] = useState('Cash on Delivery');
+  const [PaymentMode, setPaymentMode] = useState('Cash')
+  const [PaymentStatus, setPaymentStatus] = useState('unpaid')
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
-  const [cardNumber, setCardNumber] = useState('');
-  const [validMonth, setValidMonth] = useState('');
-  const [validYear, setValidYear] = useState('');
-  const [cvv, setCvv] = useState('');
+
   const navigation = useNavigation();
-  const [cardHolderName, setCardHolderName] = useState('');
+
   const propertDetails = useSelector(state => state.feature.propertyDetail);
   const [isAddCardVisible, setIsAddCardVisible] = useState(false);
   const user = useSelector(state => state.auth.userData);
   const isLoading = useSelector(state => state.feature.isLoading);
-  const [newCard, setNewCard] = useState({
-    cardNo: '',
-    name: '',
-    logo: require('../../assets/Cropping/master.png'),
-  });
+  const [checkoutUrl, setCheckoutUrl] = useState(false);
+  const [isLoading2, setIsLoading] = useState(false);
   const route = useRoute();
   const {
     firstName,
@@ -62,12 +59,31 @@ export default function PaymentDetails() {
     Property,
   } = route.params;
 
+
   const handleItemSelect = index => {
     setSelectedItemIndex(index);
   };
   const dispatch = useDispatch();
+
+
+  const booking_id = uuid.v4();
+  const Payment_mode = () => {
+
+
+    if (PaymentMode == 'Paid') {
+      setCheckoutUrl(true)
+      console.log('setCheckoutUrl',checkoutUrl);
+    } else {
+      submitBooking()
+    }
+  }
+
+  const payment_uri = `https://server-php-8-2.technorizen.com/inside/admin/booking_payment?user_id=${user.id}&amount=${Property.amount * selectedGuestCount}&currency=eur&booking_id=${booking_id}`
+
+
+
   const submitBooking = () => {
-   const  price = Property.amount*selectedGuestCount
+    const price = Property.amount * selectedGuestCount
 
     const params = {
       data: {
@@ -82,304 +98,217 @@ export default function PaymentDetails() {
         address: address,
         lat: '',
         lon: '',
-        amount:price,
+        amount: price,
         GuestList: travelers,
-        created_date:selectedEndDate?selectedStartDate+' To '+selectedEndDate:selectedStartDate,
+        created_date: selectedEndDate ? selectedStartDate + ' To ' + selectedEndDate : selectedStartDate,
         email: email,
       },
-      
-      
+
+
       navigation: navigation,
     };
- 
+
     dispatch(add_booking(params));
   };
-  const saveCardDetails = () => {
-    const newCardDetails = {
-      cardNo: `**** **** **** ${cardNumber.slice(-4)}`,
-      name: cardHolderName,
-      logo: require('../../assets/Cropping/master.png'),
-    };
-    setNewCard(newCardDetails);
-    setIsAddCardVisible(false);
+
+  const handleNavigationStateChange = async (navState) => {
+
+
+    if (navState.url.includes('paystripedata_booking')) {
+      setCheckoutUrl(false);
+      Alert.alert('Payment Success', 'Your payment was successful!');
+      setPaymentStatus('paid')
+      await submitBooking();
+
+    } 
+
   };
+  const handleError = (error) => {
+    console.error('WebView Error:', error);
+    Alert.alert('Error', 'Failed to load payment page. Please try again later.');
+    setCheckoutUrl(false);
+    setPaymentStatus('unpaid')
+  };
+
   return (
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <ProfileHeader title={localizationStrings.P_details} width={18} />
+      {checkoutUrl ? (
+        <WebView
+          source={{ uri: payment_uri }}
+          onNavigationStateChange={handleNavigationStateChange}
 
-        <View style={styles.bookingContainer}>
-          <View style={styles.bookingImageContainer}>
-            <Image
-              source={{uri: Property.main_image}}
-              style={styles.bookingImage}
-              resizeMode="cover"
-            />
-          </View>
-          <View style={styles.bookingDetails}>
-            <View style={styles.bookingHeader}>
-              <Text style={styles.bookingTitle}>{Property.name}</Text>
-              <Text style={styles.bookingPrice}>{Property.amount}</Text>
+          onError={handleError}
+          style={{ marginTop: 40 }}
+        />
+      ) : <>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <ProfileHeader title={localizationStrings.P_details} width={18} />
+
+          <View style={styles.bookingContainer}>
+            <View style={styles.bookingImageContainer}>
+              <Image
+                source={{ uri: Property.main_image }}
+                style={styles.bookingImage}
+                resizeMode="cover"
+              />
             </View>
-            <Text style={styles.bookingAddress}>{Property.address}</Text>
-            <View style={styles.ratingContainer}>
-            <Rating rating={propertDetails?.rating} /> 
-              <Text style={styles.ratingText}>{propertDetails?.rating}</Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.totalContainer}>
-          <Text style={styles.totalText}>{localizationStrings.G_no} {selectedGuestCount}</Text>
-          
-        </View>
-        <View style={styles.totalContainer}>
-          <Text style={styles.totalText}>{localizationStrings.B_date}</Text>
-          <Text style={styles.totalText}>{selectedStartDate} {selectedEndDate?' To '+selectedEndDate:''}</Text>
-        </View>
-        <View style={styles.totalContainer}>
-          <Text style={styles.totalText}>{localizationStrings.total}</Text>
-          {totalDays != 0 &&  <Text style={styles.totalAmount}>
-            {Property.amount * selectedGuestCount*totalDays}
-          </Text> }
-          {totalDays == 0 &&  <Text style={styles.totalAmount}>
-            {Property.amount * selectedGuestCount}
-          </Text> }
-        </View>
-
-        <View style={styles.paymentTitleContainer}>
-          <Text style={styles.paymentTitle}>{localizationStrings.P_details}</Text>
-        </View>
-        <View style={styles.creditDebitTitleContainer}>
-          <Text style={styles.creditDebitTitle}>
-            {localizationStrings.s_card}
-          </Text>
-        </View>
-        <View style={styles.cardListContainer}>
-          <FlatList
-            scrollEnabled={false}
-            data={newCard}
-            renderItem={({item, index}) => (
-              <TouchableOpacity
-                onPress={() => handleItemSelect(index)}
-                style={[
-                  styles.cardItem,
-                  selectedItemIndex === index && styles.selectedCardItem,
-                ]}>
-                <View>
-                  <Image
-                    source={item.logo}
-                    style={styles.cardLogo}
-                    resizeMode="contain"
-                  />
-                </View>
-                <View style={styles.cardDetails}>
-                  <Text style={styles.cardName}>{item.name}</Text>
-                  <Text style={styles.cardNumber}>{item.cardNo}</Text>
-                </View>
-                {selectedItemIndex === index && (
-                  <RadioButton
-                    selected={true}
-                    onPress={() => {}}
-                    color="#6D6EEC"
-                    borderSize={1}
-                    size={20}
-                    borderColor="#6D6EEC"
-                  />
-                )}
-              </TouchableOpacity>
-            )}
-          />
-          <TouchableOpacity style={styles.addCardContainer}
-              onPress={() => setIsAddCardVisible(true)}>
-            <View style={styles.addCardIconContainer}>
-              <AddPlus />
-            </View>
-            <View style={styles.addCardTextContainer}>
-              <Text style={styles.addCardText}>{localizationStrings.A_card}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        {/* <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>{localizationStrings.Card_no}</Text>
-          <View style={styles.inputFieldContainer}>
-            <TextInput
-              placeholder="12 localizationStrings.Card_no}"
-              placeholderTextColor={'#979797'}
-              style={styles.inputField}
-              value={cardNumber}
-              onChangeText={setCardNumber}
-            />
-          </View>
-
-          <View style={styles.inputRow}>
-            <View style={styles.inputColumn}>
-              <Text style={styles.inputLabel}>{localizationStrings.v_date}</Text>
-              <View style={styles.smallInputFieldContainer}>
-                <TextInput
-                  placeholder={localizationStrings.month}
-                  style={styles.inputField}
-                  value={validMonth}
-                  onChangeText={setValidMonth}
-                />
+            <View style={styles.bookingDetails}>
+              <View style={styles.bookingHeader}>
+                <Text style={styles.bookingTitle}>{Property.name}</Text>
+                <Text style={styles.bookingPrice}>{Property.amount}</Text>
               </View>
-              <Text style={styles.inputLabel}>{localizationStrings.E_year}</Text>
-              <View style={styles.smallInputFieldContainer}>
-                <TextInput
-                  placeholder={localizationStrings.E_year}
-                  style={styles.inputField}
-                  value={validYear}
-                  onChangeText={setValidYear}
-                />
+              <Text style={styles.bookingAddress}>{Property.address}</Text>
+              <View style={styles.ratingContainer}>
+                <Rating rating={propertDetails?.rating} />
+                <Text style={styles.ratingText}>{propertDetails?.rating}</Text>
               </View>
             </View>
-            <View style={styles.inputColumn}>
-              <Text style={styles.inputLabel}>{localizationStrings.cvv}</Text>
-              <View style={styles.cvvContainer}>
-                <TextInput
-                  placeholder="CVV"
-                  style={styles.cvvInput}
-                  value={cvv}
-                  onChangeText={setCvv}
-                />
-                <TouchableOpacity>
-                  <Image
-                    source={require('../../assets/Cropping/eyes4.png')}
-                    style={styles.cvvIcon}
-                  />
+          </View>
+
+          <View style={styles.totalContainer}>
+            <Text style={styles.totalText}>{localizationStrings.G_no} {selectedGuestCount}</Text>
+
+          </View>
+          <View style={styles.totalContainer}>
+            <Text style={styles.totalText}>{localizationStrings.B_date}</Text>
+            <Text style={styles.totalText}>{selectedStartDate} {selectedEndDate ? ' To ' + selectedEndDate : ''}</Text>
+          </View>
+          <View style={styles.totalContainer}>
+            <Text style={styles.totalText}>{localizationStrings.total}</Text>
+            {totalDays != 0 && <Text style={styles.totalAmount}>
+              {Property.amount * selectedGuestCount * totalDays}
+            </Text>}
+            {totalDays == 0 && <Text style={styles.totalAmount}>
+              {Property.amount * selectedGuestCount}
+            </Text>}
+          </View>
+
+          <View style={styles.paymentTitleContainer}>
+            <Text style={styles.paymentTitle}>{localizationStrings.P_details}</Text>
+          </View>
+          <View
+            style={[
+              styles.shadow,
+              {
+                backgroundColor: '#fff',
+                padding: 10,
+                borderRadius: 10,
+                marginTop: 10,
+                marginHorizontal: 5
+              },
+            ]}>
+            <FlatList
+              scrollEnabled={false}
+              data={PaymentOption}
+              renderItem={({ item, index }) => (
+                <TouchableOpacity
+
+                  onPress={() => {
+                    setselectedPayment(item.name)
+                    setPaymentMode(item.mode)
+                  }}
+                  style={{
+                    height: 36,
+                    borderRadius: 8,
+                    marginTop: 10,
+
+                    paddingHorizontal: 10,
+                    backgroundColor: selectedPayment == item.name ? '#c9f5d4' : '#F5F5F5',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}>
+                  <View>
+                    <Image
+                      source={item.logo}
+                      style={{ height: 20, width: 20, marginRight: 10 }}
+                      resizeMode="contain"
+                    />
+                  </View>
+                  <View
+                    style={{
+                      justifyContent: 'center',
+                      width: '82%',
+                    }}>
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 12,
+
+                          color: '#606060',
+                          fontWeight: '500',
+                        }}>
+                        {item.name}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <RadioButton
+                      value={item.id}
+                      status={item.name == selectedPayment ? 'checked' : 'unchecked'}
+
+
+                    />
+                  </View>
                 </TouchableOpacity>
-              </View>
-            </View>
-          </View>
+              )}
 
-          <Text style={styles.inputLabel}>{localizationStrings.c_H_name}</Text>
-          <View style={styles.inputFieldContainer}>
-            <TextInput
-              placeholder={localizationStrings.c_H_name}
-              placeholderTextColor={'#979797'}
-              style={styles.inputField}
-              value={cardHolderName}
-              onChangeText={setCardHolderName}
             />
           </View>
-        </View> */}
 
+
+
+
+          <View style={{ height: hp(5) }} />
+        </ScrollView>
         <TouchableOpacity
           onPress={() => {
-            submitBooking();
-            // navigation.navigate(ScreenNameEnum.PAYMENT_SUCCESS);
+            Payment_mode()
+
           }}
           style={styles.nextButton}>
           <Text style={styles.nextButtonText}>{localizationStrings.P_now}</Text>
         </TouchableOpacity>
+      </>}
 
-        {/* <Modal visible={isVisible} animationType="slide" transparent={true}>
-          <TouchableOpacity
-            onPress={() => {
-              setIsVisible(false);
-            }}
-            style={styles.modalOverlay}>
-            <View style={styles.modalContainer}>
-              <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>Driver</Text>
-              </View>
-              <FlatList
-                renderItem={({item, index}) => (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setSelection(true);
-                      setSelectedIndex(index);
-                      setIsVisible(false);
-                      setDriverDetails(item);
-                    }}
-                    style={styles.driverItem}>
-                    <Image source={item.img} style={styles.driverImage} />
-                    <View style={styles.driverDetails}>
-                      <Text style={styles.driverName}>{item.name}</Text>
-                      <Text style={styles.driverInfo}>{item.Details}</Text>
-                    </View>
-                    {isSelected && index !== selectedIndex && (
-                      <View style={styles.unselectedCheckbox}></View>
-                    )}
-                    {isSelected && index === selectedIndex && (
-                      <Box height={20} width={20} />
-                    )}
-                  </TouchableOpacity>
-                )}
-                data={Driver}
-              />
-            </View>
-          </TouchableOpacity>
-        </Modal> */}
-
-        <View style={{height: hp(5)}} />
-      </ScrollView>
-      <Modal
-        transparent={true}
-        visible={isAddCardVisible}
-        animationType="slide"
-        onRequestClose={() => setIsAddCardVisible(false)}>
-        <TouchableOpacity 
-        onPress={()=>{setIsAddCardVisible(false)}}
-        style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>{localizationStrings.AddCardDetails}</Text>
-            <TextInputMask
-        type={'credit-card'}
-        options={{
-          obfuscated: false,
-        }}
-        placeholder="Card Number"
-        style={styles.modalInput}
-        value={cardNumber}
-        onChangeText={setCardNumber}
-      />
-      <View style={{flexDirection:'row',justifyContent:'space-between',}}>
-           <TextInput
-        placeholder="Expiry Month"
-        style={[styles.modalInput,{width:'45%'}]}
-        value={validMonth}
-        onChangeText={setValidMonth}
-        maxLength={2}
-      
-      />
-      <TextInput
-        placeholder="Expiry Year"
-        style={[styles.modalInput,{width:'45%'}]}
-        value={validYear}
-        onChangeText={setValidYear}
-        maxLength={4}
-      />
-      </View>
-            <TextInput
-              placeholder="CVV"
-              style={styles.modalInput}
-              value={cvv}
-              onChangeText={setCvv}
-              maxLength={3}
-              secureTextEntry={true}
-            />
-            <TextInput
-              placeholder="Cardholder Name"
-              style={styles.modalInput}
-              value={cardHolderName}
-              onChangeText={setCardHolderName}
-            />
-            <TouchableOpacity
-              onPress={saveCardDetails}
-              style={styles.saveButton}>
-              <Text style={styles.saveButtonText}>{localizationStrings.save}</Text>
-            </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-      </Modal>
     </View>
   );
 }
+const PaymentOption = [
+  // {
+  //   id: 1,
 
+  //   name: 'Card',
+  //   logo: require('../../assets/croping/Wallet3x.png'),
+  // },
+  {
+    id: 1,
+
+    name: 'Card or Online Payment',
+    logo: require('../../assets/Cropping/Wallet3x.png'),
+    mode: 'Paid'
+  },
+  {
+    id: 2,
+    mode: 'Cash',
+    name: 'Cash on Delivery',
+    logo: require('../../assets/Cropping/CashonDelivery3x.png'),
+  },
+];
 const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
   saveButton: {
     backgroundColor: '#6D6EEC',
     padding: 15,
@@ -453,6 +382,7 @@ const styles = StyleSheet.create({
   bookingHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingRight: 10
   },
   bookingTitle: {
     fontFamily: 'Federo-Regular',
@@ -476,7 +406,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
-   
+
   },
   ratingText: {
     fontSize: 14,
@@ -669,6 +599,10 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+    bottom: 30,
+    width: '90%',
+    alignSelf: 'center'
   },
   nextButtonText: {
     fontSize: 17,
@@ -690,18 +624,8 @@ const styles = StyleSheet.create({
   //   height: hp(60),
   //   padding: 10,
   // },
-  modalHeader: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: hp(5),
-  },
-  modalTitle: {
-    fontWeight: '600',
-    fontSize: 20,
-    lineHeight: 36,
-    color: '#000',
-  },
+
+
   driverItem: {
     flexDirection: 'row',
     marginVertical: 5,
@@ -752,7 +676,7 @@ const styles = StyleSheet.create({
 
   shadow: {
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,

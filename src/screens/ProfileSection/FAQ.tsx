@@ -8,6 +8,7 @@
         ScrollView,
         TouchableOpacity,
         FlatList,
+        Platform,
       } from 'react-native';
       import React, {useEffect, useState} from 'react';
       import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -58,6 +59,7 @@ import localizationStrings from '../../utils/Localization';
         return (
           <View style={styles.container}>
             {isLoading ? <Loading /> : null}
+            <View style={{height:Platform.OS !== 'android'?20:5,}} />
         <ProfileHeader title={localizationStrings.faq} width={30} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.imageContainer}>

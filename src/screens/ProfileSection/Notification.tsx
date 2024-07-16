@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Switch, FlatList, StyleSheet} from 'react-native';
+import {View, Text, Switch, FlatList, StyleSheet, Platform} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -107,8 +107,10 @@ const Notification: React.FC = () => {
   };
   const renderItem = ({item}: {item: NotificationItem}) => (
     <View style={styles.itemContainer}>
+   
       {isLoading ? null : (
         <>
+           
           <View style={styles.itemTextContainer}>
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemDetails}>{item.Details}</Text>
@@ -127,6 +129,7 @@ const Notification: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      <View style={{height:Platform.OS !== 'android'?20:5,}} />
       <ProfileHeader title={localizationStrings.notification}/>
       <View style={styles.listContainer}>
         <FlatList

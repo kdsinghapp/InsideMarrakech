@@ -20,6 +20,7 @@ import Box from '../../assets/svg/checkBox.svg';
 import Rating from '../../configs/Ratting';
 import { useSelector } from 'react-redux';
 import localizationStrings from '../../utils/Localization';
+import GooglePlacesInput from '../../configs/AutoAddress';
 
 export default function AddTravelerDetails() {
   const route = useRoute();
@@ -111,31 +112,7 @@ export default function AddTravelerDetails() {
           <Text style={styles.totalText}>{localizationStrings.B_date}</Text>
           <Text style={styles.totalText}>{selectedStartDate} {selectedEndDate?' To '+selectedEndDate:''}</Text>
         </View>
-        {/* <TouchableOpacity
-          onPress={() => {
-            setIsVisible(true);
-          }}
-          style={styles.selectDriverButton}>
-          <Text style={styles.selectDriverButtonText}>Select Driver</Text>
-        </TouchableOpacity> */}
-        {/* 
-        {DriverDetails !== null && (
-          <>
-            <Text style={styles.driverTitle}>Driver</Text>
-            <View style={[styles.shadow, styles.driverInfoContainer]}>
-              <Image
-                source={DriverDetails.img}
-                style={styles.driverImage}
-              />
-              <View style={styles.driverDetails}>
-                <Text style={styles.driverName}>{DriverDetails.name}</Text>
-                <Text style={styles.driverDetailsText}>
-                  {DriverDetails.Details}
-                </Text>
-              </View>
-            </View>
-          </>
-        )} */}
+        
 
         {travelers.map((traveler, index) => (
           <View key={index} style={styles.travelerSection}>
@@ -144,7 +121,7 @@ export default function AddTravelerDetails() {
             } (${localizationStrings.adults})`}</Text>
             <View style={[styles.txtInput, styles.inputMargin]}>
               <TextInputField
-                placeholder="First Name"
+                placeholder={localizationStrings.First_name}
                 firstLogo={false}
                 img={require('../../assets/Cropping/Lock3x.png')}
                 showEye={false}
@@ -156,7 +133,7 @@ export default function AddTravelerDetails() {
             </View>
             <View style={[styles.txtInput, styles.inputMargin]}>
               <TextInputField
-                placeholder="Last Name"
+                placeholder={localizationStrings.Last_Name}
                 firstLogo={false}
                 img={require('../../assets/Cropping/Lock3x.png')}
                 showEye={false}
@@ -166,23 +143,12 @@ export default function AddTravelerDetails() {
                 }
               />
             </View>
-            {/* <View style={[styles.txtInput, styles.inputMargin]}>
-              <TextInputField
-                placeholder="Age"
-                firstLogo={false}
-                img={require('../../assets/Cropping/Lock3x.png')}
-                showEye={false}
-                value={traveler.age}
-                onChangeText={text =>
-                  handleInputChange(index, 'age', text)
-                }
-              />
-            </View> */}
+          
           </View>
         ))}
         <View style={[styles.txtInput, styles.inputMargin]}>
           <TextInputField
-            placeholder="Language"
+            placeholder={localizationStrings.language}
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
@@ -195,7 +161,7 @@ export default function AddTravelerDetails() {
         <View style={[styles.txtInput, styles.inputContainer]}>
           <Pin />
           <TextInputField
-            placeholder="address"
+            placeholder={localizationStrings.address}
             firstLogo={false}
             img={require('../../assets/Cropping/Lock3x.png')}
             showEye={false}
@@ -206,64 +172,21 @@ export default function AddTravelerDetails() {
           />
         </View>
 
-        <TouchableOpacity
+      
+
+       
+
+        <View style={styles.bottomSpacer} />
+
+      <TouchableOpacity
           onPress={() => {
             handleNext();
           }}
           style={styles.nextButton}>
           <Text style={styles.nextButtonText}>NEXT</Text>
         </TouchableOpacity>
-
-        {/* <Modal visible={isVisible} animationType="slide" transparent={true}>
-          <TouchableOpacity
-            onPress={() => {
-              setIsVisible(false);
-            }}
-            style={styles.modalOverlay}>
-            <View style={styles.modalContainer}>
-              <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>Driver</Text>
-              </View>
-              <View>
-                <FlatList
-                  renderItem={({item, index}) => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setSelection(true);
-                        setSelectedIndex(index);
-                        setIsVisible(false);
-                        setDriverDetails(item);
-                      }}
-                      style={[styles.shadow, styles.driverListItem]}>
-                      <Image
-                        source={item.img}
-                        style={styles.driverListItemImage}
-                      />
-                      <View style={styles.driverListItemDetails}>
-                        <Text style={styles.driverListItemName}>
-                          {item.name}
-                        </Text>
-                        <Text style={styles.driverListItemInfo}>
-                          {item.Details}
-                        </Text>
-                      </View>
-                      {isSelected && index !== selectedIndex && (
-                        <View style={styles.unselectedCheckbox}></View>
-                      )}
-                      {isSelected && index === selectedIndex && (
-                        <Box height={20} width={20} />
-                      )}
-                    </TouchableOpacity>
-                  )}
-                  data={Driver}
-                />
-              </View>
-            </View>
-          </TouchableOpacity>
-        </Modal> */}
-
-        <View style={styles.bottomSpacer} />
       </ScrollView>
+     
     </View>
   );
 }
@@ -436,6 +359,9 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
+    width:'90%',
+    alignSelf:'center',
+  
   },
   nextButtonText: {
     fontSize: 17,
@@ -511,7 +437,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   bottomSpacer: {
-    height: hp(5),
+    height: hp(20),
   },
 });
 const Driver = [
