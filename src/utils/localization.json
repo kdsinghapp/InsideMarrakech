@@ -1,5 +1,8 @@
 {
   "English": {
+    "Your_Plan": "Your Plan",
+    "Validity": "Validity",
+    "Purchase_date": "Purchase date",
     "SuccessFully": "Successfully",
     "Kind_of_Service": "Kind of Service",
     "book_nany": "Book Nany",
@@ -154,6 +157,10 @@
     "Y_B_C": "Your booking is confirmed!"
   },
   "French": {
+  
+    "Your_Plan": "Votre Plan",
+    "Validity": "Validité",
+    "Purchase_date": "Date d'achat",
     "SuccessFully": "Avec succès",
     "Kind_of_Service": "Type de service",
     "book_nany": "Réserver une nounou",
@@ -308,6 +315,9 @@
     "Close_Time": "Heure de fermeture",
   },
   "Chinese": {
+    "Your_Plan": "您的计划",
+    "Validity": "有效期",
+    "Purchase_date": "购买日期",
     "SuccessFully":"成功地",
     "Kind_of_Service": "服务种类",
     "book_nany": "预订保姆",
@@ -462,6 +472,9 @@
     "Close_Time": "关闭时间"
   },
   "Russian": {
+    "Your_Plan": "Ваш План",
+    "Validity": "Срок действия",
+    "Purchase_date": "Дата покупки",
     "SuccessFully": "Успешно",
     "Kind_of_Service": "Вид услуги",
     "book_nany": "Забронировать няню",
@@ -616,6 +629,9 @@
     "Close_Time": "Время закрытия"
   },
   "Italian": {
+    "Your_Plan": "Il tuo Piano",
+    "Validity": "Validità",
+    "Purchase_date": "Data di acquisto",
     "SuccessFully": "Con successo",
     "Kind_of_Service": "Tipo di servizio",
     "book_nany": "Prenota Tata",
@@ -770,6 +786,9 @@
     "Close_Time": "Orario di chiusura"
   },
   "Spanish": {
+    "Your_Plan": "Tu Plan",
+    "Validity": "Validez",
+    "Purchase_date": "Fecha de compra",
     "SuccessFully": "Exitosamente",
     "Kind_of_Service": "Tipo de servicio",
     "book_nany": "Reservar Niñera",
@@ -924,6 +943,9 @@
     "Close_Time": "Hora de cierre"
   },
   "Japanese": {
+    "Your_Plan": "あなたのプラン",
+    "Validity": "有効期限",
+    "Purchase_date": "購入日",
     "SuccessFully": "成功に",
     "Kind_of_Service": "サービスの種類",
     "book_nany": "ベビーシッター予約",

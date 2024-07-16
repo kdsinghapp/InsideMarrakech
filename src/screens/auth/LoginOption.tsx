@@ -25,10 +25,10 @@ export default function LoginOption() {
   const [selectRole, setSelectRole] = useState('User');
   const [value, setValue] = useState('French');
   const [items] = useState([
-    { label: 'English', value: 'English', flag: require('../../assets/Cropping/usa.png') },
     { label: 'French', value: 'French', flag: require('../../assets/Cropping/france.png') },
     { label: 'Chinese', value: 'Chinese', flag: require('../../assets/Cropping/china.png') },
     { label: 'Russian', value: 'Russian', flag: require('../../assets/Cropping/russia.png') },
+    { label: 'English', value: 'English', flag: require('../../assets/Cropping/usa.png') },
     { label: 'Italian', value: 'Italian', flag: require('../../assets/Cropping/italian.png') },
     { label: 'Spanish', value: 'Spanish', flag: require('../../assets/Cropping/spain.png') },
     { label: 'Japanese', value: 'Japanese', flag: require('../../assets/Cropping/japan.png') },
@@ -113,6 +113,7 @@ export default function LoginOption() {
           selectedTextStyle={styles.selectedText}
           iconColor="#e5c96c"
           itemTextStyle={styles.itemText}
+          dropdownPosition='top'
           onChange={(item) => handleChangeLanguage(item.value)}
         />
       </View>

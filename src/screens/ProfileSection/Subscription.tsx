@@ -129,11 +129,11 @@ console.log('MyPlan',MyPlan);
 
         <View style={styles.contentContainer}>
          {Updated_user?.subcription_status && <View style={{borderWidth:1,width:'80%',height:hp(20),borderRadius:10,alignItems:'center',padding:6}}>
-          <Text style={[styles.title,{marginTop:5}]}>Your Plan</Text>
-          <Text style={[styles.itemText,{marginVertical:8}]}>{MyPlan.name} ( {MyPlan.period} {MyPlan.type} )</Text>
-          <Text style={styles.itemText}>{localizationStrings.price} :  € {MyPlan.amount}</Text>
-          <Text style={[styles.itemText,{marginVertical:8}]}>Validity : {Updated_user?.valid_subcription_plan}</Text>
-          <Text style={styles.itemText}>Purchase date : {Updated_user?.start_subcription_plan}</Text>
+          <Text style={[styles.title,{marginTop:5}]}>{localizationStrings.your_plan}</Text>
+          <Text style={[styles.itemText,{marginVertical:8}]}>{MyPlan?.name} ( {MyPlan?.period} {MyPlan?.type} )</Text>
+          <Text style={styles.itemText}>{localizationStrings.price} :  € {MyPlan?.amount}</Text>
+          <Text style={[styles.itemText,{marginVertical:8}]}>{localizationStrings.Validity} : {Updated_user?.valid_subcription_plan}</Text>
+          <Text style={styles.itemText}>{localizationStrings.Purchase_date} : {Updated_user?.start_subcription_plan}</Text>
 
           </View>}
           <Text style={styles.title}>{localizationStrings.upgrad_pre}</Text>
