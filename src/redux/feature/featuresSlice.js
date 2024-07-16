@@ -608,6 +608,37 @@ export const get_user_wishlist = createAsyncThunk(
     }
   },
 );
+export const add_subcription_plan = createAsyncThunk(
+  'add_subcription_plan',
+  async (params, thunkApi) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      };
+      console.log('=============add_subcription_plan=======================', params);
+      let data = new FormData();
+      data.append('user_id', params?.user_id);
+      data.append('subcription_id', params?.subcription_id);
+      data.append('amount', params?.amount);
+
+      const response = await API.post('/add_subcription_plan', data, config);
+      console.log('=============add_subcription_plan=======================', response.data);
+      if (response.data.status === '1') {
+        // Do something on success
+      } else {
+        // Handle the error
+      }
+      return response.data.data;
+    } catch (error) {
+      console.log('Error:', error);
+      errorToast('Network Error add_subcription_plan');
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
 export const get_privacy_policy = createAsyncThunk(
   'get_privacy_policy',
   async (params, thunkApi) => {
@@ -1099,6 +1130,19 @@ const FeatureSlice = createSlice({
       state.isError = false;
     });
     builder.addCase(update_notification.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.isSuccess = false;
+    });
+    builder.addCase(add_subcription_plan.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(add_subcription_plan.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.isError = false;
+    });
+    builder.addCase(add_subcription_plan.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
