@@ -38,12 +38,13 @@ export default function SignUp() {
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/;
     return re.test(password);
   };
-  const validateEmail = email => {
-    const re = /\S+@\S+\.\S+/;
+  const validateEmail = (email) => {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return re.test(email);
   };
   const handleSignUp = () => {
-    console.log(validatePassword(password));
+    console.log(email);
+    console.log(validateEmail(email));
     
     if (!validateEmail(email)) {
       errorToast('Please enter a valid email address.');
@@ -246,8 +247,8 @@ export default function SignUp() {
                     placeholder="Company email"
                     firstLogo={false}
                     img={require('../../assets/Cropping/Phone2x.png')}
-                    value={CompanyEmail}
-                    onChangeText={setCompanyEmail}
+                    value={email}
+                    onChangeText={setEmail}
                   />
                 </View>
               </View>
