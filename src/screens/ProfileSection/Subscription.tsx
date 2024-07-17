@@ -50,7 +50,7 @@ if(selectedPlan == null){
 
 setCheckoutUrl(true)
 }
-const payment_uri = `https://server-php-8-2.technorizen.com/inside/admin/subcription_payment?user_id=${user.id}&amount=${selectedPlan?.amount}&currency=eur&subcription_plan_id=${selectedPlan?.id}`
+const payment_uri = `https://server-php-8-2.technorizen.com/inside/admin/subcription_payment?user_id=${user.id}&amount=${selectedPlan?.amount}&currency=mad&subcription_plan_id=${selectedPlan?.id}`
 
 
 
@@ -133,7 +133,7 @@ console.log('MyPlan',Updated_user?.subcription_status);
          <View style={{borderWidth:1,width:'80%',height:hp(20),borderRadius:10,alignItems:'center',padding:6}}>
           <Text style={[styles.title,{marginTop:5}]}>{localizationStrings.your_plan}</Text>
           <Text style={[styles.itemText,{marginVertical:8}]}>{MyPlan?.name} ( {MyPlan?.period} {MyPlan?.type} )</Text>
-          <Text style={styles.itemText}>{localizationStrings.price} :  € {MyPlan?.amount}</Text>
+          <Text style={styles.itemText}>{localizationStrings.price} :   {MyPlan?.amount}</Text>
           <Text style={[styles.itemText,{marginVertical:8}]}>{localizationStrings.Validity} : {Updated_user?.valid_subcription_plan}</Text>
           <Text style={styles.itemText}>{localizationStrings.Purchase_date} : {Updated_user?.start_subcription_plan}</Text>
 
@@ -151,7 +151,7 @@ console.log('MyPlan',Updated_user?.subcription_status);
              marginTop:15,
          marginHorizontal:10,
                 borderRadius:10,paddingHorizontal:30}]}>
-                  <Text style={styles.itemText}>{item.name} ( {item.period} {item.type} ) {localizationStrings.price}: € {item.amount}</Text>
+                  <Text style={styles.itemText}>{item.name} ( {item.period} {item.type} ) {localizationStrings.price}:  {item.amount}</Text>
                   <RadioButton
                       value={item.id}
                       status={item.id == selectedPlan?.id || Updated_user?.subcription_id == item.id? 'checked' : 'unchecked'}
