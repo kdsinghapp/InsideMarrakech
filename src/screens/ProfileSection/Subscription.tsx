@@ -106,7 +106,7 @@ const filterSubscriptionById = (id) => {
 
 // Example usage
 const MyPlan = filterSubscriptionById(Updated_user?.subcription_id)[0];
-console.log('MyPlan',MyPlan);
+console.log('MyPlan',Updated_user?.subcription_status);
 
   return (
     <View style={styles.container}>
@@ -128,7 +128,9 @@ console.log('MyPlan',MyPlan);
         <ProfileHeader title={localizationStrings.subscription} width={22} />
 
         <View style={styles.contentContainer}>
-         {Updated_user?.subcription_status && <View style={{borderWidth:1,width:'80%',height:hp(20),borderRadius:10,alignItems:'center',padding:6}}>
+         {Updated_user?.subcription_status == true && 
+         
+         <View style={{borderWidth:1,width:'80%',height:hp(20),borderRadius:10,alignItems:'center',padding:6}}>
           <Text style={[styles.title,{marginTop:5}]}>{localizationStrings.your_plan}</Text>
           <Text style={[styles.itemText,{marginVertical:8}]}>{MyPlan?.name} ( {MyPlan?.period} {MyPlan?.type} )</Text>
           <Text style={styles.itemText}>{localizationStrings.price} :  € {MyPlan?.amount}</Text>

@@ -9,6 +9,7 @@ import {
   Settings,
   ScrollView,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -20,6 +21,7 @@ import {get_profile, logout} from '../../redux/feature/authSlice';
 import localizationStrings from '../../utils/Localization';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dropdown } from 'react-native-element-dropdown';
+import { delete_user_account } from '../../redux/feature/featuresSlice';
 export default function Profile() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.userData);
@@ -79,6 +81,17 @@ useEffect(()=>{
     dispatch(logout(params));
   };
   
+
+  const delete_account =()=>{
+
+   const  params={
+      user_id:user.id
+    }
+
+   dispatch(delete_user_account(params)).then(res=>{
+    user_Logout()
+   })
+  }
 const Account = [
   {
     name:localizationStrings.Edit_profile,
@@ -293,6 +306,44 @@ const About = [
               fontFamily: 'Federo-Regular',
             }}>
             {localizationStrings.logout}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+
+Alert.alert(
+  "Delete Account",
+  "Are you sure you want to delete your account? This action cannot be undone.",
+  [
+    { text: "Delete", onPress: () => delete_account() ,style: "destructive"},
+    {
+      text: "Cancel",
+      onPress: () => console.log("Cancel Pressed"),
+      style: "cancel"
+    }
+    
+  ],
+  { cancelable: false }
+);
+          }}
+          style={{
+            height:55,
+            marginTop: 15,
+            //backgroundColor: '#FAFAFA',
+            // alignItems: 'center',
+            borderTopWidth:0.4,
+            justifyContent: 'center',
+           
+          }}>
+          <Text
+            style={{
+              color: '#FF0000',
+              fontSize: 14,
+              lineHeight: 21,
+              fontWeight: '600',
+              fontFamily: 'Federo-Regular',
+            }}>
+         Delete Account
           </Text>
         </TouchableOpacity>
 

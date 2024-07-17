@@ -190,14 +190,17 @@ export default function Booking() {
           />
         </View>
         <View style={localStyles.listContainer}>
-          {!isLoading && <FlatList
+          {BookingList?.length > 0? <FlatList
             showsVerticalScrollIndicator={false}
             data={
               BookingList
             }
             renderItem={renderItem}
-            keyExtractor={item => item.id.toString()}
-          />
+           
+          />:<View style={{flex:1,justifyContent:'center',alignItems:'center',marginTop:80}}>
+            
+            <Text style={{color:'#000',fontWeight:'600',fontSize:18}}>{localizationStrings.no_booking_found}</Text>
+            </View>
           }
         </View>
         <BookingDetailsModal

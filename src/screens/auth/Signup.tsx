@@ -45,13 +45,13 @@ export default function SignUp() {
   const handleSignUp = () => {
     console.log(validatePassword(password));
     
-    if (validateEmail(email)) {
+    if (!validateEmail(email)) {
       errorToast('Please enter a valid email address.');
       return;
     }
 
     // Password validation
-    console.log(password);
+
     
     if (!validatePassword(password)) {
       errorToast(
@@ -61,7 +61,7 @@ export default function SignUp() {
     }
 
     // Password match validation
-    if (password !== confirmPassword) {
+    if (password !== confirmPassword && role != 'User') {
       errorToast('Passwords or Confirm Password do not match.');
       return;
     }
