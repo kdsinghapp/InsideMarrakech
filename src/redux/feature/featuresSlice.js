@@ -842,7 +842,7 @@ export const get_chat_user = createAsyncThunk(
       } else {
 
       }
-      return response.data.data;
+      return response.data.result;
     } catch (error) {
       console.log('Error:', error);
      // errorToast('Network Error');

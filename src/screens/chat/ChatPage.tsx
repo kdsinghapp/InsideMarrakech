@@ -32,19 +32,20 @@ export default function ChatPage() {
 
   }
 
+console.log('ChatUser?.length',ChatUser);
 
 
   const RecentListItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate(ScreenNameEnum.CHAT_SCREEN, { item: item });
+        navigation.navigate(ScreenNameEnum.CHAT_SCREEN, { item: item.reciver_data });
       }}
       style={styles.itemContainer}>
       <View>
-        <Image source={{ uri: item.image }} style={styles.avatar} />
+        <Image source={{ uri: item.reciver_data.image }} style={styles.avatar} />
       </View>
       <View style={styles.itemTextContainer}>
-        <Text style={styles.itemName}>{item.company_name}</Text>
+        <Text style={styles.itemName}>{item.reciver_data.first_name} {item.reciver_data.last_name}</Text>
 
       </View>
     </TouchableOpacity>
@@ -68,7 +69,7 @@ export default function ChatPage() {
           </View>
         </View>
         <View style={{}}>
-          {ChatUser.length > 0 ?
+          {ChatUser?.length > 0 ?
 
             <FlatList
               data={ChatUser}

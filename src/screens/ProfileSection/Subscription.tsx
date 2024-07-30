@@ -9,6 +9,7 @@ import {
   ImageBackground,
   Platform,
   Alert,
+  Linking
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {
@@ -30,105 +31,57 @@ import WebView from 'react-native-webview';
 import { get_profile } from '../../redux/feature/authSlice';
 export default function Subscription() {
   const navigation = useNavigation();
-const isFocuse = useIsFocused()
-const Updated_user = useSelector(state => state.auth.Update_user);
+  const isFocuse = useIsFocused()
+  const Updated_user = useSelector(state => state.auth.Update_user);
+  const user = useSelector(state => state.auth.userData);
   const getSubscription = useSelector(state => state.feature.getSubscription);
   const isLoading = useSelector(state => state.feature.isLoading);
   const dispatch = useDispatch();
-const [selectedPlan,setselectedPlan]= useState(null)
-const [checkoutUrl, setCheckoutUrl] = useState(false);
+  const [selectedPlan, setselectedPlan] = useState(null)
+  const [checkoutUrl, setCheckoutUrl] = useState(false);
   useEffect(() => {
-    dispatch(get_subscription());
+
     get_userprofile()
   }, [isFocuse]);
-  const user = useSelector(state => state.auth.userData);
-
-const buy_subscription =()=>{
-if(selectedPlan == null){
-  return errorToast('Please choose the subscription')
-}
-
-setCheckoutUrl(true)
-}
-const payment_uri = `https://server-php-8-2.technorizen.com/inside/admin/subcription_payment?user_id=${user.id}&amount=${selectedPlan?.amount}&currency=mad&subcription_plan_id=${selectedPlan?.id}`
 
 
 
-
-
-const get_userprofile = () => {
-  const params = {
-    user_id: user?.id,
+  const handleRedirect = async () => {
+    try {
+      const paymentUrl = `https://server-php-8-2.technorizen.com/inside/app_subscriptions?user_id=${Updated_user?.id}`;
+      await Linking.openURL(paymentUrl);
+    } catch (error) {
+      console.error('Failed to open URL:', error);
+      Alert.alert('Error', 'Failed to open payment page.');
+    }
   };
-  dispatch(get_profile(params));
-};
-const handleNavigationStateChange = async (navState) => {
 
-console.log('navState',navState);
-
-  if (navState.url.includes('paystripedata')) {
-    setCheckoutUrl(false);
-    purchase_subscription();
-    Alert.alert(
-      "Success",
-      "Subscription purchased successfully",
-      [{ text: "OK" }]
-    );
+  const get_userprofile = () => {
+    const params = {
+      user_id: user?.id,
+    };
+    dispatch(get_profile(params));
+  };
 
 
-  } 
 
-};
 
-console.log(Updated_user?.subcription_id);
 
-const handleError = (error) => {
-  console.error('WebView Error:', error);
-  Alert.alert('Error', 'Failed to load payment page. Please try again later.');
-  setCheckoutUrl(false);
 
-};
-
-const purchase_subscription =()=>{
-  const params ={
-    user_id:user?.id,
-    subcription_id:selectedPlan?.id,
-amount:selectedPlan?.amount
-  }
-
-  dispatch(add_subcription_plan(params)).then(res=>{
-    get_userprofile()
-  })
-}
-const filterSubscriptionById = (id) => {
-  return getSubscription.filter(getSubscription => getSubscription.id === id);
-};
-
-// Example usage
-const MyPlan = filterSubscriptionById(Updated_user?.subcription_id)[0];
-console.log('MyPlan',Updated_user?.subcription_status);
 
   return (
     <View style={styles.container}>
-      {isLoading?<Loading  />:null}
-      <View  style={{marginTop:Platform.OS == 'ios'?10:0}}/>
-      {checkoutUrl ? (
-        <WebView
-          source={{ uri: payment_uri }}
-          onNavigationStateChange={handleNavigationStateChange}
+      {isLoading ? <Loading /> : null}
 
-          onError={handleError}
-          style={{ marginTop: 40 }}
-        />
-      ) :
       <ImageBackground
         source={require('../../assets/Cropping/sub.png')}
         style={{ flex: 1 }}
       >
+        <View style={{ paddingTop: Platform.OS == 'ios' ? 10 : 0 }} />
         <ProfileHeader title={localizationStrings.subscription} width={22} />
 
         <View style={styles.contentContainer}>
-         {Updated_user?.subcription_status == true && 
+          {/* {Updated_user?.subcription_status == true && 
          
          <View style={{borderWidth:1,width:'80%',height:hp(20),borderRadius:10,alignItems:'center',padding:6}}>
           <Text style={[styles.title,{marginTop:5}]}>{localizationStrings.your_plan}</Text>
@@ -162,7 +115,7 @@ console.log('MyPlan',Updated_user?.subcription_status);
                 </TouchableOpacity>
               )}
             />
-          </View>
+          </View> */}
 
           <View style={styles.logoContainer}>
             <Image
@@ -173,15 +126,15 @@ console.log('MyPlan',Updated_user?.subcription_status);
           </View>
         </View>
 
-        <TouchableOpacity 
-        onPress={()=>{
-          buy_subscription()
-        }}
-        style={styles.upgradeButton}>
+        <TouchableOpacity
+          onPress={() => {
+            handleRedirect()
+          }}
+          style={styles.upgradeButton}>
           <Text style={styles.upgradeButtonText}>{localizationStrings.up_now}</Text>
         </TouchableOpacity>
       </ImageBackground>
-}
+
     </View>
   );
 }
@@ -212,15 +165,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: hp(5),
     shadowColor: "#000",
-shadowOffset: {
-	width: 0,
-	height: 2,
-},
-shadowOpacity: 0.25,
-shadowRadius: 3.84,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
 
-elevation: 5,
-    
+    elevation: 5,
+
   },
   itemText: {
     fontFamily: 'Federo-Regular',

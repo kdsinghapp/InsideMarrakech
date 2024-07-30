@@ -22,7 +22,8 @@
 		438CA748BA6D44F6B29847F3 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D3DD0A028F44F65AF4B88A5 /* FontAwesome5_Brands.ttf */; };
 		4494E962BC704D449CE67DE0 /* FontAwesome6_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38675E7640FA4B84BEFFB961 /* FontAwesome6_Regular.ttf */; };
 		7A038F2F9D7B450392590F07 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C97F5C538E249DCA35A6AC6 /* EvilIcons.ttf */; };
-		7DB916522C2EF88B0048CD8A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DB916512C2EF88B0048CD8A /* GoogleService-Info.plist */; };
+		7DE62EDC2C4FD4BC00246DB9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DE62EDB2C4FD4BC00246DB9 /* GoogleService-Info.plist */; };
+		7DE62EDD2C4FD4BC00246DB9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DE62EDB2C4FD4BC00246DB9 /* GoogleService-Info.plist */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		84C469AD8ECA4485B6DC72B1 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 735640B79A784C37BEEAC575 /* FontAwesome6_Brands.ttf */; };
 		89047D8522F89E466C9E2E50 /* Pods_InsideMarrakech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8761FEA1D973304A5E1021F9 /* Pods_InsideMarrakech.framework */; };
@@ -68,7 +69,7 @@
 		785D8A3633B41A67141FCFEF /* Pods-InsideMarrakech-InsideMarrakechTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsideMarrakech-InsideMarrakechTests.release.xcconfig"; path = "Target Support Files/Pods-InsideMarrakech-InsideMarrakechTests/Pods-InsideMarrakech-InsideMarrakechTests.release.xcconfig"; sourceTree = "<group>"; };
 		7AFC3DE5A6D944FFAB33C83D /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = ../src/assets/Fonts/FontAwesome.ttf; sourceTree = "<group>"; };
 		7C97F5C538E249DCA35A6AC6 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = ../src/assets/Fonts/EvilIcons.ttf; sourceTree = "<group>"; };
-		7DB916512C2EF88B0048CD8A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7DE62EDB2C4FD4BC00246DB9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7DE7257C7E6C47AB9274DBCC /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = ../src/assets/Fonts/Octicons.ttf; sourceTree = "<group>"; };
 		80F9F1AD744C4704A2C1784C /* FontAwesome6_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome6_Solid.ttf; path = ../src/assets/Fonts/FontAwesome6_Solid.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = InsideMarrakech/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -133,7 +134,7 @@
 		13B07FAE1A68108700A75B9A /* InsideMarrakech */ = {
 			isa = PBXGroup;
 			children = (
-				7DB916512C2EF88B0048CD8A /* GoogleService-Info.plist */,
+				7DE62EDB2C4FD4BC00246DB9 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -318,6 +319,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DE62EDD2C4FD4BC00246DB9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,7 +344,7 @@
 				06BDF361950842ED9742946A /* Fontisto.ttf in Resources */,
 				DB99F6CFBECA403BA5907EB0 /* Foundation.ttf in Resources */,
 				1567F68281844A5991108AAC /* Ionicons.ttf in Resources */,
-				7DB916522C2EF88B0048CD8A /* GoogleService-Info.plist in Resources */,
+				7DE62EDC2C4FD4BC00246DB9 /* GoogleService-Info.plist in Resources */,
 				F88F53E9A3784699AC7B8C78 /* MaterialCommunityIcons.ttf in Resources */,
 				9CF7E827D21347CEAF2977A6 /* MaterialIcons.ttf in Resources */,
 				AD453C14905640D2A45A051D /* Octicons.ttf in Resources */,
@@ -584,9 +586,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = InsideMarrakech/InsideMarrakech.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = Z3DT3CMZCM;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = InsideMarrakech/Info.plist;
@@ -594,7 +597,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -620,16 +623,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = InsideMarrakech/InsideMarrakech.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = Z3DT3CMZCM;
 				INFOPLIST_FILE = InsideMarrakech/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

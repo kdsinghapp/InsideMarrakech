@@ -115,11 +115,11 @@ const Account = [
 
     screen: ScreenNameEnum.BOOKING_SCREEN,
   },
-  {
-    name: localizationStrings.subscription,
+  // {
+  //   name: localizationStrings.subscription,
 
-    screen: ScreenNameEnum.SUBSCRIPTION_SCREEN,
-  },
+  //   screen: ScreenNameEnum.SUBSCRIPTION_SCREEN,
+  // },
   {
     name: localizationStrings.notification,
 

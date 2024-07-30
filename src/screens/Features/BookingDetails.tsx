@@ -19,10 +19,15 @@ export default function BookingDetails() {
   const { Property, selectedStartDate,
     selectedEndDate, totalDays,
     selectedGuestCount } = route.params;
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-
+    const validateEmail = (email) => {
+      if (!emailRegex.test(email)) {
+        errorToast('Please enter a valid email');
+        return false;
+      }
+      return true;
+    };
     const make_call = (Number) => {
 
       RNImmediatePhoneCall.immediatePhoneCall(Number);
@@ -42,7 +47,7 @@ export default function BookingDetails() {
       phoneNumber === '' &&
       email === ''
     ) return errorToast('Please enter all fields error');
-    if (emailRegex.test(email)) return errorToast('Please enter valid email ');
+    if (!validateEmail(email)) return errorToast('Please enter valid email ');
 
     navigation.navigate(ScreenNameEnum.TRAVELER_DETAILS, {
       firstName,

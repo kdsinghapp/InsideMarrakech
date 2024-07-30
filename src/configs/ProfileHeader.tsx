@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
     height: hp(5),
-marginTop:Platform.OS === 'android'?5:35,
+marginTop:Platform.OS === 'android'?5:40,
     flexDirection: 'row',
 
     justifyContent: 'space-between',

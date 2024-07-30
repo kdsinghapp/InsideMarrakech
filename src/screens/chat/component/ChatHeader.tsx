@@ -23,7 +23,7 @@ console.log(item);
     </TouchableOpacity>
     <View style={styles.headerContent}>
       <Image source={{uri:item?.image}} style={styles.headerAvatar}  resizeMode='cover'/>
-      <Text style={styles.headerText}>{item?.company_name}</Text>
+      <Text style={styles.headerText}>{item?.first_name} {item?.last_name}</Text>
     </View>
   </View>
   )
@@ -54,7 +54,7 @@ const styles =StyleSheet.create({
     colorDiv: {
         backgroundColor: '#edf2f2',
         height: hp(8),
-       marginTop:Platform.OS == 'ios'?25:0,
+       marginTop:Platform.OS == 'ios'?40:0,
         flexDirection: 'row',
         alignItems: 'center',
       

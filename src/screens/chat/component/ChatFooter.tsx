@@ -45,7 +45,11 @@ export default function ChatFooter({ item, onMessageSent }) {
       .doc('' + user?.id + item?.id)
       .collection('message')
       .add(messageData);
-
+      await firestore()
+      .collection('chats')
+      .doc('' +item?.id+user?.id)
+      .collection('message')
+      .add(messageData);
     setLoading(false); // Reset loading state
   };
 

@@ -32,7 +32,7 @@ import { errorToast } from '../../configs/customToast';
 export default function PaymentDetails() {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedPayment, setselectedPayment] = useState('Cash on Delivery');
-  const [PaymentMode, setPaymentMode] = useState('Cash')
+  const [PaymentMode, setPaymentMode] = useState('Paid')
   const [PaymentStatus, setPaymentStatus] = useState('unpaid')
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
 
@@ -290,12 +290,12 @@ const PaymentOption = [
     logo: require('../../assets/Cropping/Wallet3x.png'),
     mode: 'Paid'
   },
-  {
-    id: 2,
-    mode: 'Cash',
-    name: 'Cash on Delivery',
-    logo: require('../../assets/Cropping/CashonDelivery3x.png'),
-  },
+  // {
+  //   id: 2,
+  //   mode: 'Cash',
+  //   name: 'Cash on Delivery',
+  //   logo: require('../../assets/Cropping/CashonDelivery3x.png'),
+  // },
 ];
 const styles = StyleSheet.create({
   shadow: {

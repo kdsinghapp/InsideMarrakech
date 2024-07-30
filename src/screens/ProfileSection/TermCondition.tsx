@@ -38,7 +38,7 @@ export default function TermCondition() {
     <link href="https://fonts.googleapis.com/css2?family=Federo&display=swap" rel="stylesheet">
     <style>
       body {
-        font-family: 'Federo', sans-serif;
+
         font-size:36px;
         color: #000;
       }
