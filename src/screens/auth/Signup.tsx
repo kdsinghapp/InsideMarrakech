@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -16,6 +18,7 @@ import {errorToast} from '../../configs/customToast';
 import Loading from '../../configs/Loader';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import localizationStrings from '../../utils/Localization';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SignUp() {
   const navigation = useNavigation();
@@ -32,6 +35,10 @@ export default function SignUp() {
   const [CompanyAddress, setCompanyAddress] = useState('');
   const [CompanyEmail, setCompanyEmail] = useState('');
   const [mobile, setMobile] = useState('');
+  const [languageChanged, setLanguageChanged] = useState(false);
+
+
+  
   const validatePassword = password => {
     // Password must contain at least 8 characters including at least one uppercase letter, one lowercase letter, one number, and one special character
     const re =
@@ -43,29 +50,25 @@ export default function SignUp() {
     return re.test(email);
   };
   const handleSignUp = () => {
-    console.log(email);
-    console.log(validateEmail(email));
-    
+    const lang = localizationStrings.getLanguage();
+  
     if (!validateEmail(email)) {
-      errorToast('Please enter a valid email address.');
+      errorToast(localizationStrings[`please_enter_valid_email_${lang}`]);
       return;
     }
-
+  
     // Password validation
-
-    
     if (!validatePassword(password)) {
-      errorToast(
-        'Password must contain at least 8 characters including at least one uppercase letter, one lowercase letter, one number, and one special character.',
-      );
+      errorToast(localizationStrings[`password_invalid_${lang}`]);
       return;
     }
-
+  
     // Password match validation
-    if (password !== confirmPassword && role != 'User') {
-      errorToast('Passwords or Confirm Password do not match.');
+    if (password !== confirmPassword && role !== 'User') {
+      errorToast(localizationStrings[`password_mismatch_${lang}`]);
       return;
     }
+  
     if (role == 'User') {
       if (
         firstName === '' &&
@@ -74,8 +77,11 @@ export default function SignUp() {
         email === '' &&
         password === '' &&
         role !== null
-      )
-        return errorToast('Please enter all fields error');
+      ) {
+        errorToast(localizationStrings[`enter_all_fields_error_${lang}`]);
+        return;
+      }
+      // Dispatch the registration action for users
       const params = {
         data: {
           first_name: firstName,
@@ -87,7 +93,7 @@ export default function SignUp() {
         },
         navigation: navigation,
       };
-
+  
       dispatch(register(params));
     } else {
       if (
@@ -98,8 +104,11 @@ export default function SignUp() {
         CompanyEmail === '' &&
         password === '' &&
         role !== null
-      )
-        return errorToast('Please enter all fields error');
+      ) {
+        errorToast(localizationStrings[`enter_all_fields_error_${lang}`]);
+        return;
+      }
+      // Dispatch the registration action for companies
       const params = {
         data: {
           company_name: CompanyName,
@@ -114,15 +123,18 @@ export default function SignUp() {
         },
         navigation: navigation,
       };
-
+  
       dispatch(register(params));
     }
   };
-
+  
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+    style={styles.container}
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  >
       {isLoading ? <Loading /> : null}
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.logoContainer}>
           <Image
             source={require('../../assets/Cropping/Logo3x.png')}
@@ -259,6 +271,7 @@ export default function SignUp() {
                     firstLogo={false}
                     img={require('../../assets/Cropping/Lock2x.png')}
                     showEye={true}
+                    hide={true}
                     value={password}
                     onChangeText={setPassword}
                   />
@@ -293,9 +306,10 @@ export default function SignUp() {
           </View>
 
           <View style={{height: role == 'Company' ? hp(5) : 10}} />
+          <View style={{height:hp(40)}} />
         </View>
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

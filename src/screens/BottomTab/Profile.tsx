@@ -29,10 +29,10 @@ export default function Profile() {
   const isFacuse = useIsFocused();
   const [isVisible, setIsVisible] = useState(false);
   const navigation = useNavigation();
-  const [value, setValue] = useState('French');
+const [value, setValue] = useState('French');
   const [languageChanged, setLanguageChanged] = useState(false);
-  const [items] = useState([
-    { label: 'French', value: 'French', flag: require('../../assets/Cropping/france.png') },
+    const [items] = useState([
+     { label: 'French', value: 'French', flag: require('../../assets/Cropping/france.png') },
     { label: 'Chinese', value: 'Chinese', flag: require('../../assets/Cropping/china.png') },
     { label: 'Russian', value: 'Russian', flag: require('../../assets/Cropping/russia.png') },
     { label: 'English', value: 'English', flag: require('../../assets/Cropping/usa.png') },
@@ -308,7 +308,7 @@ const About = [
             {localizationStrings.logout}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
 
 Alert.alert(
@@ -345,7 +345,7 @@ Alert.alert(
             }}>
          Delete Account
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
 
         <Modal visible={isVisible} animationType="slide" transparent={true}>

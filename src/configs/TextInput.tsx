@@ -1,5 +1,5 @@
 import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 export default function TextInputField({ ...props }) {
@@ -15,6 +15,10 @@ export default function TextInputField({ ...props }) {
       props.onChangeText(value);
     }
   };
+
+  useEffect(()=>{
+setShowPassword(props.hide)
+  },[])
 
   return (
     <View style={styles.inputContainer}>

@@ -29,6 +29,9 @@ export default function ProfileHeader({ title = '' }) {
           {title}
         </Text>
       </View>
+      <View style={{width:'10%'}}>
+      
+      </View>
     </View>
   );
 }
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
     height: hp(5),
-marginTop:Platform.OS === 'android'?5:40,
+marginTop:Platform.OS === 'android'?5:45,
     flexDirection: 'row',
 
     justifyContent: 'space-between',
@@ -59,7 +62,7 @@ marginTop:Platform.OS === 'android'?5:40,
   titleContainer: {
 
 
-    width: '60%',
+  
 
     justifyContent: 'center',
   },

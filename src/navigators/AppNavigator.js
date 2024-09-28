@@ -21,7 +21,7 @@ export default function AppNavigator() {
     const handleLanguage =async () => {
       await firebase.analytics().setAnalyticsCollectionEnabled(true);
    const language = await AsyncStorage.getItem("Lng")
-  console.log('language',language);
+
     localizationStrings.setLanguage(language);
 
     }

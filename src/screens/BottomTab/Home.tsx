@@ -37,6 +37,7 @@ import Loading from '../../configs/Loader';
 import axios, { all } from 'axios';
 import localizationStrings from '../../utils/Localization';
 import ModalForm from '../Modal/ModalForm';
+import { KeyboardAvoidingView } from 'react-native';
 
 export default function Home() {
 
@@ -214,7 +215,7 @@ export default function Home() {
 
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       {isLoading ? <Loading /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{height:Platform.OS !== 'android'?30:5,}} />
@@ -336,81 +337,6 @@ setModalVisible(true)
               keyExtractor={(item) => item.id}
             />
 
-            {/* <Modal visible={isVisible} animationType="slide" transparent={true}>
-              <TouchableOpacity
-                onPress={() => {
-                  setIsVisible(false);
-                }}
-                style={styles.modalBackground}>
-                  
-                <View style={styles.modalContent}>
-                  <View style={styles.modalTitleContainer}>
-                    <Text style={styles.modalTitle}>Time Range</Text>
-                  </View>
-                  <View style={styles.modalSection}>
-                    <View style={styles.timeContainer}>
-                      <View style={styles.timeOption}>
-                        <Text style={styles.timeText}>1 Hours</Text>
-                      </View>
-                      <View style={styles.timeOption}>
-                        <Text style={styles.timeText}>1 Hours</Text>
-                      </View>
-                      <View style={styles.timeOption}>
-                        <Text style={styles.timeText}>1 Hours</Text>
-                      </View>
-                      <View style={styles.timeOption}>
-                        <Text style={styles.timeText}>1 Hours</Text>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={styles.modalTitleContainer}>
-                    <Text style={styles.modalTitle}>Person</Text>
-                  </View>
-                  <View style={styles.modalSection}>
-                    <View style={styles.guestsContainer}>
-                      <View style={styles.guestOption}>
-                        <Text style={styles.guestText}>1</Text>
-                        <Image
-                          source={require('../../assets/Cropping/Person2x.png')}
-                          style={styles.personIcon}
-                        />
-                      </View>
-                      <View style={styles.guestOption}>
-                        <Text style={styles.guestText}>1</Text>
-                        <Image
-                          source={require('../../assets/Cropping/Person2x.png')}
-                          style={styles.personIcon}
-                        />
-                      </View>
-                      <View style={styles.guestOption}>
-                        <Text style={styles.guestText}>1</Text>
-                        <Image
-                          source={require('../../assets/Cropping/Person2x.png')}
-                          style={styles.personIcon}
-                        />
-                      </View>
-                      <View style={styles.guestOption}>
-                        <Text style={styles.guestText}>1</Text>
-                        <Image
-                          source={require('../../assets/Cropping/Person2x.png')}
-                          style={styles.personIcon}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                  <View style={styles.modalTitleContainer}>
-                    <Text style={styles.modalTitle}>Budget Range</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate(ScreenNameEnum.LOGIN_SCREEN);
-                    }}
-                    style={styles.applyButton}>
-                    <Text style={styles.applyButtonText}>Apply</Text>
-                  </TouchableOpacity>
-                </View>
-              </TouchableOpacity>
-            </Modal> */}
           </>
         )}
         {user?.type === 'Company' && (
@@ -435,7 +361,7 @@ setModalVisible(true)
         onClose={handleCloseModal}
         onSubmit={handleSubmit}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

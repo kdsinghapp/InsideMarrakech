@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { CountryPicker } from 'react-native-country-codes-picker';
@@ -113,7 +114,10 @@ export default function Login() {
   }, [identity, password, code, emailRegex, numberRegex, role, dispatch, navigation]);
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+    style={styles.container}
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  >
       {isLoading ? <Loading /> : null}
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.logoContainer}>
@@ -193,7 +197,7 @@ export default function Login() {
           style={styles.countryPicker}
         />
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

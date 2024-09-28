@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import React, { useState } from 'react';
 import ProfileHeader from '../../configs/ProfileHeader';
 import { styles } from '../../configs/Styles';
@@ -65,7 +65,10 @@ export default function BookingDetails() {
 
 
   return (
-    <View style={localStyles.container}>
+    <KeyboardAvoidingView
+    style={localStyles.container}
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  >
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader title={localizationStrings.Booking_details} width={12} />
 
@@ -176,7 +179,7 @@ export default function BookingDetails() {
         </TouchableOpacity>
       </ScrollView>
 
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

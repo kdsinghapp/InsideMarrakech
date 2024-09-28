@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import ProfileHeader from '../../configs/ProfileHeader';
@@ -75,7 +77,10 @@ export default function AddTravelerDetails() {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+    style={styles.container}
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  >
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader title={localizationStrings.Booking_details} width={13} />
 
@@ -187,7 +192,7 @@ export default function AddTravelerDetails() {
         </TouchableOpacity>
       </ScrollView>
      
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
