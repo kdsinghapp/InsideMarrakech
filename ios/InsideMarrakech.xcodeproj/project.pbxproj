@@ -15,22 +15,22 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1567F68281844A5991108AAC /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8E9CE29656FB4D229560C076 /* Ionicons.ttf */; };
-		1A610E089760BA9C4C2D3555 /* Pods_InsideMarrakech_InsideMarrakechTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9915A17F7FCFB1AD609AFA76 /* Pods_InsideMarrakech_InsideMarrakechTests.framework */; };
 		2BE5900999B142129D95A498 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA207F0264934E9F80F6F2D0 /* AntDesign.ttf */; };
 		418A64BFE2EF45F4B072A798 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D22227F9B5D04F9D926DAAEE /* Entypo.ttf */; };
 		42786D9B50500B2ED7987AA8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F205CDF72E7178E4DA3E342F /* PrivacyInfo.xcprivacy */; };
 		438CA748BA6D44F6B29847F3 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D3DD0A028F44F65AF4B88A5 /* FontAwesome5_Brands.ttf */; };
 		4494E962BC704D449CE67DE0 /* FontAwesome6_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38675E7640FA4B84BEFFB961 /* FontAwesome6_Regular.ttf */; };
 		7A038F2F9D7B450392590F07 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C97F5C538E249DCA35A6AC6 /* EvilIcons.ttf */; };
-		7DE62EDC2C4FD4BC00246DB9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DE62EDB2C4FD4BC00246DB9 /* GoogleService-Info.plist */; };
-		7DE62EDD2C4FD4BC00246DB9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DE62EDB2C4FD4BC00246DB9 /* GoogleService-Info.plist */; };
+		7DBE1C862CA831580041C252 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DBE1C852CA831580041C252 /* GoogleService-Info.plist */; };
+		7DBE1C872CA831580041C252 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DBE1C852CA831580041C252 /* GoogleService-Info.plist */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		84C469AD8ECA4485B6DC72B1 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 735640B79A784C37BEEAC575 /* FontAwesome6_Brands.ttf */; };
-		89047D8522F89E466C9E2E50 /* Pods_InsideMarrakech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8761FEA1D973304A5E1021F9 /* Pods_InsideMarrakech.framework */; };
 		9615B83C5B6F435F8B3DEE5F /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1E6B7FFA4CE74118A8BA37E7 /* FontAwesome5_Regular.ttf */; };
 		9CF7E827D21347CEAF2977A6 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DF6ECEA46C044E439BF2E290 /* MaterialIcons.ttf */; };
+		A439B7C2D72642030D6E2C7F /* Pods_InsideMarrakech_InsideMarrakechTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF8C5B834A85DE39E619748D /* Pods_InsideMarrakech_InsideMarrakechTests.framework */; };
 		A71E2CD88A97492B9E0B0E75 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB7EB2ABA987479A9717F8C9 /* FontAwesome5_Solid.ttf */; };
 		AD453C14905640D2A45A051D /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7DE7257C7E6C47AB9274DBCC /* Octicons.ttf */; };
+		B19BE45901560949C6FB1ACD /* Pods_InsideMarrakech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACEB194FF40CEEDEB0F9A25 /* Pods_InsideMarrakech.framework */; };
 		BAED90FEEC4A4AE1BCA14BCE /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F2919723954C1AA9946326 /* Feather.ttf */; };
 		D4AE043AAF19408DA8449786 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AFC3DE5A6D944FFAB33C83D /* FontAwesome.ttf */; };
 		DB99F6CFBECA403BA5907EB0 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C165790C59994AA18CA786EC /* Foundation.ttf */; };
@@ -69,20 +69,20 @@
 		785D8A3633B41A67141FCFEF /* Pods-InsideMarrakech-InsideMarrakechTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsideMarrakech-InsideMarrakechTests.release.xcconfig"; path = "Target Support Files/Pods-InsideMarrakech-InsideMarrakechTests/Pods-InsideMarrakech-InsideMarrakechTests.release.xcconfig"; sourceTree = "<group>"; };
 		7AFC3DE5A6D944FFAB33C83D /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = ../src/assets/Fonts/FontAwesome.ttf; sourceTree = "<group>"; };
 		7C97F5C538E249DCA35A6AC6 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = ../src/assets/Fonts/EvilIcons.ttf; sourceTree = "<group>"; };
-		7DE62EDB2C4FD4BC00246DB9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7DBE1C852CA831580041C252 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7DE7257C7E6C47AB9274DBCC /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = ../src/assets/Fonts/Octicons.ttf; sourceTree = "<group>"; };
 		80F9F1AD744C4704A2C1784C /* FontAwesome6_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome6_Solid.ttf; path = ../src/assets/Fonts/FontAwesome6_Solid.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = InsideMarrakech/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8761FEA1D973304A5E1021F9 /* Pods_InsideMarrakech.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InsideMarrakech.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E9CE29656FB4D229560C076 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = ../src/assets/Fonts/Ionicons.ttf; sourceTree = "<group>"; };
-		9915A17F7FCFB1AD609AFA76 /* Pods_InsideMarrakech_InsideMarrakechTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InsideMarrakech_InsideMarrakechTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D3DD0A028F44F65AF4B88A5 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = ../src/assets/Fonts/FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
 		9D706882C013431F9C1453AA /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = ../src/assets/Fonts/SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		A1B46F160CDE2FB1BCEF6070 /* Pods-InsideMarrakechTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsideMarrakechTests.debug.xcconfig"; path = "Target Support Files/Pods-InsideMarrakechTests/Pods-InsideMarrakechTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A1CA0A96395A15D23D2C006E /* Pods-InsideMarrakech-InsideMarrakechTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InsideMarrakech-InsideMarrakechTests.debug.xcconfig"; path = "Target Support Files/Pods-InsideMarrakech-InsideMarrakechTests/Pods-InsideMarrakech-InsideMarrakechTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A4C676A470CA4BB1A7106E5C /* Federo-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Federo-Regular.ttf"; path = "../src/assets/Fonts/Federo-Regular.ttf"; sourceTree = "<group>"; };
 		AA207F0264934E9F80F6F2D0 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = ../src/assets/Fonts/AntDesign.ttf; sourceTree = "<group>"; };
+		AACEB194FF40CEEDEB0F9A25 /* Pods_InsideMarrakech.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InsideMarrakech.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE8925B63D024B46B14F0A4A /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = ../src/assets/Fonts/Zocial.ttf; sourceTree = "<group>"; };
+		BF8C5B834A85DE39E619748D /* Pods_InsideMarrakech_InsideMarrakechTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InsideMarrakech_InsideMarrakechTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C165790C59994AA18CA786EC /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = ../src/assets/Fonts/Foundation.ttf; sourceTree = "<group>"; };
 		CB7EB2ABA987479A9717F8C9 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = ../src/assets/Fonts/FontAwesome5_Solid.ttf; sourceTree = "<group>"; };
 		D22227F9B5D04F9D926DAAEE /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = ../src/assets/Fonts/Entypo.ttf; sourceTree = "<group>"; };
@@ -99,7 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A610E089760BA9C4C2D3555 /* Pods_InsideMarrakech_InsideMarrakechTests.framework in Frameworks */,
+				A439B7C2D72642030D6E2C7F /* Pods_InsideMarrakech_InsideMarrakechTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,7 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				89047D8522F89E466C9E2E50 /* Pods_InsideMarrakech.framework in Frameworks */,
+				B19BE45901560949C6FB1ACD /* Pods_InsideMarrakech.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,7 +134,7 @@
 		13B07FAE1A68108700A75B9A /* InsideMarrakech */ = {
 			isa = PBXGroup;
 			children = (
-				7DE62EDB2C4FD4BC00246DB9 /* GoogleService-Info.plist */,
+				7DBE1C852CA831580041C252 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -151,8 +151,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				8761FEA1D973304A5E1021F9 /* Pods_InsideMarrakech.framework */,
-				9915A17F7FCFB1AD609AFA76 /* Pods_InsideMarrakech_InsideMarrakechTests.framework */,
+				AACEB194FF40CEEDEB0F9A25 /* Pods_InsideMarrakech.framework */,
+				BF8C5B834A85DE39E619748D /* Pods_InsideMarrakech_InsideMarrakechTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -319,7 +319,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7DE62EDD2C4FD4BC00246DB9 /* GoogleService-Info.plist in Resources */,
+				7DBE1C872CA831580041C252 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,7 +344,7 @@
 				06BDF361950842ED9742946A /* Fontisto.ttf in Resources */,
 				DB99F6CFBECA403BA5907EB0 /* Foundation.ttf in Resources */,
 				1567F68281844A5991108AAC /* Ionicons.ttf in Resources */,
-				7DE62EDC2C4FD4BC00246DB9 /* GoogleService-Info.plist in Resources */,
+				7DBE1C862CA831580041C252 /* GoogleService-Info.plist in Resources */,
 				F88F53E9A3784699AC7B8C78 /* MaterialCommunityIcons.ttf in Resources */,
 				9CF7E827D21347CEAF2977A6 /* MaterialIcons.ttf in Resources */,
 				AD453C14905640D2A45A051D /* Octicons.ttf in Resources */,
@@ -589,7 +589,7 @@
 				CODE_SIGN_ENTITLEMENTS = InsideMarrakech/InsideMarrakech.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z3DT3CMZCM;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = InsideMarrakech/Info.plist;
@@ -597,7 +597,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -626,14 +626,14 @@
 				CODE_SIGN_ENTITLEMENTS = InsideMarrakech/InsideMarrakech.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Z3DT3CMZCM;
 				INFOPLIST_FILE = InsideMarrakech/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -687,7 +687,7 @@
 				CXX = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -781,7 +781,7 @@
 				CXX = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, FlatList, StyleSheet ,TouchableOpacity,Image} from 'react-native'
+import { View, Text, Dimensions, FlatList, StyleSheet ,TouchableOpacity,Image, Platform} from 'react-native'
 import React from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import ScreenNameEnum from '../../routes/screenName.enum'
@@ -22,7 +22,7 @@ export default function Gallery_Screen() {
   
     return (
       <View style={styles.container}>
-        <View style={{flexDirection:'row',alignItems:'center',height:60,}}>
+        <View style={{flexDirection:'row',alignItems:'center',height:60,marginTop:Platform.OS == 'ios'?30:10}}>
          <TouchableOpacity
         onPress={() => {
           navigation.goBack();
