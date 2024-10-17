@@ -1,5 +1,7 @@
 {
   "English": {
+    "No_Notification_found": "No Notification found",
+    "No_Chat_Contact_Found": "No Chat Contact Found",
     "Your_Plan": "Your Plan",
     "Validity": "Validity",
     "Purchase_date": "Purchase date",
@@ -165,7 +167,8 @@
   "password_invalid_fr":"Le mot de passe doit contenir 8+ caractères, avec majuscule, minuscule, chiffre et caractère spécial.",
   "password_mismatch_fr": "Les mots de passe ne correspondent pas.",
   "enter_all_fields_error_fr": "Veuillez remplir tous les champs.",
-  
+  "No_Notification_found": "Aucune notification trouvée",
+    "No_Chat_Contact_Found": "Aucun contact de chat trouvé",
     "Your_Plan": "Votre Plan",
     "Validity": "Validité",
     "Purchase_date": "Date d'achat",
@@ -182,7 +185,7 @@
     "Other_Guests": "Autres invités",
     "No_of_Guest": "Nombre d'invités",
     "Status": "Statut",
-    "SubCategory": "Sous-catégorie",
+    "SubCategory": "Sous-Catégoriess",
     "month": "mois",
     "Y_B_C": "Votre réservation est confirmée!",
     "b_home": "Retour à l'accueil",
@@ -232,7 +235,7 @@
     "photo": "Photo",
     "Description": "Description",
     "name": "Nom",
-    "S_category": "Choisir une catégorie",
+    "S_category": "Choisir une Catégories",
     "title": "Titre",
     "a_propert": "Ajouter une propriété",
     "Personal_Info": "Informations personnelles",
@@ -255,7 +258,7 @@
     "Company": "Entreprise",
     "SignUp": "S'inscrire",
     "First_name": "Prénom",
-    "Last_Name": "Nom de famille",
+    "Last_Name": "Nom ",
     "Email_Address": "Adresse e-mail",
     "Mobile_number": "Numéro de portable",
     "Login_txt": "Vous avez déjà un compte ? Connexion",
@@ -274,7 +277,7 @@
     "save": "Enregistrer",
     "current_location": "Emplacement actuel",
     "search": "Chercher",
-    "category": "Catégorie",
+    "category": "Catégories",
     "View": "Vue",
     "Home": "Accueil",
     "Booking": "Réservation",
@@ -282,7 +285,7 @@
     "Back": "Retour",
     "Pending": "En attente",
     "Complete": "Complet",
-    "Cancel": "Annuler",
+    "Cancel": "Annulée",
     "Account": "Compte",
     "Edit_profile": "Modifier le profil",
     "Change_pass": "Changer le mot de passe",
@@ -323,6 +326,8 @@
     "Close_Time": "Heure de fermeture",
   },
   "Chinese": {
+    "No_Notification_found": "未找到通知",
+    "No_Chat_Contact_Found": "未找到聊天联系人",
     "please_enter_valid_email_zh": "请输入有效的电子邮件地址。",
     "password_invalid_zh":"密码必须包含 8+ 个字符，包括大写字母、小写字母、数字和特殊字符。",
     "password_mismatch_zh": "密码不匹配。",
@@ -484,6 +489,8 @@
     "Close_Time": "关闭时间"
   },
   "Russian": {
+    "No_Notification_found": "Уведений не найдено",
+    "No_Chat_Contact_Found": "Контактов для чата не найдено",
     "please_enter_valid_email_ru": "Пожалуйста, введите действительный адрес электронной почты.",
     "password_invalid_ru":
       "Пароль должен содержать 8+ символов, включая заглавные, строчные буквы, цифры и специальные символы.",
@@ -648,6 +655,8 @@
     "Close_Time": "Время закрытия"
   },
   "Italian": {
+    "No_Notification_found": "Nessuna notifica trovata",
+    "No_Chat_Contact_Found": "Nessun contatto chat trovato",
     "please_enter_valid_email_it": "Inserisci un indirizzo email valido.",
     "password_invalid_it":"La password deve contenere 8+ caratteri, con maiuscole, minuscole, numeri e caratteri speciali.",
     "password_mismatch_it": "Le password non corrispondono.",
@@ -810,6 +819,8 @@
     "Close_Time": "Orario di chiusura"
   },
   "Spanish": {
+    "No_Notification_found": "No se encontraron notificaciones",
+    "No_Chat_Contact_Found": "No se encontraron contactos de chat",
     "please_enter_valid_email_es": "Por favor, ingrese una dirección de correo válida.",
   "password_invalid_es":"La contraseña debe tener 8+ caracteres, con mayúsculas, minúsculas, números y caracteres especiales.",
   "password_mismatch_es": "Las contraseñas no coinciden.",
@@ -971,6 +982,8 @@
     "Close_Time": "Hora de cierre"
   },
   "Japanese": {
+    "No_Notification_found": "通知が見つかりませんでした",
+    "No_Chat_Contact_Found": "チャットの連絡先が見つかりませんでした",
     "please_enter_valid_email_ja": "有効なメールアドレスを入力してください。",
   "password_invalid_ja":"パスワードは8文字以上、大文字、小文字、数字、特殊文字を含める必要があります。",
   "password_mismatch_ja": "パスワードが一致しません。",

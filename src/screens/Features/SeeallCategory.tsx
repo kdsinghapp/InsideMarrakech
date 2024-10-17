@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+  } from 'react-native-responsive-screen';
 import ProfileHeader from '../../configs/ProfileHeader';
 import localizationStrings from '../../utils/Localization';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
@@ -29,12 +32,37 @@ const SeeallCategory = () => {
         onPress={()=>{
           navigation.navigate(ScreenNameEnum.seeSubcategory,{id:item.id})
         }}
-        style={styles.itemContainer}>
+        style={[
+            styles.shadow,
+            {
+
+              borderRadius: 10,
+              marginVertical: 10,
+              alignSelf: 'center',
+              backgroundColor: '#FFFFFF',
+              marginHorizontal: 10,
+              width: wp(40),
+              justifyContent: 'center',
+              alignItems: 'center'
+            },
+          ]}>
+      
+    
+          <View style={{
+            marginTop: 5, paddingBottom: 10,
+    
+          }}>
             <Image
-                source={{ uri: item.image }}
-                style={styles.itemImage}
-                resizeMode="contain"
+              resizeMode='cover'
+              source={{ uri: item.image }}
+              style={{
+                height: hp(15),
+                width: wp(35),
+                borderRadius: 15,
+                borderColor: '#7756FC',
+              }}
             />
+          </View>
             <Text style={styles.itemText}>{item.name}</Text>
         </TouchableOpacity>
     );
@@ -43,20 +71,33 @@ const SeeallCategory = () => {
         <View style={styles.container}>
            {isLoading?<Loading />:null}
              <ProfileHeader title={localizationStrings.category}/>
+             <View style={[styles.container,{alignItems:'center'}]}>
             <FlatList
+            showsVerticalScrollIndicator={false}
                 data={categories}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 numColumns={numColumns}
             />
         </View>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
+    shadow: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+        elevation: 7,
+      },
     container: {
         flex: 1,
-       
+     
         backgroundColor: '#fff',
     },
     itemContainer: {
@@ -81,6 +122,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         padding: 10,
+        fontFamily: 'Federo-Regular',
     },
 });
 

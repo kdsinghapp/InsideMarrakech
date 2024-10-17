@@ -40,7 +40,7 @@ export const login = createAsyncThunk('login', async (params, thunkApi) => {
 
     return response.data.user_data;
   } catch (error) {
-    console.log('Error:', error);
+    console.log('Error: login', error);
     errorToast(`Network error`);
 
     return thunkApi.rejectWithValue(error);
@@ -65,7 +65,7 @@ export const register = createAsyncThunk(
 
       return response.data.user_data;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error: register', error);
       errorToast(`Network error`);
 
       return thunkApi.rejectWithValue(error);
@@ -90,7 +90,7 @@ export const Get_UserProfile = createAsyncThunk(
 
       return response.data.result;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error: get_profile', error);
 
       return thunkApi.rejectWithValue(error);
     }
@@ -263,7 +263,7 @@ export const get_profile = createAsyncThunk(
 
       return response.data.user_data;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error: get_profile', error);
       errorToast('Network Error');
       return thunkApi.rejectWithValue(error);
     }

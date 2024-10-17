@@ -102,7 +102,7 @@ import localizationStrings from '../../utils/Localization';
                 keyExtractor={(item) => item.id}
                 ListFooterComponent={() => <View style={styles.footer} />}
               />:<View style={{flex:1,alignItems:'center',justifyContent: 'center',}}>
-<Text style={{fontSize:20,color:'#000'}}>No Notification found</Text>
+<Text style={{fontSize:20,color:'#000',  fontFamily: 'Federo-Regular',}}>{localizationStrings?.No_Notification_found}</Text>
             </View>
     }
             </View>

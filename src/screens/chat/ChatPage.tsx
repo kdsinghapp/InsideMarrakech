@@ -32,7 +32,7 @@ export default function ChatPage() {
 
   }
 
-console.log('ChatUser?.length',ChatUser);
+  console.log('ChatUser?.length', ChatUser);
 
 
   const RecentListItem = ({ item }) => (
@@ -45,11 +45,14 @@ console.log('ChatUser?.length',ChatUser);
         <Image source={{ uri: item.reciver_data.image }} style={styles.avatar} />
       </View>
       <View style={styles.itemTextContainer}>
-        <Text style={styles.itemName}>{item.reciver_data.first_name} {item.reciver_data.last_name}</Text>
+        <Text style={styles.itemName}>{item.reciver_data.first_name} {item.reciver_data.last_name} {!item.reciver_data.last_name && !item.reciver_data.first_name && item.reciver_data.company_name}</Text>
 
       </View>
     </TouchableOpacity>
   );
+
+
+
 
   return (
     <View style={styles.container}>
@@ -79,7 +82,7 @@ console.log('ChatUser?.length',ChatUser);
               }
             /> : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
 
-              <Text style={{ fontSize: 12, color: "#000", fontWeight: '500' }}>No Chat Contact Found</Text>
+              <Text style={{ fontSize: 12, color: "#000", fontWeight: '500', fontFamily: 'Federo-Regular', }}>{localizationStrings?.No_Chat_Contact_Found}</Text>
             </View>
 
           }
@@ -96,10 +99,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   itemContainer: {
+    shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 2,
+},
+shadowOpacity: 0.25,
+shadowRadius: 3.84,
+
+elevation: 5,
     height: hp(10),
     padding: 10,
     marginHorizontal: 15,
-    backgroundColor: '#e6fbfc',
+    backgroundColor: '#fff',
     borderRadius: 15,
     marginVertical: 5,
     flexDirection: 'row',
@@ -118,14 +130,17 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '600',
     lineHeight: 25,
+    fontFamily: 'Federo-Regular',
     color: '#000',
   },
   itemStatus: {
     color: '#874BE9',
     fontSize: 14,
     fontWeight: '700',
+    fontFamily: 'Federo-Regular',
   },
   itemTime: {
+    fontFamily: 'Federo-Regular',
     fontSize: 12,
     fontWeight: '400',
     color: '#B6B6B6',
@@ -150,6 +165,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 12,
     color: '#FFF',
+    fontFamily: 'Federo-Regular',
   },
   searchContainer: {
     marginTop: 10,
@@ -170,6 +186,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     lineHeight: 18,
+    fontFamily: 'Federo-Regular',
   },
   shdow: {
     shadowColor: '#000',
@@ -184,46 +201,3 @@ const styles = StyleSheet.create({
   },
 });
 
-const data = [
-  {
-    id: '1',
-    name: 'Jenny Wilson',
-    time: '08.00pm',
-    img: require('../../assets/Cropping/img1.png'),
-    status: 'Typing...',
-    count: '2',
-  },
-  {
-    id: '2',
-    name: 'Emerson',
-    time: '08.00pm',
-    img: require('../../assets/Cropping/img2.png'),
-    status: 'Have you spoken to the delivery...',
-    count: '2',
-  },
-  {
-    id: '3',
-    name: 'Ruben George',
-    time: '08.00pm',
-    img: require('../../assets/Cropping/img3.png'),
-    status: 'Have you spoken to the delivery...',
-    count: '999',
-  },
-  {
-    id: '4',
-    name: 'Omar Kenter',
-    time: '08.00pm',
-    img: require('../../assets/Cropping/img4.png'),
-    status: 'Have you spoken to the delivery...',
-    count: '2',
-  },
-  {
-    id: '5',
-    name: 'Martin Botosh',
-    time: '08.00pm',
-    img: require('../../assets/Cropping/img5.png'),
-
-    status: 'Have you spoken to the delivery...',
-    count: '150',
-  },
-];

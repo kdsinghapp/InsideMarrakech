@@ -61,15 +61,18 @@ const GooglePlacesInput = ({ placeholder, onPlaceSelected }) => {
                     container: {
                         marginHorizontal: 10,
                         marginTop: 10,
-                        backgroundColor: '#fff'
+                        backgroundColor: '#fff',
+                     
                     },
                     textInput: {
+                        fontFamily: 'Federo-Regular',
                         fontSize: 13,
                         color: '#000',
                         height: '100%',
                         width: '90%',
                         borderWidth: 1,
                         borderRadius: 10,
+                    
                     },
                 }}
                 textInputProps={{

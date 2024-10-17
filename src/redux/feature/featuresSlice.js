@@ -210,10 +210,7 @@ export const get_property_detail = createAsyncThunk(
         params,
         config,
       );
-      console.log(
-        '==============get_property_detail==response====================',
-        response.data,
-      );
+    
 
       if (response.data.status === '1') {
         return response.data.data;
@@ -330,7 +327,7 @@ export const add_property = createAsyncThunk(
       return response.data;
     } catch (error) {
       errorToast('Network error');
-      console.log('====================================');
+      console.log('============add_property========================');
       console.log(error);
       console.log('====================================');
       return thunkApi.rejectWithValue(error);
@@ -365,7 +362,7 @@ export const update_property = createAsyncThunk(
       return responseData;
     } catch (error) {
       errorToast('Network error');
-      console.error('API Error:', error);
+      console.error('API Error update_property :', error);
       return thunkApi.rejectWithValue(error);
     }
   },
@@ -403,7 +400,7 @@ export const add_property_menu = createAsyncThunk(
       return response.data;
     } catch (error) {
       errorToast('Network error');
-      console.log('====================================');
+      console.log('=============add_property_menu=======================');
       console.log(error);
       console.log('====================================');
       return thunkApi.rejectWithValue(error);
@@ -460,7 +457,7 @@ export const add_booking = createAsyncThunk(
       }
       return response.data;
     } catch (error) {
-      errorToast('Network error');
+      errorToast('Network error add_booking');
       return thunkApi.rejectWithValue(error);
     }
   },
@@ -484,7 +481,7 @@ export const add_chat_user = createAsyncThunk(
         '==============add_chat_user==response====================',
         response.data,
       );
-      if (response.data.status === '1') {
+      if (response.data.status == '1') {
         params.navigation.navigate(ScreenNameEnum.CHAT_SCREEN, { item: { id: params.data.company_id } });
       }
       if (response.data.message == 'You are Already Added.') {
@@ -637,7 +634,7 @@ export const get_user_wishlist = createAsyncThunk(
       }
       return response.data.data;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error get_user_wishlist :', error);
       errorToast('Network Error');
       return thunkApi.rejectWithValue(error);
     }
@@ -668,7 +665,7 @@ export const add_subcription_plan = createAsyncThunk(
       }
       return response.data.data;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error: add_subcription_plan', error);
       errorToast('Network Error add_subcription_plan');
       return thunkApi.rejectWithValue(error);
     }
@@ -710,7 +707,7 @@ export const get_faq = createAsyncThunk(
       }
       return response.data.result;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error: get_faq', error);
       errorToast('Network Error');
       return thunkApi.rejectWithValue(error);
     }
@@ -731,7 +728,7 @@ export const get_about_us = createAsyncThunk(
       }
       return response.data.result;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error: get_about_us', error);
       errorToast('Network Error');
       return thunkApi.rejectWithValue(error);
     }
@@ -783,7 +780,7 @@ export const delete_property = createAsyncThunk(
       }
       return response.data.data;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error: delete_property', error);
       errorToast('Network Error');
       return thunkApi.rejectWithValue(error);
     }
@@ -814,7 +811,7 @@ export const delete_notification = createAsyncThunk(
       }
       return response.data.data;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error: delete_notification', error);
       errorToast('Network Error');
       return thunkApi.rejectWithValue(error);
     }
@@ -844,7 +841,7 @@ export const get_chat_user = createAsyncThunk(
       }
       return response.data.result;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error get_chat_user:', error);
      // errorToast('Network Error');
       return thunkApi.rejectWithValue(error);
     }
@@ -866,7 +863,7 @@ export const get_terms_conditions = createAsyncThunk(
       }
       return response.data.result;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error: get_terms_conditions', error);
       errorToast('Network Error');
       return thunkApi.rejectWithValue(error);
     }
@@ -925,7 +922,7 @@ export const get_company_all_property = createAsyncThunk(
       }
 
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error: get_company_all_property', error);
       //errorToast('Network Error');
       return thunkApi.rejectWithValue([]);
 
@@ -962,7 +959,7 @@ export const get_user_notification = createAsyncThunk(
       }
 
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error: get_user_notification', error);
       //errorToast('Network Error');
       return thunkApi.rejectWithValue([]);
 
@@ -985,7 +982,7 @@ export const get_category = createAsyncThunk(
       }
       return response.data.result;
     } catch (error) {
-      console.log('Error:', error);
+      console.log('Error: get_category', error);
       errorToast('Network Error');
       return thunkApi.rejectWithValue(error);
     }

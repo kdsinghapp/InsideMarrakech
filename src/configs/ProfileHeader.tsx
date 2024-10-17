@@ -62,7 +62,7 @@ marginTop:Platform.OS === 'android'?5:45,
   titleContainer: {
 
 
-  
+    fontFamily: 'Federo-Regular',
 
     justifyContent: 'center',
   },

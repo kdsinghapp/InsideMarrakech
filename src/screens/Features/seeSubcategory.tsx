@@ -1,5 +1,5 @@
 import { View, Text, FlatList, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
 import React, { useEffect } from 'react';
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,10 @@ import ProfileHeader from '../../configs/ProfileHeader';
 import localizationStrings from '../../utils/Localization';
 import Loading from '../../configs/Loader';
 import ScreenNameEnum from '../../routes/screenName.enum';
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 const numColumns = 2;
 
 export default function SeeSubcategory() {
@@ -35,22 +38,49 @@ export default function SeeSubcategory() {
       onPress={() => {
         navigation.navigate(ScreenNameEnum.SubCategoryProperty, { id: item.id });
       }}
-      style={styles.itemContainer}>
+ 
+      style={[
+        styles.shadow,
+        {
+
+          borderRadius: 10,
+          marginVertical: 10,
+          alignSelf: 'center',
+          backgroundColor: '#FFFFFF',
+          marginHorizontal: 10,
+          width: wp(40),
+          justifyContent: 'center',
+          alignItems: 'center'
+        },
+      ]}>
+  
+
+      <View style={{
+        marginTop: 5, paddingBottom: 10,
+
+      }}>
         <Image
+          resizeMode='cover'
           source={{ uri: item.image }}
-          style={styles.itemImage}
-          resizeMode="contain"
+          style={{
+            height: hp(15),
+            width: wp(35),
+            borderRadius: 15,
+            borderColor: '#7756FC',
+          }}
         />
+      </View>
         <Text style={styles.itemText}>{item.name}</Text>
     </TouchableOpacity>
   );
+
 
   return (
     <View style={styles.container}>
       {isLoading ? <Loading /> : null}
       <ProfileHeader title={localizationStrings.SubCategory} />
+      <View style={[styles.container,{alignItems:'center'}]}>
       {subcategory?.length > 0 ? (
-      
          <FlatList
          data={subcategory}
          renderItem={renderItem}
@@ -63,10 +93,21 @@ export default function SeeSubcategory() {
       </View>
       )}
     </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -93,6 +134,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     padding: 10,
+    fontFamily: 'Federo-Regular',
   },
   emptyContainer: {
     flex: 1,
@@ -102,5 +144,6 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 18,
     color: '#000',
+    fontFamily: 'Federo-Regular',
   },
 });

@@ -123,7 +123,7 @@
       return (
         <View style={styles.container}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <ProfileHeader title={'Property'} width={30} />
+            <ProfileHeader title={''} width={30} />
             <View style={styles.searchContainer}>
               <View style={styles.search}>
                 <SearchIcon />

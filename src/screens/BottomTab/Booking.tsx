@@ -36,7 +36,7 @@ export default function Booking() {
   const isLoading = useSelector(state => state.feature.isLoading);
   
 
-  console.log(user.id);
+
   
   const BList = [
     {
@@ -199,7 +199,7 @@ export default function Booking() {
            
           />:<View style={{flex:1,justifyContent:'center',alignItems:'center',marginTop:80}}>
             
-            <Text style={{color:'#000',fontWeight:'600',fontSize:18}}>{localizationStrings.no_booking_found}</Text>
+            <Text style={{color:'#000',fontWeight:'600',fontSize:18,  fontFamily: 'Federo-Regular',}}>{localizationStrings.no_booking_found}</Text>
             </View>
           }
         </View>

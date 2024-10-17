@@ -212,6 +212,7 @@ const localStyles = StyleSheet.create({
   detailsHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingRight:15
   },
   bookingTitle: {
     fontFamily: 'Federo-Regular',
@@ -290,10 +291,10 @@ const localStyles = StyleSheet.create({
 
   },
   nextButtonText: {
-    fontSize: 17,
+    fontSize: 14,
     color: '#FFFFFF',
     fontWeight: '600',
-    lineHeight: 25,
+    lineHeight:15,
     fontFamily: 'Federo-Regular',
   },
 });

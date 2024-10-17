@@ -9,8 +9,11 @@ import {
   ScrollView,
   Alert,
   Dimensions,
+  Platform,
+  PermissionsAndroid,
+  SafeAreaView,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import GoldRight from '../../assets/svg/GoldRight.svg';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
@@ -38,7 +41,8 @@ import Loading from '../../configs/Loader';
 import Rating from '../../configs/Ratting';
 import localizationStrings from '../../utils/Localization';
 import { WebView } from 'react-native-webview';
-
+import { errorToast } from '../../configs/customToast';
+const { width } = Dimensions.get('window');
 export default function PlaceDetails() {
   const route = useRoute();
   const { item } = route.params;
@@ -109,15 +113,7 @@ export default function PlaceDetails() {
 
     dispatch(delete_property(params));
   };
-  const formatTimes = () => {
-    const [startTimeStr, endTimeStr] = propertDetails?.opening_hours?.split('/');
-    const formattedStartTime = timeFormate(startTimeStr);
-    const formattedEndTime = timeFormate(endTimeStr);
-    return {
-      startTime: formattedStartTime,
-      endTime: formattedEndTime
-    };
-  };
+
   const Add_chatUser = async () => {
 
 
@@ -131,10 +127,45 @@ export default function PlaceDetails() {
 
     dispatch(add_chat_user(params))
   }
-  const make_call = (Number) => {
 
-    RNImmediatePhoneCall.immediatePhoneCall(Number);
-  }
+  const [activeIndex, setActiveIndex] = useState(0); // State to track the active index
+
+  const onViewRef = useRef(({ viewableItems }) => {
+      if (viewableItems.length > 0) {
+          setActiveIndex(viewableItems[0].index);
+      }
+  });
+
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
+  const make_call = async (number) => {
+    try {
+      // Request permission on Android
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CALL_PHONE,
+          {
+            title: 'Phone Call Permission',
+            message: 'This app needs access to your phone to make calls.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          }
+        );
+  
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          Alert.alert('Permission Denied', 'You need to allow phone call permission to use this feature.');
+          return; // Exit the function if permission is not granted
+        }
+      }
+  
+      // Make the phone call
+      RNImmediatePhoneCall.immediatePhoneCall(number);
+    } catch (err) {
+      console.log(err);
+      Alert.alert('Error', 'An error occurred while trying to make a call. Please try again.');
+    }
+  };
+  
   const onWebViewMessage = event => {
     console.log('event.nativeEvent.data', event.nativeEvent.data);
 
@@ -168,12 +199,13 @@ export default function PlaceDetails() {
 
 
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={localStyles.container}>
       {isLoading ? <Loading /> : null}
       {propertDetails.document_gallery ?
         <ScrollView showsVerticalScrollIndicator={false}>
 
-          {propertDetails && (
+          {/* {propertDetails && (
             <ImageBackground
               source={{
                 uri:
@@ -182,13 +214,49 @@ export default function PlaceDetails() {
               style={localStyles.imageBackground}>
 
             </ImageBackground>
-          )}
+          )} */}
+
+<FlatList
+                        data={[{image:propertDetails?.main_image},...propertDetails?.document_gallery]}
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => (
+                            <Image
+                                source={{ uri: item.image }}
+                                style={{
+                                    width: width, // Full width of the screen for each image
+                                    height: hp(25),
+                                   
+                         
+                                }}
+                                resizeMode='cover'
+                            />
+                        )}
+                        onViewableItemsChanged={onViewRef.current}
+                        viewabilityConfig={viewConfigRef.current}
+                    />
+    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+                        {[{image:propertDetails?.main_image},...propertDetails?.document_gallery]?.map((_, index) => (
+                            <View
+                                key={index}
+                                style={{
+                                    height: 8,
+                                    width: 8,
+                                    borderRadius: 4,
+                                    backgroundColor: index === activeIndex ? 'green' : 'gray',
+                                    margin: 5,
+                                }}
+                            />
+                        ))}
+                    </View>
 
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
             }}
-            style={{ position: 'absolute', top:45, left: 15 }}
+            style={{ position: 'absolute', top:10, left: 15 }}
           >
             <GoldRight width={30} height={30} />
           </TouchableOpacity>
@@ -217,7 +285,72 @@ export default function PlaceDetails() {
               </Text>
             </View>
 
-            <View style={localStyles.buttonsContainer}>
+       
+{/* 
+            <View style={localStyles.galleryHeaderContainer}>
+              <Text style={localStyles.galleryHeaderText}>{localizationStrings.G_photo}</Text>
+
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate(ScreenNameEnum.Gallery_Screen, {
+                    item: propertDetails?.document_gallery
+                  })
+                }}
+              >
+                <Text style={localStyles.seeAllText}>{localizationStrings.see_a}</Text>
+              </TouchableOpacity>
+
+            </View> */}
+{/* 
+            <View style={localStyles.galleryContainer}>
+              <FlatList
+                data={propertDetails?.document_gallery}
+                showsHorizontalScrollIndicator={false}
+                horizontal
+                renderItem={({ item }) => (
+                  <View>
+                    <Image
+                      source={{ uri: item.image }}
+                      resizeMode="contain"
+                      style={localStyles.galleryImage}
+                    />
+                  </View>
+                )}
+              />
+            </View> */}
+
+         
+            <View style={localStyles.descriptionContainer}>
+              {/* <Text style={localStyles.sectionTitle}>{localizationStrings.title}</Text>
+              <Text style={[localStyles.sectionTitle, { marginTop: 10 }]}>
+                {propertDetails?.title}
+              </Text> */}
+              <Text style={[localStyles.sectionTitle, { marginTop: 20 }]}>
+                {localizationStrings.Description}
+              </Text>
+              <View style={{}}>
+
+                {isHTML(propertDetails?.description) &&
+
+                  <WebView
+                    source={{ html: generateHtmlContent(propertDetails?.description) }}
+                    style={{ height: webViewHeight > 900 ? webViewHeight / 2 : webViewHeight < 500 ? webViewHeight : webViewHeight - 200, width: Dimensions.get('window').width - 10 }}
+                    onMessage={onWebViewMessage}
+                    javaScriptEnabled
+                    injectedJavaScript="window.ReactNativeWebView.postMessage(document.body.scrollHeight)"
+
+                  />
+                  // <HTML source={{ html: generateHtmlContent(propertDetails?.description) }}/>
+                }
+                {!isHTML(propertDetails?.description) &&
+                  <Text style={[localStyles.descriptionText, { marginTop: 10 }]}>
+                    {propertDetails?.description}
+                  </Text>
+                }
+              </View>
+            </View>
+          </View>
+          <View style={localStyles.buttonsContainer}>
               {user?.type == 'User' ? (
                 <TouchableOpacity
                   onPress={() => {
@@ -246,50 +379,17 @@ export default function PlaceDetails() {
                 <Text style={localStyles.btnText}>{localizationStrings.menu}</Text>
               </TouchableOpacity>
             </View>
-
-            <View style={localStyles.galleryHeaderContainer}>
-              <Text style={localStyles.galleryHeaderText}>{localizationStrings.G_photo}</Text>
-
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate(ScreenNameEnum.Gallery_Screen, {
-                    item: propertDetails?.document_gallery
-                  })
-                }}
-              >
-                <Text style={localStyles.seeAllText}>{localizationStrings.see_a}</Text>
-              </TouchableOpacity>
-
-            </View>
-
-            <View style={localStyles.galleryContainer}>
-              <FlatList
-                data={propertDetails?.document_gallery}
-                showsHorizontalScrollIndicator={false}
-                horizontal
-                renderItem={({ item }) => (
-                  <View>
-                    <Image
-                      source={{ uri: item.image }}
-                      resizeMode="contain"
-                      style={localStyles.galleryImage}
-                    />
-                  </View>
-                )}
-              />
-            </View>
-
-            {user?.type == 'User' && (
+          {user?.type == 'User' && (
               <View style={localStyles.contactContainer}>
                 <TouchableOpacity
                   onPress={() => {
-                    make_call(propertDetails?.book_online_mobile_number)
+                    make_call('+33628831991')
                   }}
                   style={localStyles.contactButton}>
                   <Call />
                   <Text style={localStyles.contactButtonText}>
                     {localizationStrings.B_O_call}:
-                    {propertDetails?.book_online_mobile_number}
+                    +33 6 28 83 19 91
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -302,63 +402,39 @@ export default function PlaceDetails() {
                 </TouchableOpacity>
               </View>
             )}
-            <View style={localStyles.descriptionContainer}>
-              <Text style={localStyles.sectionTitle}>{localizationStrings.title}</Text>
-              <Text style={[localStyles.sectionTitle, { marginTop: 10 }]}>
-                {propertDetails?.title}
-              </Text>
-              <Text style={[localStyles.sectionTitle, { marginTop: 20 }]}>
-                {localizationStrings.Description}
-              </Text>
-              <View style={{}}>
-
-                {isHTML(propertDetails?.description) &&
-
-                  <WebView
-                    source={{ html: generateHtmlContent(propertDetails?.description) }}
-                    style={{ height: webViewHeight > 900 ? webViewHeight / 2 : webViewHeight < 500 ? webViewHeight : webViewHeight - 200, width: Dimensions.get('window').width - 10 }}
-                    onMessage={onWebViewMessage}
-                    javaScriptEnabled
-                    injectedJavaScript="window.ReactNativeWebView.postMessage(document.body.scrollHeight)"
-
-                  />
-                  // <HTML source={{ html: generateHtmlContent(propertDetails?.description) }}/>
-                }
-                {!isHTML(propertDetails?.description) &&
-                  <Text style={[localStyles.descriptionText, { marginTop: 10 }]}>
-                    {propertDetails?.description}
-                  </Text>
-                }
-              </View>
-            </View>
-          </View>
-
-          <View style={localStyles.openingHoursContainer}>
+          {/* <View style={localStyles.openingHoursContainer}>
             <Text style={localStyles.sectionTitle}>{localizationStrings.O_hours}</Text>
 
             <Text style={localStyles.openingHoursText}>
               {propertDetails?.lunch_start} to {propertDetails?.lunch_end}
             </Text>
-          </View>
+          </View> */}
 
 
           <View style={[localStyles.sectionContainer, { marginTop: 20 }]}>
             <Text style={localStyles.sectionTitle}>{localizationStrings.h_t_get}</Text>
             <Text style={localStyles.sectionTitle}>{propertDetails?.title}</Text>
           </View>
-          {propertDetails?.lat != '' && propertDetails?.lon != '' && <ImageBackground
+   <ImageBackground
             style={localStyles.mapImageBackground}
             source={require('../../assets/Cropping/map.png')}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate(ScreenNameEnum.MAP_SCREEN, { item: propertDetails }
-                );
+
+                if(propertDetails?.lat != '' && propertDetails?.lon != ''){
+
+                  navigation.navigate(ScreenNameEnum.MAP_SCREEN, { item: propertDetails })
+                }
+                else{
+errorToast("Not Address Found")
+                }
+                
               }}
 
               style={localStyles.mapButton}>
               <Text style={localStyles.mapButtonText}>{localizationStrings.O_map}</Text>
             </TouchableOpacity>
-          </ImageBackground>}
+          </ImageBackground>
 
           {user?.type == 'Company' && <TouchableOpacity
             onPress={() => {
@@ -402,6 +478,7 @@ export default function PlaceDetails() {
         </View>
       }
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -479,11 +556,11 @@ const localStyles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 40,
+    marginHorizontal:40,
   },
   btn: {
     borderWidth: 1,
-    height: 45,
+    height:50,
     borderRadius: 30,
     width: '45%',
     alignItems: 'center',
@@ -530,6 +607,7 @@ const localStyles = StyleSheet.create({
   contactButton: {
     borderWidth: 1,
     borderRadius: 30,
+
     height: 55,
     alignItems: 'center',
     justifyContent: 'center',
@@ -648,10 +726,12 @@ const localStyles = StyleSheet.create({
     marginHorizontal: 20,
   },
   mapImageBackground: {
-    height: hp(30),
+    height: hp(20),
     marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    marginHorizontal:15,
+
   },
   mapButton: {
     backgroundColor: '#FFF',

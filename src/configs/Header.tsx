@@ -63,7 +63,7 @@ const Header = () => {
                 <Text style={styles.locationText}>{localizationStrings.current_location}</Text>
                 <View style={styles.locationContainer}>
                     <Pin />
-                    <Text style={styles.locationName}>{locationName ? locationName.substring(0,15) : 'Fetching..'}</Text>
+                    <Text style={styles.locationName}>{locationName ? locationName.substring(0, 15) : 'Localisation..'}</Text>
                     <Down />
                 </View>
             </TouchableOpacity>
@@ -89,14 +89,14 @@ const Header = () => {
 
 const styles = StyleSheet.create({
     container: {
-       
 
-paddingVertical:10,
+
+        paddingVertical: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
-    alignItems:'center',
+        alignItems: 'center',
         paddingHorizontal: 15,
-    
+
     },
     locationButton: {
 
@@ -112,12 +112,12 @@ paddingVertical:10,
     locationContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-    
+
     },
     locationName: {
         fontFamily: 'Federo-Regular',
         fontSize: 12,
- 
+
         fontWeight: '500',
         color: '#000',
         marginHorizontal: 5,

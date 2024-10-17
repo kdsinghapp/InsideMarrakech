@@ -32,7 +32,7 @@ export default function ChatFooter({ item, onMessageSent }) {
 
       setMessageText('');
       await sendMessage(messageData);
-      onMessageSent(); // Trigger refresh in parent component (ChatBody)
+       // Trigger refresh in parent component (ChatBody)
     } catch (error) {
       console.error('Error sending message: ', error);
       setLoading(false); // Reset loading state

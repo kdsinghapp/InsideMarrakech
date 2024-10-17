@@ -25,6 +25,7 @@ import ScreenNameEnum from '../../routes/screenName.enum';
 import DateModal from '../Modal/DateModal';
 import SearchIcon from '../../assets/svg/search.svg';
 import { useDispatch, useSelector } from 'react-redux';
+import FastImage from 'react-native-fast-image'
 import {
   add_customise_service,
   get_all_property,
@@ -90,11 +91,7 @@ export default function Home() {
 
 
 
-  const handleCategorySelect = categoryId => {
-    setSelectedCategory(categoryId);
-    setSearchQuery('');
-  };
-  console.log(user?.id);
+
   
 
 
@@ -151,7 +148,7 @@ export default function Home() {
             <Text style={styles.itemTitle}>{item.name}</Text>
             <View style={styles.detailsContainer}>
 
-              <Text style={styles.itemDetails}>{item.title}</Text>
+              {/* <Text style={styles.itemDetails}>{item.title}</Text> */}
             </View>
             <View style={styles.detailsContainer}>
               <Pin />
@@ -167,7 +164,7 @@ export default function Home() {
 
 
             </View>
-            <View style={styles.userContainer}>
+            {/* <View style={styles.userContainer}>
               <View style={styles.userTextContainer}>
                 <Text style={styles.itemUser}>{localizationStrings.Open_Time} : {item.lunch_start}</Text>
 
@@ -180,8 +177,9 @@ export default function Home() {
 
 
 
-            </View>
+            </View> */}
           </TouchableOpacity>
+     
         );
       }
     }
@@ -218,7 +216,7 @@ export default function Home() {
     <KeyboardAvoidingView style={styles.container}>
       {isLoading ? <Loading /> : null}
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{height:Platform.OS !== 'android'?30:5,}} />
+        <View style={{height:Platform.OS !== 'android'?40:10,}} />
         <Header />
         {user?.type === 'User' && (
           <>
@@ -234,7 +232,8 @@ export default function Home() {
                 />
               </View>
             </View>
-            {searchQuery === '' && (<View style={styles.categoryContainer}>
+            {searchQuery === '' && (
+            <View style={styles.categoryContainer}>
               <View style={styles.categoryHeader}>
                 <Text style={styles.categoryHeaderText}>{localizationStrings.category}</Text>
                 <TouchableOpacity onPress={()=>{
@@ -252,33 +251,78 @@ export default function Home() {
                   data={category}
                   horizontal
                   renderItem={({ item, index }) => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        if(item.name === 'Prestation sur mesure'){
-setModalVisible(true)
-                        }
-                        else{
-                        navigation.navigate(ScreenNameEnum.seeSubcategory,{id:item.id})
-                        }
-                      }}
-                      style={styles.categoryItem}
-                    >
-                      {loadingState[index] && (
-                        <ActivityIndicator
-                          style={{position:'absolute',top:20}}
-                          size="small"
-                          color="#000"
-                        />
-                      )}
-                      <Image
-                        resizeMode="contain"
-                        source={{ uri: item.image }}
-                        style={styles.categoryItemImage}
-                        onLoadStart={() => handleImageLoadStart(index)}
-                        onLoadEnd={() => handleImageLoadEnd(index)}
-                      />
-                      <Text style={styles.categoryItemText}>{item.name}</Text>
-                    </TouchableOpacity>
+
+<TouchableOpacity
+
+onPress={()=>{
+    if(item.name==='Prestation sur mesure'){
+      setModalVisible(true)
+    }else{
+      navigation.navigate(ScreenNameEnum.seeSubcategory,
+      {
+        id: item.id
+      })
+    }
+  }
+}
+style={[
+  styles.shadow,
+  {
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    marginHorizontal: 5,
+    width: 90,
+    borderRadius: 10,
+    marginVertical:10
+
+
+    
+
+  },
+]}>
+
+{loadingState[
+    index
+  ]&&(<ActivityIndicator style={
+    {
+      position: 'absolute',
+      top: 20
+    }
+  } size="small" color="#000"/>)
+}
+<FastImage
+  style={{
+    height: 70,
+    width: 90,
+    borderRadius: 10,
+
+  }}
+  source={{
+    uri: item.image,
+
+    priority: FastImage.priority.high,
+  }}
+  resizeMode={FastImage.resizeMode.cover}
+/>
+
+
+<Text
+  style={{
+    fontSize: 10,
+    fontWeight: '600',
+
+    lineHeight: 12,
+    color: '#352C48',
+    marginTop: 5,
+    textAlign: 'center'
+  }}>
+  {item.name.substring(0, 20)}
+</Text>
+</TouchableOpacity>
+
+
+
                   )}
                 />
               </View>
@@ -398,6 +442,16 @@ const styles = StyleSheet.create({
     fontFamily: 'Federo-Regular',
 
   },
+  shadow:{shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  
+  elevation: 5,
+},
   title: {
     marginVertical: 20,
   },
@@ -462,16 +516,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
    
   },
-  shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
-  },
+
   itemContainer: {
     backgroundColor: '#FFF',
     paddingVertical: 10,
@@ -498,16 +543,17 @@ const styles = StyleSheet.create({
   },
   itemDetails: {
     fontFamily: 'Federo-Regular',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '400',
     color: '#777777',
+    marginLeft:5
   },
   userContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-
-    paddingHorizontal: 10,
+paddingBottom:10,
+    paddingHorizontal:5,
   },
   userTextContainer: {
     flexDirection: 'row',
@@ -516,7 +562,7 @@ const styles = StyleSheet.create({
   },
   itemUser: {
     fontFamily: 'Federo-Regular',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '500',
     color: '#000',
   },
@@ -547,10 +593,12 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   categoryContainer: {
-    height: hp(12),
-    marginTop: 20,
+    height: hp(25),
+
+    marginTop:20,
     paddingHorizontal: 10,
     justifyContent: 'center',
+    
   },
   categoryHeader: {
     flexDirection: 'row',
@@ -565,7 +613,9 @@ const styles = StyleSheet.create({
   },
   categoryList: {
     marginTop: 20,
-    paddingVertical: 10,
+    minHeight:hp(15),
+    marginVertical:20,
+
 
   },
   categoryItem: {
@@ -585,15 +635,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Federo-Regular',
   },
   bannerContainer: {
-    width: '100%',
-    height: hp(30),
+  
+    height: hp(23),
+
+
   },
   bannerItem: {
     padding: 5,
-    height: hp(25),
+    height: hp(22),
     width: hp(43),
-    marginLeft: 15,
-    marginTop: 20
+
+
+
+
   },
   bannerImage: {
     width: '100%',

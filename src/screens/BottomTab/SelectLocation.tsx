@@ -143,14 +143,15 @@ const SelectLocation = () => {
     }, [currentCoords]);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
            
              <ProfileHeader title={localizationStrings.location} />
        
-            <View style={{ width: '100%', marginTop: 10,
+       
+            <View style={{ width: '100%', marginTop: 10, 
        
            }}>
-                <GooglePlacesInput placeholder={'Search'} onPlaceSelected={handleSelectLocation} />
+                <GooglePlacesInput placeholder={'Search'}   onPlaceSelected={handleSelectLocation} />
             </View>
             <View style={styles.savedContainer}>
                 <Text style={styles.sectionTitle}>Saved Addresses</Text>
@@ -162,7 +163,7 @@ const SelectLocation = () => {
             </View>
 
             <View style={styles.nearbyContainer}>
-                <Text style={[styles.sectionTitle, { fontSize: 16, fontWeight: '400' }]}>NEARBY LOCATIONS</Text>
+                <Text style={[styles.sectionTitle, { fontSize: 16, fontWeight: '400', fontFamily: 'Federo-Regular', }]}>NEARBY LOCATIONS</Text>
                {nearbyLocations && <FlatList
                     data={nearbyLocations} // Show only the first 3 nearby locations
                     renderItem={renderLocationItem}
@@ -198,7 +199,7 @@ const SelectLocation = () => {
             >
              <Pin height={30} width={30} />
             </TouchableOpacity>
-        </SafeAreaView>
+        </View>
     );
 };
 
@@ -220,6 +221,7 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         marginHorizontal: 15,
         marginVertical: 10,
+        fontFamily: 'Federo-Regular',
     },
     locationItem: {
         padding: 15,
