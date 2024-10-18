@@ -154,7 +154,7 @@ const SelectLocation = () => {
                 <GooglePlacesInput placeholder={'Search'}   onPlaceSelected={handleSelectLocation} />
             </View>
             <View style={styles.savedContainer}>
-                <Text style={styles.sectionTitle}>Saved Addresses</Text>
+                <Text style={styles.sectionTitle}>{localizationStrings?.Saved_Addresses}</Text>
                 <FlatList
                     data={savedAddresses}
                     renderItem={renderLocationItem}
@@ -163,7 +163,7 @@ const SelectLocation = () => {
             </View>
 
             <View style={styles.nearbyContainer}>
-                <Text style={[styles.sectionTitle, { fontSize: 16, fontWeight: '400', fontFamily: 'Federo-Regular', }]}>NEARBY LOCATIONS</Text>
+                <Text style={[styles.sectionTitle, { fontSize: 16, fontWeight: '400', fontFamily: 'Federo-Regular', }]}>{localizationStrings?.near_location}</Text>
                {nearbyLocations && <FlatList
                     data={nearbyLocations} // Show only the first 3 nearby locations
                     renderItem={renderLocationItem}

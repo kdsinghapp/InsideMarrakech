@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -12,10 +12,12 @@ import {
   TextInput,
   Platform,
   ActivityIndicator,
+  Dimensions,
+  Pressable,
 } from 'react-native';
 import Header from '../../configs/Header';
 import Searchbar from '../../configs/Searchbar';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp,widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import BlackDown from '../../assets/svg/BlackDown.svg';
 import Pin from '../../assets/svg/Pin.svg';
 import User from '../../assets/svg/user.svg';
@@ -39,7 +41,7 @@ import axios, { all } from 'axios';
 import localizationStrings from '../../utils/Localization';
 import ModalForm from '../Modal/ModalForm';
 import { KeyboardAvoidingView } from 'react-native';
-
+const { width } = Dimensions.get('window');
 export default function Home() {
 
   const user = useSelector(state => state.auth.userData);
@@ -69,7 +71,15 @@ export default function Home() {
     // Handle form submission
   };
 
+  const [activeIndex, setActiveIndex] = useState(0); // State to track the active index
 
+  const onViewRef = useRef(({ viewableItems }) => {
+      if (viewableItems.length > 0) {
+          setActiveIndex(viewableItems[0].index);
+      }
+  });
+
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
 
 
   const timeFormate = utcDateString => {
@@ -127,15 +137,54 @@ export default function Home() {
       if (firstImage) {
         return (
           <TouchableOpacity
+   
             onPress={() => {
               navigation.navigate(ScreenNameEnum.PLACE_DETAILS, { item: item });
             }}
             style={[styles.shadow, styles.itemContainer]}>
-            <Image
+            {/* <Image
               source={{ uri: firstImage }}
               style={styles.itemImage}
               resizeMode="cover"
-            />
+            /> */}
+            <FlatList
+                        data={[{image:item.main_image},...item?.document_gallery]}
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => (
+                          <Pressable style={{}}>
+                            <Image
+                                source={{ uri: item.image }}
+                                style={{
+                                    width: wp(85), // Full width of the screen for each image
+                                    height: hp(25),
+                                    borderRadius:15,
+                                    marginLeft:10
+                         
+                                }}
+                                resizeMode='cover'
+                            />
+                            </Pressable>
+                        )}
+                        onViewableItemsChanged={onViewRef.current}
+                        viewabilityConfig={viewConfigRef.current}
+                    />
+    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+                        {[{image:item?.main_image},...item?.document_gallery]?.map((_, index) => (
+                            <View
+                                key={index}
+                                style={{
+                                    height: 8,
+                                    width: 8,
+                                    borderRadius: 4,
+                                    backgroundColor: index === activeIndex ? 'green' : 'gray',
+                                    margin: 5,
+                                }}
+                            />
+                        ))}
+                    </View>
             {loadingState[index] && (
               <ActivityIndicator
                 style={styles.loadingIndicator}

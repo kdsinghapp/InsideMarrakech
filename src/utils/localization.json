@@ -1,5 +1,7 @@
 {
   "English": {
+    "Saved_Addresses": "Saved Addresses",
+    "near_location": "NEARBY LOCATIONS",
     "No_Notification_found": "No Notification found",
     "No_Chat_Contact_Found": "No Chat Contact Found",
     "Your_Plan": "Your Plan",
@@ -18,7 +20,7 @@
     "Other_Guests": "Other Guests",
     "No_of_Guest": "No of Guest",
     "Status": "Status",
-    "SubCategory":"Sub Category",
+    "SubCategory": "Sub Category",
     "login": "Login",
     "login_Txt": "Enter your email and password",
     "Placeholder_email": "Email Address / Mobile number",
@@ -157,17 +159,20 @@
     "month": "month",
     "b_home": "Back To Home",
     "Y_B_C": "Your booking is confirmed!",
-  "please_enter_valid_email": "Please enter a valid email address.",
-  "password_invalid":"Password must be 8+ chars, with upper, lower, num, & special.",
-  "password_mismatch": "Passwords do not match.",
-  "enter_all_fields_error": "Please fill in all fields."
+    "please_enter_valid_email": "Please enter a valid email address.",
+    "password_invalid": "Password must be 8+ chars, with upper, lower, num, & special.",
+    "password_mismatch": "Passwords do not match.",
+    "enter_all_fields_error": "Please fill in all fields."
   },
   "French": {
+    "Saved_Addresses": "Adresses sauvegardées",
+    "near_location": "Lieux à proximité",
+    
     "please_enter_valid_email_fr": "Veuillez entrer une adresse e-mail valide.",
-  "password_invalid_fr":"Le mot de passe doit contenir 8+ caractères, avec majuscule, minuscule, chiffre et caractère spécial.",
-  "password_mismatch_fr": "Les mots de passe ne correspondent pas.",
-  "enter_all_fields_error_fr": "Veuillez remplir tous les champs.",
-  "No_Notification_found": "Aucune notification trouvée",
+    "password_invalid_fr": "Le mot de passe doit contenir 8+ caractères, avec majuscule, minuscule, chiffre et caractère spécial.",
+    "password_mismatch_fr": "Les mots de passe ne correspondent pas.",
+    "enter_all_fields_error_fr": "Veuillez remplir tous les champs.",
+    "No_Notification_found": "Aucune notification trouvée",
     "No_Chat_Contact_Found": "Aucun contact de chat trouvé",
     "Your_Plan": "Votre Plan",
     "Validity": "Validité",
@@ -326,16 +331,18 @@
     "Close_Time": "Heure de fermeture",
   },
   "Chinese": {
+    "Saved_Addresses": "保存的地址",
+    "near_location": "附近地点",
     "No_Notification_found": "未找到通知",
     "No_Chat_Contact_Found": "未找到聊天联系人",
     "please_enter_valid_email_zh": "请输入有效的电子邮件地址。",
-    "password_invalid_zh":"密码必须包含 8+ 个字符，包括大写字母、小写字母、数字和特殊字符。",
+    "password_invalid_zh": "密码必须包含 8+ 个字符，包括大写字母、小写字母、数字和特殊字符。",
     "password_mismatch_zh": "密码不匹配。",
     "enter_all_fields_error_zh": "请填写所有字段。",
     "Your_Plan": "您的计划",
     "Validity": "有效期",
     "Purchase_date": "购买日期",
-    "SuccessFully":"成功地",
+    "SuccessFully": "成功地",
     "Kind_of_Service": "服务种类",
     "book_nany": "预订保姆",
     "book_driver": "预订司机",
@@ -489,15 +496,14 @@
     "Close_Time": "关闭时间"
   },
   "Russian": {
+    "Saved_Addresses": "Сохраненные адреса",
+    "near_location": "Ближайшие места",
     "No_Notification_found": "Уведений не найдено",
     "No_Chat_Contact_Found": "Контактов для чата не найдено",
     "please_enter_valid_email_ru": "Пожалуйста, введите действительный адрес электронной почты.",
-    "password_invalid_ru":
-      "Пароль должен содержать 8+ символов, включая заглавные, строчные буквы, цифры и специальные символы.",
+    "password_invalid_ru": "Пароль должен содержать 8+ символов, включая заглавные, строчные буквы, цифры и специальные символы.",
     "password_mismatch_ru": "Пароли не совпадают.",
     "enter_all_fields_error_ru": "Пожалуйста, заполните все поля.",
-  
-
     "Your_Plan": "Ваш План",
     "Validity": "Срок действия",
     "Purchase_date": "Дата покупки",
@@ -655,13 +661,14 @@
     "Close_Time": "Время закрытия"
   },
   "Italian": {
+    "Saved_Addresses": "Indirizzi salvati",
+    "near_location": "Località vicine",
     "No_Notification_found": "Nessuna notifica trovata",
     "No_Chat_Contact_Found": "Nessun contatto chat trovato",
     "please_enter_valid_email_it": "Inserisci un indirizzo email valido.",
-    "password_invalid_it":"La password deve contenere 8+ caratteri, con maiuscole, minuscole, numeri e caratteri speciali.",
+    "password_invalid_it": "La password deve contenere 8+ caratteri, con maiuscole, minuscole, numeri e caratteri speciali.",
     "password_mismatch_it": "Le password non corrispondono.",
     "enter_all_fields_error_it": "Si prega di compilare tutti i campi.",
-  
     "Your_Plan": "Il tuo Piano",
     "Validity": "Validità",
     "Purchase_date": "Data di acquisto",
@@ -819,12 +826,14 @@
     "Close_Time": "Orario di chiusura"
   },
   "Spanish": {
+    "Saved_Addresses": "Direcciones guardadas",
+    "near_location": "Ubicaciones cercanas",
     "No_Notification_found": "No se encontraron notificaciones",
     "No_Chat_Contact_Found": "No se encontraron contactos de chat",
     "please_enter_valid_email_es": "Por favor, ingrese una dirección de correo válida.",
-  "password_invalid_es":"La contraseña debe tener 8+ caracteres, con mayúsculas, minúsculas, números y caracteres especiales.",
-  "password_mismatch_es": "Las contraseñas no coinciden.",
-  "enter_all_fields_error_es": "Por favor complete todos los campos.",
+    "password_invalid_es": "La contraseña debe tener 8+ caracteres, con mayúsculas, minúsculas, números y caracteres especiales.",
+    "password_mismatch_es": "Las contraseñas no coinciden.",
+    "enter_all_fields_error_es": "Por favor complete todos los campos.",
     "Your_Plan": "Tu Plan",
     "Validity": "Validez",
     "Purchase_date": "Fecha de compra",
@@ -982,12 +991,14 @@
     "Close_Time": "Hora de cierre"
   },
   "Japanese": {
+    "Saved_Addresses": "保存された住所",
+    "near_location": "近くの場所",
     "No_Notification_found": "通知が見つかりませんでした",
     "No_Chat_Contact_Found": "チャットの連絡先が見つかりませんでした",
     "please_enter_valid_email_ja": "有効なメールアドレスを入力してください。",
-  "password_invalid_ja":"パスワードは8文字以上、大文字、小文字、数字、特殊文字を含める必要があります。",
-  "password_mismatch_ja": "パスワードが一致しません。",
-  "enter_all_fields_error_ja": "すべてのフィールドに入力してください。",
+    "password_invalid_ja": "パスワードは8文字以上、大文字、小文字、数字、特殊文字を含める必要があります。",
+    "password_mismatch_ja": "パスワードが一致しません。",
+    "enter_all_fields_error_ja": "すべてのフィールドに入力してください。",
     "Your_Plan": "あなたのプラン",
     "Validity": "有効期限",
     "Purchase_date": "購入日",
