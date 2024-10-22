@@ -190,6 +190,7 @@ export default function AddTravelerDetails() {
           style={styles.nextButton}>
           <Text style={styles.nextButtonText}>NEXT</Text>
         </TouchableOpacity>
+        <View style={styles.bottomSpacer} />
       </ScrollView>
      
     </KeyboardAvoidingView>
@@ -442,7 +443,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   bottomSpacer: {
-    height: hp(20),
+    height: hp(5),
   },
 });
 const Driver = [

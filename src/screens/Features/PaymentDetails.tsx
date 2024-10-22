@@ -78,7 +78,8 @@ export default function PaymentDetails() {
     }
   }
 
-  const payment_uri = `https://server-php-8-2.technorizen.com/inside/admin/booking_payment?user_id=${user.id}&amount=${Property.amount * selectedGuestCount}&currency=mad&booking_id=${booking_id}`
+  // const payment_uri = `https://server-php-8-2.technorizen.com/inside/admin/booking_payment?user_id=${user.id}&amount=${Property.amount * selectedGuestCount}&currency=mad&booking_id=${booking_id}`
+  const payment_uri = `https://inside-marrakech.com/admin/booking_payment?user_id=${user.id}&amount=${(Number(Property.amount) * Number(selectedGuestCount))?.toFixed(2)}&currency=mad&booking_id=${booking_id}`
 
 
 

@@ -151,7 +151,7 @@ const SelectLocation = () => {
             <View style={{ width: '100%', marginTop: 10, 
        
            }}>
-                <GooglePlacesInput placeholder={'Search'}   onPlaceSelected={handleSelectLocation} />
+                <GooglePlacesInput placeholder={localizationStrings.search}   onPlaceSelected={handleSelectLocation} />
             </View>
             <View style={styles.savedContainer}>
                 <Text style={styles.sectionTitle}>{localizationStrings?.Saved_Addresses}</Text>

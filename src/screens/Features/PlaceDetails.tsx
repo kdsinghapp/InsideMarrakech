@@ -42,6 +42,7 @@ import Rating from '../../configs/Ratting';
 import localizationStrings from '../../utils/Localization';
 import { WebView } from 'react-native-webview';
 import { errorToast } from '../../configs/customToast';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width } = Dimensions.get('window');
 export default function PlaceDetails() {
   const route = useRoute();
@@ -55,7 +56,16 @@ export default function PlaceDetails() {
   const propertDetails = useSelector(state => state.feature.propertyDetail);
   const isFocuse = useIsFocused();
   const [webViewHeight, setWebViewHeight] = useState(0);
+  const [value, setValue] = useState('French')
+  useEffect(() => {
+    const handleLanguage = async () => {
+      const language = await AsyncStorage.getItem("Lng")
 
+      localizationStrings.setLanguage(language);
+      setValue(language);
+    }
+    handleLanguage();
+  }, [user])
 
 
   function isHTML(str) {
@@ -131,9 +141,9 @@ export default function PlaceDetails() {
   const [activeIndex, setActiveIndex] = useState(0); // State to track the active index
 
   const onViewRef = useRef(({ viewableItems }) => {
-      if (viewableItems.length > 0) {
-          setActiveIndex(viewableItems[0].index);
-      }
+    if (viewableItems.length > 0) {
+      setActiveIndex(viewableItems[0].index);
+    }
   });
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
@@ -151,13 +161,13 @@ export default function PlaceDetails() {
             buttonPositive: 'OK',
           }
         );
-  
+
         if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
           Alert.alert('Permission Denied', 'You need to allow phone call permission to use this feature.');
           return; // Exit the function if permission is not granted
         }
       }
-  
+
       // Make the phone call
       RNImmediatePhoneCall.immediatePhoneCall(number);
     } catch (err) {
@@ -165,7 +175,7 @@ export default function PlaceDetails() {
       Alert.alert('Error', 'An error occurred while trying to make a call. Please try again.');
     }
   };
-  
+
   const onWebViewMessage = event => {
     console.log('event.nativeEvent.data', event.nativeEvent.data);
 
@@ -195,17 +205,16 @@ export default function PlaceDetails() {
   `;
 
 
-  console.log(webViewHeight);
 
 
   return (
-    <SafeAreaView style={{flex:1}}>
-    <View style={localStyles.container}>
-      {isLoading ? <Loading /> : null}
-      {propertDetails.document_gallery ?
-        <ScrollView showsVerticalScrollIndicator={false}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={localStyles.container}>
+        {isLoading ? <Loading /> : null}
+        {propertDetails.document_gallery ?
+          <ScrollView showsVerticalScrollIndicator={false}>
 
-          {/* {propertDetails && (
+            {/* {propertDetails && (
             <ImageBackground
               source={{
                 uri:
@@ -216,77 +225,77 @@ export default function PlaceDetails() {
             </ImageBackground>
           )} */}
 
-<FlatList
-                        data={[{image:propertDetails?.main_image},...propertDetails?.document_gallery]}
-                        horizontal
-                        pagingEnabled
-                        showsHorizontalScrollIndicator={false}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({ item }) => (
-                            <Image
-                                source={{ uri: item.image }}
-                                style={{
-                                    width: width, // Full width of the screen for each image
-                                    height: hp(25),
-                                   
-                         
-                                }}
-                                resizeMode='cover'
-                            />
-                        )}
-                        onViewableItemsChanged={onViewRef.current}
-                        viewabilityConfig={viewConfigRef.current}
-                    />
-    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-                        {[{image:propertDetails?.main_image},...propertDetails?.document_gallery]?.map((_, index) => (
-                            <View
-                                key={index}
-                                style={{
-                                    height: 8,
-                                    width: 8,
-                                    borderRadius: 4,
-                                    backgroundColor: index === activeIndex ? 'green' : 'gray',
-                                    margin: 5,
-                                }}
-                            />
-                        ))}
-                    </View>
+            <FlatList
+              data={[{ image: propertDetails?.main_image }, ...propertDetails?.document_gallery]}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <Image
+                  source={{ uri: item.image }}
+                  style={{
+                    width: width, // Full width of the screen for each image
+                    height: hp(25),
 
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={{ position: 'absolute', top:10, left: 15 }}
-          >
-            <GoldRight width={30} height={30} />
-          </TouchableOpacity>
-          <View style={localStyles.contentContainer}>
-            <View style={localStyles.titleContainer}>
-              <Text style={localStyles.titleText}>{propertDetails?.name}</Text>
-            </View>
-            <View style={localStyles.addressContainer}>
-              <Pin />
-              <Text style={[localStyles.addressText, { marginLeft: 5 }]}>
-                {propertDetails?.address}
-              </Text>
+
+                  }}
+                  resizeMode='cover'
+                />
+              )}
+              onViewableItemsChanged={onViewRef.current}
+              viewabilityConfig={viewConfigRef.current}
+            />
+            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+              {[{ image: propertDetails?.main_image }, ...propertDetails?.document_gallery]?.map((_, index) => (
+                <View
+                  key={index}
+                  style={{
+                    height: 8,
+                    width: 8,
+                    borderRadius: 4,
+                    backgroundColor: index === activeIndex ? 'green' : 'gray',
+                    margin: 5,
+                  }}
+                />
+              ))}
             </View>
 
-            <View style={localStyles.star}>
-
-              <View style={localStyles.starsContainer}>
-                <Rating rating={propertDetails?.rating} />
-
-
-                <Text style={localStyles.ratingText}>{propertDetails?.rating}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{ position: 'absolute', top: 10, left: 15 }}
+            >
+              <GoldRight width={30} height={30} />
+            </TouchableOpacity>
+            <View style={localStyles.contentContainer}>
+              <View style={localStyles.titleContainer}>
+                <Text style={localStyles.titleText}>{propertDetails?.name}</Text>
+              </View>
+              <View style={localStyles.addressContainer}>
+                <Pin />
+                <Text style={[localStyles.addressText, { marginLeft: 5 }]}>
+                  {propertDetails?.address}
+                </Text>
               </View>
 
-              <Text style={localStyles.priceText}>
-                {localizationStrings.price} {propertDetails?.amount}
-              </Text>
-            </View>
+              <View style={localStyles.star}>
 
-       
-{/* 
+                <View style={localStyles.starsContainer}>
+                  <Rating rating={propertDetails?.rating} />
+
+
+                  <Text style={localStyles.ratingText}>{propertDetails?.rating}</Text>
+                </View>
+
+                <Text style={localStyles.priceText}>
+                  {localizationStrings.price} {propertDetails?.amount}
+                </Text>
+              </View>
+
+
+              {/* 
             <View style={localStyles.galleryHeaderContainer}>
               <Text style={localStyles.galleryHeaderText}>{localizationStrings.G_photo}</Text>
 
@@ -301,7 +310,7 @@ export default function PlaceDetails() {
               </TouchableOpacity>
 
             </View> */}
-{/* 
+              {/* 
             <View style={localStyles.galleryContainer}>
               <FlatList
                 data={propertDetails?.document_gallery}
@@ -319,38 +328,38 @@ export default function PlaceDetails() {
               />
             </View> */}
 
-         
-            <View style={localStyles.descriptionContainer}>
-              {/* <Text style={localStyles.sectionTitle}>{localizationStrings.title}</Text>
+
+              <View style={localStyles.descriptionContainer}>
+                {/* <Text style={localStyles.sectionTitle}>{localizationStrings.title}</Text>
               <Text style={[localStyles.sectionTitle, { marginTop: 10 }]}>
                 {propertDetails?.title}
               </Text> */}
-              <Text style={[localStyles.sectionTitle, { marginTop: 20 }]}>
-                {localizationStrings.Description}
-              </Text>
-              <View style={{}}>
+                <Text style={[localStyles.sectionTitle, { marginTop: 20 }]}>
+                  {localizationStrings.Description}
+                </Text>
+                <View style={{}}>
 
-                {isHTML(propertDetails?.description) &&
+                  {isHTML(propertDetails?.description) &&
 
-                  <WebView
-                    source={{ html: generateHtmlContent(propertDetails?.description) }}
-                    style={{ height: webViewHeight > 900 ? webViewHeight / 2 : webViewHeight < 500 ? webViewHeight : webViewHeight - 200, width: Dimensions.get('window').width - 10 }}
-                    onMessage={onWebViewMessage}
-                    javaScriptEnabled
-                    injectedJavaScript="window.ReactNativeWebView.postMessage(document.body.scrollHeight)"
+                    <WebView
+                      source={{ html: generateHtmlContent(propertDetails?.description) }}
+                      style={{ height: webViewHeight > 900 ? webViewHeight / 2 : webViewHeight < 500 ? webViewHeight : webViewHeight - 200, width: Dimensions.get('window').width - 10 }}
+                      onMessage={onWebViewMessage}
+                      javaScriptEnabled
+                      injectedJavaScript="window.ReactNativeWebView.postMessage(document.body.scrollHeight)"
 
-                  />
-                  // <HTML source={{ html: generateHtmlContent(propertDetails?.description) }}/>
-                }
-                {!isHTML(propertDetails?.description) &&
-                  <Text style={[localStyles.descriptionText, { marginTop: 10 }]}>
-                    {propertDetails?.description}
-                  </Text>
-                }
+                    />
+                    // <HTML source={{ html: generateHtmlContent(propertDetails?.description) }}/>
+                  }
+                  {!isHTML(propertDetails?.description) &&
+                    <Text style={[localStyles.descriptionText, { marginTop: 10 }]}>
+                      {propertDetails?.description}
+                    </Text>
+                  }
+                </View>
               </View>
             </View>
-          </View>
-          <View style={localStyles.buttonsContainer}>
+            <View style={localStyles.buttonsContainer}>
               {user?.type == 'User' ? (
                 <TouchableOpacity
                   onPress={() => {
@@ -379,7 +388,7 @@ export default function PlaceDetails() {
                 <Text style={localStyles.btnText}>{localizationStrings.menu}</Text>
               </TouchableOpacity>
             </View>
-          {user?.type == 'User' && (
+            {user?.type == 'User' && (
               <View style={localStyles.contactContainer}>
                 <TouchableOpacity
                   onPress={() => {
@@ -402,7 +411,7 @@ export default function PlaceDetails() {
                 </TouchableOpacity>
               </View>
             )}
-          {/* <View style={localStyles.openingHoursContainer}>
+            {/* <View style={localStyles.openingHoursContainer}>
             <Text style={localStyles.sectionTitle}>{localizationStrings.O_hours}</Text>
 
             <Text style={localStyles.openingHoursText}>
@@ -411,73 +420,73 @@ export default function PlaceDetails() {
           </View> */}
 
 
-          <View style={[localStyles.sectionContainer, { marginTop: 20 }]}>
-            <Text style={localStyles.sectionTitle}>{localizationStrings.h_t_get}</Text>
-            <Text style={localStyles.sectionTitle}>{propertDetails?.title}</Text>
-          </View>
-   <ImageBackground
-            style={localStyles.mapImageBackground}
-            source={require('../../assets/Cropping/map.png')}>
-            <TouchableOpacity
+            <View style={[localStyles.sectionContainer, { marginTop: 20 }]}>
+              <Text style={localStyles.sectionTitle}>{localizationStrings.h_t_get}</Text>
+              <Text style={localStyles.sectionTitle}>{propertDetails?.title}</Text>
+            </View>
+            <ImageBackground
+              style={localStyles.mapImageBackground}
+              source={require('../../assets/Cropping/map.png')}>
+              <TouchableOpacity
+                onPress={() => {
+
+                  if (propertDetails?.lat != '' && propertDetails?.lon != '') {
+
+                    navigation.navigate(ScreenNameEnum.MAP_SCREEN, { item: propertDetails })
+                  }
+                  else {
+                    errorToast(localizationStrings.No_Address_Found)
+                  }
+
+                }}
+
+                style={localStyles.mapButton}>
+                <Text style={localStyles.mapButtonText}>{localizationStrings.O_map}</Text>
+              </TouchableOpacity>
+            </ImageBackground>
+
+            {user?.type == 'Company' && <TouchableOpacity
               onPress={() => {
-
-                if(propertDetails?.lat != '' && propertDetails?.lon != ''){
-
-                  navigation.navigate(ScreenNameEnum.MAP_SCREEN, { item: propertDetails })
-                }
-                else{
-errorToast("Not Address Found")
-                }
-                
+                Alert.alert(
+                  translations[value].alertTitle,
+                  translations[value].alertMessage,
+                  [
+                    {
+                      text: translations[value].cancelText,
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel',
+                    },
+                    {
+                      text: translations[value].deleteText,
+                      onPress: () => DeleteProperty(),
+                      style: 'destructive',
+                    },
+                  ],
+                  { cancelable: false },
+                );
               }}
-
-              style={localStyles.mapButton}>
-              <Text style={localStyles.mapButtonText}>{localizationStrings.O_map}</Text>
+              style={{ alignSelf: 'center', marginTop: 20 }}>
+              <Text style={{ color: 'red' }}>Delete Property</Text>
             </TouchableOpacity>
-          </ImageBackground>
-
-          {user?.type == 'Company' && <TouchableOpacity
-            onPress={() => {
-              Alert.alert(
-                'Delete Property',
-                'Are you sure you want to delete this property?',
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'Delete',
-                    onPress: () => DeleteProperty(),
-                    style: 'destructive',
-                  },
-                ],
-                { cancelable: false },
-              );
-            }}
-            style={{ alignSelf: 'center', marginTop: 20 }}>
-            <Text style={{ color: 'red' }}>Delete Property</Text>
-          </TouchableOpacity>
-          }
-          <View style={localStyles.bottomSpace} />
-          <DateModal
-            visible={modalVisible}
-            onClose={() => setModalVisible(false)}
-            data={item}
-          />
-          <MenuModal
-            visible={modalMenuVisible}
-            onClose={() => setmodalMenuVisible(false)}
-            data={propertDetails}
-          />
-        </ScrollView>
-        :
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: '#000', fontSize: 16 }}>No Details</Text>
-        </View>
-      }
-    </View>
+            }
+            <View style={localStyles.bottomSpace} />
+            <DateModal
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
+              data={item}
+            />
+            <MenuModal
+              visible={modalMenuVisible}
+              onClose={() => setmodalMenuVisible(false)}
+              data={propertDetails}
+            />
+          </ScrollView>
+          :
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: '#000', fontSize: 16 }}>No Details</Text>
+          </View>
+        }
+      </View>
     </SafeAreaView>
   );
 }
@@ -556,11 +565,11 @@ const localStyles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal:40,
+    marginHorizontal: 40,
   },
   btn: {
     borderWidth: 1,
-    height:50,
+    height: 50,
     borderRadius: 30,
     width: '45%',
     alignItems: 'center',
@@ -730,7 +739,7 @@ const localStyles = StyleSheet.create({
     marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal:15,
+    marginHorizontal: 15,
 
   },
   mapButton: {
@@ -753,23 +762,47 @@ const localStyles = StyleSheet.create({
   },
 });
 
-const GalleryData = [
-  {
-    Img: require('../../assets/Cropping/img4.png'),
+const translations = {
+  "English": {
+    "alertTitle": "Delete Property",
+    "alertMessage": "Are you sure you want to delete this property?",
+    "cancelText": "Cancel",
+    "deleteText": "Delete"
   },
-  {
-    Img: require('../../assets/Cropping/img5.png'),
+  "Chinese": {
+    "alertTitle": "删除属性",
+    "alertMessage": "您确定要删除此属性吗？",
+    "cancelText": "取消",
+    "deleteText": "删除"
   },
-  {
-    Img: require('../../assets/Cropping/img6.png'),
+  "Russian": {
+    "alertTitle": "Удалить собственность",
+    "alertMessage": "Вы уверены, что хотите удалить эту собственность?",
+    "cancelText": "Отмена",
+    "deleteText": "Удалить"
   },
-  {
-    Img: require('../../assets/Cropping/img4.png'),
+  "Italian": {
+    "alertTitle": "Elimina Proprietà",
+    "alertMessage": "Sei sicuro di voler eliminare questa proprietà?",
+    "cancelText": "Annulla",
+    "deleteText": "Elimina"
   },
-  {
-    Img: require('../../assets/Cropping/img5.png'),
+  "Spanish": {
+    "alertTitle": "Eliminar Propiedad",
+    "alertMessage": "¿Estás seguro de que deseas eliminar esta propiedad?",
+    "cancelText": "Cancelar",
+    "deleteText": "Eliminar"
   },
-  {
-    Img: require('../../assets/Cropping/img6.png'),
+  "Japanese": {
+    "alertTitle": "プロパティを削除",
+    "alertMessage": "このプロパティを削除してもよろしいですか？",
+    "cancelText": "キャンセル",
+    "deleteText": "削除"
   },
-];
+  "French": {
+    "alertTitle": "Supprimer la propriété",
+    "alertMessage": "Êtes-vous sûr de vouloir supprimer cette propriété ?",
+    "cancelText": "Annuler",
+    "deleteText": "Supprimer"
+  }
+}

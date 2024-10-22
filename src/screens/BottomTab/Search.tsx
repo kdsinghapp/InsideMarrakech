@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   FlatList,
   ScrollView,
   Platform,
+  Pressable
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -31,40 +32,90 @@ export default function Search() {
   const dispatch = useDispatch();
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeIndex, setActiveIndex] = useState(0); // State to track the active index
+  const isLoading = useSelector(state => state.feature.isLoading);
+  const onViewRef = useRef(({ viewableItems }) => {
+      if (viewableItems.length > 0) {
+          setActiveIndex(viewableItems[0].index);
+      }
+  });
+  const [loadingState, setLoadingState] = useState({});
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
 
   useEffect(() => {
     dispatch(get_all_property());
   }, [isFocused, user]);
 
-  const renderList = ({ item }) => {
-    const formatTimes = () => {
-      const [startTimeStr, endTimeStr] = item?.opening_hours?.split('/');
-      const formattedStartTime = timeFormate(startTimeStr);
-      const formattedEndTime = timeFormate(endTimeStr);
-      return {
-        startTime: formattedStartTime,
-        endTime: formattedEndTime
-      };
-    };
+  
+  const renderList = ({ item, index }) => {
 
     if (item.main_image != '') {
+      // Check if the first object in document_gallery has the image property
       const firstImage = item.main_image;
       if (firstImage) {
         return (
           <TouchableOpacity
+   
             onPress={() => {
               navigation.navigate(ScreenNameEnum.PLACE_DETAILS, { item: item });
             }}
             style={[styles.shadow, styles.itemContainer]}>
-            <Image
+            {/* <Image
               source={{ uri: firstImage }}
               style={styles.itemImage}
               resizeMode="cover"
-            />
+            /> */}
+            <FlatList
+                        data={[{image:item.main_image},...item?.document_gallery]}
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => (
+                          <Pressable style={{}}>
+                            <Image
+                                source={{ uri: item.image }}
+                                style={{
+                                    width: wp(85), // Full width of the screen for each image
+                                    height: hp(25),
+                                    borderRadius:15,
+                                    marginLeft:10
+                         
+                                }}
+                                resizeMode='cover'
+                            />
+                            </Pressable>
+                        )}
+                        onViewableItemsChanged={onViewRef.current}
+                        viewabilityConfig={viewConfigRef.current}
+                    />
+    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+                        {[{image:item?.main_image},...item?.document_gallery]?.map((_, index) => (
+                            <View
+                                key={index}
+                                style={{
+                                    height: 8,
+                                    width: 8,
+                                    borderRadius: 4,
+                                    backgroundColor: index === activeIndex ? 'green' : 'gray',
+                                    margin: 5,
+                                }}
+                            />
+                        ))}
+                    </View>
+            {loadingState[index] && (
+              <ActivityIndicator
+                style={styles.loadingIndicator}
+                size="small"
+                color="#000"
+              />
+            )}
+
 
             <Text style={styles.itemTitle}>{item.name}</Text>
             <View style={styles.detailsContainer}>
-              <Text style={styles.itemDetails}>{item.title}</Text>
+
+              {/* <Text style={styles.itemDetails}>{item.title}</Text> */}
             </View>
             <View style={styles.detailsContainer}>
               <Pin />
@@ -74,23 +125,35 @@ export default function Search() {
             <View style={styles.userContainer}>
               <View style={styles.userTextContainer}>
                 <Text style={styles.itemUser}>{localizationStrings.price} : {item.amount}</Text>
+
               </View>
+
+
+
             </View>
-            <View style={styles.userContainer}>
+            {/* <View style={styles.userContainer}>
               <View style={styles.userTextContainer}>
                 <Text style={styles.itemUser}>{localizationStrings.Open_Time} : {item.lunch_start}</Text>
+
               </View>
 
               <View style={styles.userTextContainer}>
-                <Text style={styles.itemUser}>{localizationStrings.Close_Time} : {item.lunch_end}</Text>
+                <Text style={styles.itemUser}> {localizationStrings.Close_Time} : {item.lunch_end}</Text>
+
               </View>
-            </View>
+
+
+
+            </View> */}
           </TouchableOpacity>
+     
         );
       }
     }
+
     return null;
   };
+
 
   const timeFormate = utcDateString => {
     const date = new Date(utcDateString);

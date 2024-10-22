@@ -1,5 +1,6 @@
 {
   "English": {
+    "No_Address_Found": "No Address Found",
     "Saved_Addresses": "Saved Addresses",
     "near_location": "NEARBY LOCATIONS",
     "No_Notification_found": "No Notification found",
@@ -165,6 +166,7 @@
     "enter_all_fields_error": "Please fill in all fields."
   },
   "French": {
+    "No_Address_Found": "Aucune adresse trouvée",
     "Saved_Addresses": "Adresses sauvegardées",
     "near_location": "Lieux à proximité",
     
@@ -331,6 +333,8 @@
     "Close_Time": "Heure de fermeture",
   },
   "Chinese": {
+    "No_Address_Found": "未找到地址"
+,
     "Saved_Addresses": "保存的地址",
     "near_location": "附近地点",
     "No_Notification_found": "未找到通知",
@@ -496,6 +500,7 @@
     "Close_Time": "关闭时间"
   },
   "Russian": {
+    "No_Address_Found": "Адрес не найден",
     "Saved_Addresses": "Сохраненные адреса",
     "near_location": "Ближайшие места",
     "No_Notification_found": "Уведений не найдено",
@@ -661,6 +666,7 @@
     "Close_Time": "Время закрытия"
   },
   "Italian": {
+    "No_Address_Found": "Nessun indirizzo trovato",
     "Saved_Addresses": "Indirizzi salvati",
     "near_location": "Località vicine",
     "No_Notification_found": "Nessuna notifica trovata",
@@ -826,6 +832,7 @@
     "Close_Time": "Orario di chiusura"
   },
   "Spanish": {
+    "No_Address_Found": "No se encontraron direcciones",
     "Saved_Addresses": "Direcciones guardadas",
     "near_location": "Ubicaciones cercanas",
     "No_Notification_found": "No se encontraron notificaciones",
@@ -991,6 +998,7 @@
     "Close_Time": "Hora de cierre"
   },
   "Japanese": {
+    "No_Address_Found": "住所が見つかりません",
     "Saved_Addresses": "保存された住所",
     "near_location": "近くの場所",
     "No_Notification_found": "通知が見つかりませんでした",

@@ -82,23 +82,6 @@ export default function Home() {
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
 
 
-  const timeFormate = utcDateString => {
-    const date = new Date(utcDateString);
-
-    // Check if the date is valid
-    if (!isNaN(date.getTime())) {
-      // Convert UTC date to local time
-      const localTimeString = date.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-      });
-      return localTimeString;
-    } else {
-
-    }
-  };
-
 
 
 
@@ -304,7 +287,7 @@ export default function Home() {
 <TouchableOpacity
 
 onPress={()=>{
-    if(item.name==='Prestation sur mesure'){
+    if(item.name === 'Prestations sur mesure'){
       setModalVisible(true)
     }else{
       navigation.navigate(ScreenNameEnum.seeSubcategory,
