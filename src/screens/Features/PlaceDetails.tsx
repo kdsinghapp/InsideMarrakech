@@ -43,6 +43,8 @@ import localizationStrings from '../../utils/Localization';
 import { WebView } from 'react-native-webview';
 import { errorToast } from '../../configs/customToast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Header from '../../configs/Header';
+import ProfileHeader from '../../configs/ProfileHeader';
 const { width } = Dimensions.get('window');
 export default function PlaceDetails() {
   const route = useRoute();
@@ -210,6 +212,10 @@ export default function PlaceDetails() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={localStyles.container}>
+        <View style={{marginTop:-45}}>
+
+      <ProfileHeader title={''} />
+        </View>
         {isLoading ? <Loading /> : null}
         {propertDetails.document_gallery ?
           <ScrollView showsVerticalScrollIndicator={false}>

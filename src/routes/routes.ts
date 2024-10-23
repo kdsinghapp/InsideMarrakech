@@ -29,6 +29,7 @@ import PlaceDetails from "../screens/Features/PlaceDetails";
 import SeeallCategory from "../screens/Features/SeeallCategory";
 import seeSubcategory from "../screens/Features/seeSubcategory";
 import SubCategoryProperty from "../screens/Features/SubCategoryProperty";
+import WebViewScreen from "../screens/Features/WebView";
 import MapScreen from "../screens/Map";
 import AboutUs from "../screens/ProfileSection/AboutUs";
 import BookingTab from "../screens/ProfileSection/BookingTab";
@@ -205,6 +206,10 @@ const _routes = {
     {
       name: ScreenNameEnum.SubCategoryProperty,
       Component:SubCategoryProperty,
+    },
+    {
+      name: ScreenNameEnum.WebViewScreen,
+      Component:WebViewScreen,
     },
     
   ],

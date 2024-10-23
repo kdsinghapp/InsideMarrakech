@@ -20,11 +20,8 @@ import Searchbar from '../../configs/Searchbar';
 import { heightPercentageToDP as hp,widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import BlackDown from '../../assets/svg/BlackDown.svg';
 import Pin from '../../assets/svg/Pin.svg';
-import User from '../../assets/svg/user.svg';
-import Down from '../../assets/svg/BlackDown.svg';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import ScreenNameEnum from '../../routes/screenName.enum';
-import DateModal from '../Modal/DateModal';
 import SearchIcon from '../../assets/svg/search.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import FastImage from 'react-native-fast-image'
@@ -55,6 +52,7 @@ export default function Home() {
   const BannerList = useSelector(state => state.feature.BannerList);
   const isLoading = useSelector(state => state.feature.isLoading);
   const dispatch = useDispatch();
+  
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -101,16 +99,17 @@ export default function Home() {
     : [];
 
 
-  useEffect(() => {
-    dispatch(get_category());
-    dispatch(get_banner());
-    dispatch(get_all_property())
-    get_Companyproperty();
-  }, [isFocused, user]);
+  useFocusEffect(
+    React.useCallback(() => {
+    
+     
+      dispatch(get_category());
+      dispatch(get_banner());
+      dispatch(get_all_property())
+      get_Companyproperty();
+    }, [])
+  );
 
-  useEffect(() => {
-    dispatch(get_all_property())
-  }, [])
 
   const renderList = ({ item, index }) => {
 
@@ -138,7 +137,7 @@ export default function Home() {
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item }) => (
                           <Pressable style={{}}>
-                            <Image
+                            <FastImage
                                 source={{ uri: item.image }}
                                 style={{
                                     width: wp(85), // Full width of the screen for each image

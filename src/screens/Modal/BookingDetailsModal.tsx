@@ -10,6 +10,7 @@ import {
   ScrollView,
   Image,
   FlatList,
+  Pressable
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -23,6 +24,7 @@ import {styles} from '../../configs/Styles';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import AddRatingModal from './RattingModal';
 import localizationStrings from '../../utils/Localization';
+import FastImage from 'react-native-fast-image';
 
 const BookingDetailsModal = ({visible, onClose, data}) => {
   const screenHeight = Dimensions.get('screen').height;
@@ -35,6 +37,7 @@ const BookingDetailsModal = ({visible, onClose, data}) => {
   const isFocused = useIsFocused();
   const [isModalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
+  const [activeIndex, setActiveIndex] = useState(0); // State to track the active index
 
 const [BookingData, setBookingData] = useState(null);
   useEffect(() => {
@@ -49,6 +52,13 @@ const [BookingData, setBookingData] = useState(null);
       get_property()
     }
   }, [BookingDetails]);
+  const onViewRef = useRef(({ viewableItems }) => {
+    if (viewableItems.length > 0) {
+        setActiveIndex(viewableItems[0].index);
+    }
+});
+
+const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
 
 
   const get_booking= () => {
@@ -115,6 +125,9 @@ const [BookingData, setBookingData] = useState(null);
     
   }
   };
+
+  console.log('propertDetails?.main_image',[{image:propertDetails.main_image},...propertDetails?.document_gallery]);
+  
   const renderBookingDetails = () => {
     if (!BookingDetails) return null;
 
@@ -123,11 +136,43 @@ const [BookingData, setBookingData] = useState(null);
       <>
         <View style={Styles.profileImageContainer}>
           {imageUri ? (
-            <Image source={{uri: imageUri}} style={Styles.profileImage} />
+              <FlatList
+              data={[{image:propertDetails.main_image},...propertDetails?.document_gallery]}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <Pressable style={{height:hp(20),width:wp(80), marginRight:10}}>
+            <FastImage
+            source={{ uri: item.image}}
+            style={Styles.profileImage}
+            resizeMode='cover'
+        /> 
+        
+        </Pressable> )}
+        onViewableItemsChanged={onViewRef.current}
+        viewabilityConfig={viewConfigRef.current}
+    />
           ) : (
             <Text>No Image Available</Text>
           )}
         </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+                        {[{image:propertDetails?.main_image},...propertDetails?.document_gallery]?.map((_, index) => (
+                            <View
+                                key={index}
+                                style={{
+                                    height: 8,
+                                    width: 8,
+                                    borderRadius: 4,
+                                    backgroundColor: index === activeIndex ? 'green' : 'gray',
+                                    margin: 5,
+                                }}
+                            />
+                        ))}
+                    </View>
         <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:20}}>
           <TouchableOpacity
            onPress={() => {
@@ -347,7 +392,8 @@ const Styles = StyleSheet.create({
   profileImage: {
     height: '100%',
     width:'100%',
- borderRadius:10
+ borderRadius:10,
+
   },
   sectionHeader: {
 

@@ -14,7 +14,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { styles } from '../../configs/Styles';
 import ProfileHeader from '../../configs/ProfileHeader';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,6 +35,7 @@ export default function Booking() {
   const BookingList = useSelector(state => state.feature.BookingList);
   const isLoading = useSelector(state => state.feature.isLoading);
   
+
 
 
   
@@ -95,7 +96,7 @@ export default function Booking() {
           <Image
             source={{ uri: item.image }}
             style={localStyles.itemImage}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         </View>
         <View style={localStyles.itemDetailsContainer}>
@@ -241,7 +242,7 @@ const localStyles = StyleSheet.create({
   },
   itemImage: {
     height: 100,
-    borderRadius: 10,
+    borderRadius: 15,
     width: 100,
     borderColor: '#7756FC',
   },

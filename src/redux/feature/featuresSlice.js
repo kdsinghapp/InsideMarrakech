@@ -68,7 +68,7 @@ export const get_user_booking_list = createAsyncThunk(
         '==============get_user_booking_list======================',
         params
       );
-      const response = await fetch(`https://server-php-8-2.technorizen.com/inside/api/get_user_booking_list`, {
+      const response = await fetch(`https://inside-marrakech.com/api/get_user_booking_list`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -341,7 +341,7 @@ export const update_property = createAsyncThunk(
     try {
      
 
-      const response = await fetch(`https://server-php-8-2.technorizen.com/inside/api/update_property`, {
+      const response = await fetch(`https://inside-marrakech.com/api/update_property`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -451,7 +451,11 @@ export const add_booking = createAsyncThunk(
       );
       if (response.data.status === '1') {
         successToast(response.data.message);
-        params.navigation.navigate(ScreenNameEnum.PAYMENT_SUCCESS);
+         setTimeout(() => {
+          params.navigation.navigate(ScreenNameEnum.PAYMENT_SUCCESS);
+                  
+                }, 3000);
+     
       } else {
         errorToast(response.data.message);
       }

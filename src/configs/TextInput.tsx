@@ -38,7 +38,7 @@ setShowPassword(props.hide)
         <View style={[styles.textInputWrapper, { width: props.showEye ? '70%' : props.County ? '75%' : '90%' }]}>
           <TextInput
             placeholderTextColor="#000000"
-            style={[styles.textInput,{}]}
+            style={[styles.textInput,{width:'80%'}]}
             keyboardType={props.keyboardType}
             onChangeText={onChangeText}
             value={props.value}

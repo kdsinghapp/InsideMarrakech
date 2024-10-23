@@ -16,13 +16,14 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import SearchIcon from '../../assets/svg/search.svg';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import ScreenNameEnum from '../../routes/screenName.enum';
 import ProfileHeader from '../../configs/ProfileHeader';
 import Pin from '../../assets/svg/Pin.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_all_property } from '../../redux/feature/featuresSlice';
 import localizationStrings from '../../utils/Localization';
+import FastImage from 'react-native-fast-image';
 
 export default function Search() {
   const navigation = useNavigation();
@@ -35,18 +36,24 @@ export default function Search() {
   const [activeIndex, setActiveIndex] = useState(0); // State to track the active index
   const isLoading = useSelector(state => state.feature.isLoading);
   const onViewRef = useRef(({ viewableItems }) => {
-      if (viewableItems.length > 0) {
-          setActiveIndex(viewableItems[0].index);
-      }
+    if (viewableItems.length > 0) {
+      setActiveIndex(viewableItems[0].index);
+    }
   });
   const [loadingState, setLoadingState] = useState({});
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
 
-  useEffect(() => {
-    dispatch(get_all_property());
-  }, [isFocused, user]);
 
-  
+  useFocusEffect(
+    React.useCallback(() => {
+
+
+
+      dispatch(get_all_property())
+
+    }, [])
+  );
+
   const renderList = ({ item, index }) => {
 
     if (item.main_image != '') {
@@ -55,7 +62,7 @@ export default function Search() {
       if (firstImage) {
         return (
           <TouchableOpacity
-   
+
             onPress={() => {
               navigation.navigate(ScreenNameEnum.PLACE_DETAILS, { item: item });
             }}
@@ -66,43 +73,43 @@ export default function Search() {
               resizeMode="cover"
             /> */}
             <FlatList
-                        data={[{image:item.main_image},...item?.document_gallery]}
-                        horizontal
-                        pagingEnabled
-                        showsHorizontalScrollIndicator={false}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({ item }) => (
-                          <Pressable style={{}}>
-                            <Image
-                                source={{ uri: item.image }}
-                                style={{
-                                    width: wp(85), // Full width of the screen for each image
-                                    height: hp(25),
-                                    borderRadius:15,
-                                    marginLeft:10
-                         
-                                }}
-                                resizeMode='cover'
-                            />
-                            </Pressable>
-                        )}
-                        onViewableItemsChanged={onViewRef.current}
-                        viewabilityConfig={viewConfigRef.current}
-                    />
-    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-                        {[{image:item?.main_image},...item?.document_gallery]?.map((_, index) => (
-                            <View
-                                key={index}
-                                style={{
-                                    height: 8,
-                                    width: 8,
-                                    borderRadius: 4,
-                                    backgroundColor: index === activeIndex ? 'green' : 'gray',
-                                    margin: 5,
-                                }}
-                            />
-                        ))}
-                    </View>
+              data={[{ image: item.main_image }, ...item?.document_gallery]}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <Pressable style={{}}>
+                  <FastImage
+                    source={{ uri: item.image }}
+                    style={{
+                      width: wp(85), // Full width of the screen for each image
+                      height: hp(25),
+                      borderRadius: 15,
+                      marginLeft: 10
+
+                    }}
+                    resizeMode='cover'
+                  />
+                </Pressable>
+              )}
+              onViewableItemsChanged={onViewRef.current}
+              viewabilityConfig={viewConfigRef.current}
+            />
+            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+              {[{ image: item?.main_image }, ...item?.document_gallery]?.map((_, index) => (
+                <View
+                  key={index}
+                  style={{
+                    height: 8,
+                    width: 8,
+                    borderRadius: 4,
+                    backgroundColor: index === activeIndex ? 'green' : 'gray',
+                    margin: 5,
+                  }}
+                />
+              ))}
+            </View>
             {loadingState[index] && (
               <ActivityIndicator
                 style={styles.loadingIndicator}
@@ -146,7 +153,7 @@ export default function Search() {
 
             </View> */}
           </TouchableOpacity>
-     
+
         );
       }
     }
@@ -178,7 +185,7 @@ export default function Search() {
 
   return (
     <View style={styles.container}>
-            <View  style={{marginTop:Platform.OS == 'ios'?15:0}}/>
+      <View style={{ marginTop: Platform.OS == 'ios' ? 15 : 0 }} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <ProfileHeader title={localizationStrings.search} width={30} />
         <View style={styles.searchContainer}>
@@ -325,9 +332,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#000',
     lineHeight: 18,
-    width:'90%',
+    width: '90%',
     fontFamily: 'Federo-Regular',
-    
+
 
   },
   noDataContainer: {

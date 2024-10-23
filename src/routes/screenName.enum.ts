@@ -47,6 +47,7 @@ enum ScreenNameEnum {
  PAYMENT_DETAILS = 'PAYMENT_DETAILS',
  PAYMENT_SUCCESS ='PAYMENT_SUCCESS',
  MAP_SCREEN= 'MAP_SCREEN',
+ WebViewScreen="WebViewScreen",
  
   //company
   ADD_PROPERTY ='ADD_PROPERTY',

@@ -29,6 +29,7 @@ import { TextInputMask } from 'react-native-masked-text';
 import { RadioButton } from 'react-native-paper';
 import WebView from 'react-native-webview';
 import { errorToast } from '../../configs/customToast';
+import ExitConfirmationModal from '../../configs/ExitConfirmationModal';
 export default function PaymentDetails() {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedPayment, setselectedPayment] = useState('Cash on Delivery');
@@ -59,7 +60,7 @@ export default function PaymentDetails() {
     Property,
   } = route.params;
 
-
+  const [modalVisible, setModalVisible] = useState(false);
   const handleItemSelect = index => {
     setSelectedItemIndex(index);
   };
@@ -69,17 +70,41 @@ export default function PaymentDetails() {
   const booking_id = uuid.v4();
   const Payment_mode = () => {
 
+    const payment_uri = `https://inside-marrakech.com/admin/booking_payment?user_id=${user.id}&amount=${(Number(Property.amount) * Number(selectedGuestCount))?.toFixed(2)}&currency=mad&booking_id=${booking_id}`
+    const price = Property.amount * selectedGuestCount
+
+
+    const fromData = {
+      user_id: user.id,
+      company_id: Property.company_id,
+      property_id: Property.id,
+      first_name: firstName,
+      last_name: lastName,
+      mobile: phoneNumber,
+      driver_id: '',
+      language: language,
+      address: address,
+      lat: '',
+      lon: '',
+      amount: price,
+      GuestList: travelers,
+      created_date: selectedEndDate ? selectedStartDate + ' To ' + selectedEndDate : selectedStartDate,
+      email: email,
+    }
+
+
+
+
 
     if (PaymentMode == 'Paid') {
-      setCheckoutUrl(true)
-      console.log('setCheckoutUrl',checkoutUrl);
+      navigation.navigate(ScreenNameEnum.WebViewScreen, { url: payment_uri, fromData: fromData })
+
     } else {
       submitBooking()
     }
   }
 
   // const payment_uri = `https://server-php-8-2.technorizen.com/inside/admin/booking_payment?user_id=${user.id}&amount=${Property.amount * selectedGuestCount}&currency=mad&booking_id=${booking_id}`
-  const payment_uri = `https://inside-marrakech.com/admin/booking_payment?user_id=${user.id}&amount=${(Number(Property.amount) * Number(selectedGuestCount))?.toFixed(2)}&currency=mad&booking_id=${booking_id}`
 
 
 
@@ -108,7 +133,6 @@ export default function PaymentDetails() {
 
       navigation: navigation,
     };
-
     dispatch(add_booking(params));
   };
 
@@ -121,7 +145,7 @@ export default function PaymentDetails() {
       setPaymentStatus('paid')
       await submitBooking();
 
-    } 
+    }
 
   };
   const handleError = (error) => {
@@ -264,6 +288,10 @@ export default function PaymentDetails() {
 
           <View style={{ height: hp(5) }} />
         </ScrollView>
+        <ExitConfirmationModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
         <TouchableOpacity
           onPress={() => {
             Payment_mode()
