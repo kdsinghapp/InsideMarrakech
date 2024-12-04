@@ -21,8 +21,6 @@ target 'InsideMarrakech' do
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
 
-
- 
   $RNFirebaseAsStaticFramework = true
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
 
@@ -31,7 +29,7 @@ target 'InsideMarrakech' do
   pod 'FirebaseCoreInternal', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
-  pod 'Firebase/Analytics',:modular_headers => true
+  pod 'Firebase/Analytics', :modular_headers => true
   pod 'Firebase/Auth', :modular_headers => true  # Add other Firebase dependencies if needed
 
   use_react_native!(
@@ -46,13 +44,26 @@ target 'InsideMarrakech' do
     # Pods for testing
   end
 
+  # Combined Post Install Hook
   post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+    installer.pods_project.targets.each do |target|
+      # Fix for BoringSSL-GRPC
+      if target.name == 'BoringSSL-GRPC'
+        target.source_build_phase.files.each do |file|
+          if file.settings && file.settings['COMPILER_FLAGS']
+            flags = file.settings['COMPILER_FLAGS'].split
+            flags.reject! { |flag| flag == '-GCC_WARN_INHIBIT_ALL_WARNINGS' }
+            file.settings['COMPILER_FLAGS'] = flags.join(' ')
+          end
+        end
+      end
+    end
+
+    # React Native Post Install Hook
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
+      :mac_catalyst_enabled => false
     )
   end
 end

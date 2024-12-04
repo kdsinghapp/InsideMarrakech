@@ -158,7 +158,7 @@ const DateModal = ({ visible, onClose, data }) => {
                     </Text>
                     <Image
                       source={require('../../assets/Cropping/Person2x.png')}
-                      style={styles.guestIcon}
+                      style={[styles.guestIcon, {tintColor:selectedGuestCount === index ?'#fff':'#000'}]}
                     />
                   </TouchableOpacity>
                 )}

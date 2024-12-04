@@ -348,7 +348,7 @@ style={[
     marginTop: 5,
     textAlign: 'center'
   }}>
-  {item.name.substring(0, 20)}
+  {item.name}
 </Text>
 </TouchableOpacity>
 
