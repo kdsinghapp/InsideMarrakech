@@ -22,37 +22,67 @@ const WebViewScreen = ({ route, }) => {
 
     const onNavigationStateChange = async navState => {
 
+console.log('navState=>>>>>>',navState);
 
 
         const filename = navState?.url?.split('/')?.pop()?.split('?')[0].split('#')[0];
 
+console.log('filename',filename);
 
-        if (navState.url.includes('paystripedata_booking')) {
-
-            setSuccuss(true)
-
-            await submitBooking();
-
-
-
+try{
+    const extractToken = (url) => {
+        // Ensure the URL contains query parameters
+        if (!url.includes('?')) {
+          return null;
         }
-        else if (filename == 'paystripe_cancel_booking') {
-            setModalVisible(true)
-
-
+    
+        const queryParams = url.split('?')[1]; // Get everything after "?"
+        const paramsArray = queryParams.split('&'); // Split by "&" to get individual key-value pairs
+    
+        // Use a loop to check all key-value pairs
+        for (const param of paramsArray) {
+          const [key, value] = param.split('='); // Split each pair into key and value
+          if (key === 'token') {
+            return value; // Return the token value if the key is "token"
+          }
         }
+    
+        return null; // Return null if token is not found
+      };
+    
+const token =  extractToken(navState?.url);
 
-        else {
+if (filename === 'success') {
 
-        }
+    setSuccuss(true)
 
+    await submitBooking(token);
+
+
+
+}
+else if (filename === 'cancel') {
+    setModalVisible(true)
+
+
+}
+}
+
+catch(err){
+
+    console.log('errr',err);
+    
+}
+       
+
+       
     };
-    const submitBooking = () => {
+    const submitBooking = (token) => {
         try {
             const params = {
                 data: fromData,
-
-
+                paypal_transaction_id:token,
+            
                 navigation: navigation,
             };
             dispatch(add_booking(params)).then(res => {

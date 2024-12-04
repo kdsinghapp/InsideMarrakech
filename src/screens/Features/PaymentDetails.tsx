@@ -10,7 +10,7 @@ import {
   TextInput,
   Alert
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfileHeader from '../../configs/ProfileHeader';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DarkStar from '../../assets/svg/DarkStar.svg';
@@ -67,6 +67,32 @@ export default function PaymentDetails() {
   const dispatch = useDispatch();
 
 
+  const get_paypal_url = (data) => {
+
+
+    const formdata = new FormData();
+    formdata.append("currency", "EUR");
+    formdata.append("amount", Number(Property.amount * selectedGuestCount));
+    
+    const requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow"
+    };
+    
+    fetch("https://inside-marrakech.com/api/paypal/create-order", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+ const res = JSON.parse(result)
+        console.log(res?.url)
+if(res?.url){
+
+  navigation.navigate(ScreenNameEnum.WebViewScreen, { url: res?.url, fromData: data })
+}
+
+      })
+      .catch((error) => console.error(error));
+  }
   const booking_id = uuid.v4();
   const Payment_mode = () => {
 
@@ -97,7 +123,8 @@ export default function PaymentDetails() {
 
 
     if (PaymentMode == 'Paid') {
-      navigation.navigate(ScreenNameEnum.WebViewScreen, { url: payment_uri, fromData: fromData })
+      get_paypal_url(fromData)
+    
 
     } else {
       submitBooking()
