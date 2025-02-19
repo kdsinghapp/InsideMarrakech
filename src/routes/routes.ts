@@ -55,6 +55,10 @@ const _routes = {
       name: ScreenNameEnum.SPLASH_SCREEN,
       Component:SplashScreen,
     },
+       {
+      name: ScreenNameEnum.LOGIN_OPTION,
+      Component:LoginOption,
+    },
     {
       name: ScreenNameEnum.WELLCOME_SCREEN,
       Component:WellcomeScreen,
@@ -143,10 +147,7 @@ const _routes = {
       name: ScreenNameEnum.CHAT_SCREEN,
       Component:Chat,
     },
-    {
-      name: ScreenNameEnum.LOGIN_OPTION,
-      Component:LoginOption,
-    },
+ 
     {
       name: ScreenNameEnum.ADD_PROPERTY,
       Component:AddProperty,

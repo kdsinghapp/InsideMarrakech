@@ -29,8 +29,6 @@ target 'InsideMarrakech' do
   pod 'FirebaseCoreInternal', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
-  pod 'Firebase/Analytics', :modular_headers => true
-  pod 'Firebase/Auth', :modular_headers => true  # Add other Firebase dependencies if needed
 
   use_react_native!(
     :path => config[:reactNativePath],

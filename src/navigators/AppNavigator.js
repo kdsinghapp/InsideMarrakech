@@ -14,6 +14,7 @@ import { LanguageProvider } from '../utils/LanguageContext';
 import { LocationProvider } from '../configs/LocationContext';
 import InternetConnectionCheck from '../configs/ConnectionCheck';
 import { firebase } from '@react-native-firebase/analytics';
+
 export default function AppNavigator() {
 
   useEffect(()=>{

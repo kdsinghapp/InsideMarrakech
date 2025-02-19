@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   Dimensions,
   Pressable,
+  VirtualizedList,
 } from 'react-native';
 import Header from '../../configs/Header';
 import Searchbar from '../../configs/Searchbar';
@@ -241,12 +242,42 @@ export default function Home() {
     }));
   };
 
+  const [visibleData, setVisibleData] = useState([]); // Store visible items
+const [page, setPage] = useState(1); // Current page
+const [loading, setLoading] = useState(false); // Loading state for fetching more data
+const itemsPerPage = 10; // Items per page
+
+useEffect(() => {
+  if (all_property && all_property.length > 0) {
+    loadMoreData(); // Load first batch of items when component mounts
+  }
+}, [all_property]);
+
+const loadMoreData = () => {
+  if (loading) return; // Avoid multiple loads at the same time
+
+  setLoading(true); // Set loading state to true
+  const nextPage = page + 1;
+  const startIndex = page * itemsPerPage; // Calculate the start index for the next batch of items
+  const newItems = all_property.slice(startIndex, startIndex + itemsPerPage); // Fetch next 10 items
+  
+  // Update the visible data and page number
+  setVisibleData((prevData) => [...prevData, ...newItems]);
+  setPage(nextPage);
+  setLoading(false); // Reset loading state once the data is loaded
+};
+
+const getItemLayout = (data, index) => ({
+  length: 100,  // height of each item in the list (adjust according to your item layout)
+  offset: 100 * index, // index of the item
+  index,
+});
 
 
   return (
     <KeyboardAvoidingView style={styles.container}>
       {isLoading ? <Loading /> : null}
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{height:Platform.OS !== 'android'?40:10,}} />
         <Header />
         {user?.type === 'User' && (
@@ -397,20 +428,17 @@ style={[
                 )}
               </View>
             )}
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              onLoadStart={() => handleImageLoadStart(index)}
-              onLoadEnd={() => handleImageLoadEnd(index)}
-              data={
-                selectedCategory
-                  ? filteredPropertiesByCategory
-                  : searchQuery
-                    ? filteredPropertiesBySearch
-                    : all_property
-              }
-              renderItem={renderList}
-              keyExtractor={(item) => item.id}
-            />
+       <VirtualizedList
+  data={visibleData}
+  initialNumToRender={10}
+  renderItem={renderList}
+  keyExtractor={(item) => item.id.toString()}
+  getItemCount={(data) => data.length}
+  getItem={(data, index) => data[index]}
+  onEndReached={loadMoreData}
+  onEndReachedThreshold={0.1}
+  ListFooterComponent={loading ? <ActivityIndicator size="large" color="#0000ff" /> : null}
+/>
 
           </>
         )}

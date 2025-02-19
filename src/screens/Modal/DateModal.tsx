@@ -133,6 +133,7 @@ const DateModal = ({ visible, onClose, data }) => {
               selectedDayColor="#7300e6"
               selectedDayTextColor="#FFFFFF"
               onDateChange={handleDateChange}
+              selectedDayStyle={{ backgroundColor: '#7300e6' }} 
             />
             <Text style={styles.title}>{localizationStrings.guest}</Text>
             <View style={styles.optionContainer}>

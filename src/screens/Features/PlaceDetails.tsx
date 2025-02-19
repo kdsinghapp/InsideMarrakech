@@ -43,7 +43,6 @@ import localizationStrings from '../../utils/Localization';
 import { WebView } from 'react-native-webview';
 import { errorToast } from '../../configs/customToast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Header from '../../configs/Header';
 import ProfileHeader from '../../configs/ProfileHeader';
 const { width } = Dimensions.get('window');
 export default function PlaceDetails() {
@@ -220,16 +219,7 @@ export default function PlaceDetails() {
         {propertDetails.document_gallery ?
           <ScrollView showsVerticalScrollIndicator={false}>
 
-            {/* {propertDetails && (
-            <ImageBackground
-              source={{
-                uri:
-                  propertDetails?.main_image
-              }}
-              style={localStyles.imageBackground}>
-
-            </ImageBackground>
-          )} */}
+       
 
             <FlatList
               data={[{ image: propertDetails?.main_image }, ...propertDetails?.document_gallery]}
@@ -301,38 +291,7 @@ export default function PlaceDetails() {
               </View>
 
 
-              {/* 
-            <View style={localStyles.galleryHeaderContainer}>
-              <Text style={localStyles.galleryHeaderText}>{localizationStrings.G_photo}</Text>
-
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate(ScreenNameEnum.Gallery_Screen, {
-                    item: propertDetails?.document_gallery
-                  })
-                }}
-              >
-                <Text style={localStyles.seeAllText}>{localizationStrings.see_a}</Text>
-              </TouchableOpacity>
-
-            </View> */}
-              {/* 
-            <View style={localStyles.galleryContainer}>
-              <FlatList
-                data={propertDetails?.document_gallery}
-                showsHorizontalScrollIndicator={false}
-                horizontal
-                renderItem={({ item }) => (
-                  <View>
-                    <Image
-                      source={{ uri: item.image }}
-                      resizeMode="contain"
-                      style={localStyles.galleryImage}
-                    />
-                  </View>
-                )}
-              />
-            </View> */}
+           
 
 
               <View style={localStyles.descriptionContainer}>
@@ -417,13 +376,7 @@ export default function PlaceDetails() {
                 </TouchableOpacity>
               </View>
             )}
-            {/* <View style={localStyles.openingHoursContainer}>
-            <Text style={localStyles.sectionTitle}>{localizationStrings.O_hours}</Text>
-
-            <Text style={localStyles.openingHoursText}>
-              {propertDetails?.lunch_start} to {propertDetails?.lunch_end}
-            </Text>
-          </View> */}
+         
 
 
             <View style={[localStyles.sectionContainer, { marginTop: 20 }]}>
